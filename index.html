@@ -199,7 +199,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li></ul>
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li></ul>
                     </div>
                 </section>
                 
@@ -269,6 +269,79 @@
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-kerberos-study" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/12/29/kerberos-study/" class="article-date">
+      <time datetime="2020-12-29T07:24:58.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <h2 id="kerberos的概念、作用"><a href="#kerberos的概念、作用" class="headerlink" title="kerberos的概念、作用"></a>kerberos的概念、作用</h2><p><strong>Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos</strong></p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>例如A与B之间有个秘钥需要传输，A要向B证明这个秘钥是我给你的，首先A需要自己给秘钥加密，然后把明文发送给B，B拿到后会先解密，得到的和明文相符，则证明是A发送来的。<br>在网络中，秘钥是可以被截获和破解的，所以秘钥的加密又分为长期秘钥（Long time Key）和临时秘钥（Session Key），大部分都是用临时秘钥进行传输，因为就算黑客截获了密文，等到破解出来密文已经过期，需要重启验证。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">长期秘钥是长期存在的，例如存储在计算机用户的管理员NTLM-Hash </span><br><span class="line">短期秘钥就需要一个第三方可信任机构来生成，也就是KDC</span><br><span class="line">至此，三个介质已经介绍完毕，1、Client 2、Server 3、KDC</span><br></pre></td></tr></table></figure>
+<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>在A到B机器的完整通信中，需要经过几个介质的名称<br>1、Domain Controller（域控制器，也叫域控）简称DC，用于对域下计算机，用户的统一管理<br>2、KDC，秘钥分发中心<br>3、AS，身份验证服务，用于KDC对Client的认证<br>4、AD, 存储机器信息，用户组，域相关的信息<br>5、TGS,票据授予服务，用于KDC向Client和Server分发临时秘钥<br>6、Client 我们客户端<br>7、Server 对方服务端</p>
+<h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>这里引进网上的一张流程图，算了对着画一张吧，我画画还是挺不错的<br><img src="https://www.tu3k.cn/images/kerberos/kerberos.png" alt="kerberos" title="kerberos"><br>1、首先Client向DC域控请求与Server产生通信，DC接到需求，先用AS服务去AD里查询A机器发起请求用户的信息，如果存在，返回一个与机器对应的TGT票据给Client<br>2、Client拿到票据，再次请求DC与Server产生通信，这时TGS服务拿到票据后会查询这个机器发来的票据权限有多大，是否具备访问权限等<br>3、如果有访问权限，或者权限更大，TGS会返回给Client一个ST（Service Ticket）票据，这个票据是用来与Server产生通信的门票<br>4、Client拿着ST去请求Server<br>5、产生通信。</p>
+<p><strong>总结：</strong><code>Client要访问Server，先让AS去AD里查询身份是否存在，认证通过后返回给Client一个TGT票据；Client再拿着TGT票据去请求TGS服务认证下权限，如果有权限，返回给Client一个ST；Client拿着ST直接和Serer产生通信。</code><br><img src="https://www.tu3k.cn/images/kerberos/sb.jpg" alt="yunliwuli" title="yunliwuli"></p>
+<h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>以上就是整个的通信流程，如果理解了就不用看下面了，这里再仔细解读一下。</p>
+<h4 id="1、Client发送信息到AS进行认证并返回TGT票据"><a href="#1、Client发送信息到AS进行认证并返回TGT票据" class="headerlink" title="1、Client发送信息到AS进行认证并返回TGT票据"></a>1、Client发送信息到AS进行认证并返回TGT票据</h4><p>详情：<br> ① Client用自己的NTLM_Hash对当前时间、Client信息、服务信息进行加密发送到DC的AS服务<br> ② AS服务接收到查询请求会通过AD查询身份是否存在；如果存在则取出Client的NTLM_Hash，然后生成一个随机临时秘钥（Session Key），将临时秘钥用取出来的NTLM_Hash加密起来做为Client的一部分内容<br> ③ 还有一部分就是TGT：使用域控账户（krbtgt）的NTLM_Hash加密算法对Session Key、当前时间、客户端信息进行加密，然后将两部分内容返回给Client。（krbtgt是创建域控自动生成的账户）</p>
+<h4 id="2、请求TGS服务认真并拿到ST票据"><a href="#2、请求TGS服务认真并拿到ST票据" class="headerlink" title="2、请求TGS服务认真并拿到ST票据"></a>2、请求TGS服务认真并拿到ST票据</h4><p>详情：<br> ① Client收到AS发来的两部分内容后，先解密用自身NTLM_Hash加密的票据得到Session Key，并用临时秘钥加密Client Info和当前时间等信息<br> ② TGT的内容是域管krbtgt账户加密的，解密不开<br> ③ 两部分内容一起发送到TGS服务进行权限验证<br> ④ TGS服务收到后，用krbtgt的NTLM_Hash先解密TGT得到Session Key，再用Session Key去解密Client的内容包，得到当前时间等一些信息，并对两个包的当前时间进行比较，如果相差太多，需重新验证，还要拿TGT解密出来的Client信息和Session Key解密出来Client的信息作对比，必须一致。<br> ⑤ 接着判断Client有无权限访问Server，有权限，TGS也会产生一个随机秘钥(Session Key TGS)，接着返回给Client两部分内容，一部分是：Session Key加密的Session Key TGS（用来Client与Server之间通信的介质），另一部分：Server NTLM_Hash加密的数据(Session Key TGS、Client Info、当前时间)简称ST</p>
+<h4 id="3、Client拿着ST票据访问Server"><a href="#3、Client拿着ST票据访问Server" class="headerlink" title="3、Client拿着ST票据访问Server"></a>3、Client拿着ST票据访问Server</h4><p>详情：<br> ① Client收到返回的两部分内容，先解密出Session Key TGS，接着用解密出来的Session Key TGS加密Client信息(当前时间、Client Info)<br> ② ST是Server的NTLM_Hash加密的，解密不出，拼接前面的第一部分发送给Server</p>
+<h4 id="4、Server登场"><a href="#4、Server登场" class="headerlink" title="4、Server登场"></a>4、Server登场</h4><p>详情：<br> Server收到请求，用自身的NTLM_Hash解密出Session Key TGS，接着用Session Key TGS解密出Client信息，然后对比时间相差，如果没有超过八小时，则验证通过，建立通信</p>
+<h4 id="5、举例"><a href="#5、举例" class="headerlink" title="5、举例"></a>5、举例</h4><p>简单来说就是，我是一名六年级小学生（Client），现在要出校门（Server），需要拿到请假条（票据），我拿着写着我名字的假条（Client Info）去学生处（DC）找级部主任请假，他会先查我是哪个班的（AS-&gt;AD），查到后给我假条上盖个私章（krbtgt加密过的TGT），并告诉我去隔壁教务处盖批准章，我拿着盖着私章的假条到了隔壁教务处（TGS），教务处会看我是否有出校门的权利，如果符合条件，就给我盖上章录入出校系统（Server NTLM加密的Session Key TGS），接着出校门，一套动作行云流水。</p>
+<h2 id="域渗透中Kerberos的问题"><a href="#域渗透中Kerberos的问题" class="headerlink" title="域渗透中Kerberos的问题"></a>域渗透中Kerberos的问题</h2><p>黄金票据的问题出现在 TGT处<br>白银票据的问题出现在 ST处</p>
+<p><code>经典的ms14-068的问题是在权限认证的时候允许用户填入权限，造成了伪造管理员票据的漏洞</code></p>
+
+    
+</div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-frp" class="article article-type-post" itemscope itemprop="blogPost">
   
