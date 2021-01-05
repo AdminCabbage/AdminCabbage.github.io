@@ -15,12 +15,12 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="背景这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。 前期收集信息先是Ueditor Getshell:http:&#x2F;&#x2F;***.cn&#x2F;ueditor&#x2F;net&#x2F;upload&#x2F;image&#x2F;20201017&#x2F;63743489112455">
+<meta name="description" content="背景这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记录一次7i24星外虚拟主机提权">
 <meta property="og:url" content="https://www.tu3k.cn/2021/01/04/7i24tiquan/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="背景这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。 前期收集信息先是Ueditor Getshell:http:&#x2F;&#x2F;***.cn&#x2F;ueditor&#x2F;net&#x2F;upload&#x2F;image&#x2F;20201017&#x2F;63743489112455">
+<meta property="og:description" content="背景这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.tu3k.cn/images/7i24/1.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/7i24/2.png">
@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://www.tu3k.cn/images/7i24/21.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/7i24/22.png">
 <meta property="article:published_time" content="2021-01-03T20:28:00.000Z">
-<meta property="article:modified_time" content="2021-01-05T05:44:28.896Z">
+<meta property="article:modified_time" content="2021-01-05T06:21:56.585Z">
 <meta property="article:tag" content="星外7i24提权">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.tu3k.cn/images/7i24/1.png">
@@ -332,6 +332,8 @@
     
         
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><strong>这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。</strong></p>
+<a id="more"></a>
+
 <h3 id="前期收集信息"><a href="#前期收集信息" class="headerlink" title="前期收集信息"></a>前期收集信息</h3><p>先是Ueditor Getshell:<code>http://***.cn/ueditor/net/upload/image/20201017/6374348911245522335347148.aspx</code><br><img src="https://www.tu3k.cn/images/7i24/1.png" alt="7i24" title="星外主机提权"><br>通过目录发现是freehost主机，翻看目录确认是7i24的星外虚拟主机<br><img src="https://www.tu3k.cn/images/7i24/2.png" alt="freehost" title="freehost"><br>星外主机提权无非两三种</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">① iis低版本和服务器的ee提权</span><br><span class="line">② exp提权</span><br><span class="line">③ 第三方（几率很小都有防护措施）</span><br><span class="line">④ 其他方式</span><br></pre></td></tr></table></figure>
 <p>首先收集了下主机信息<br><img src="https://www.tu3k.cn/images/7i24/3.png" alt="systeminfo" title="systeminfo"><br>iis权限，权限挺大的，起码能执行命令，systeminfo收集了打的补丁情况和主机情况<br><img src="https://www.tu3k.cn/images/7i24/4.png" alt="bug" title="bug"><br>2008 R2/x64/200补丁，查了下漏洞补丁用了些ms16-032、烂土豆没提下，（当时是用烂土豆没提下），接着上了个aspx大马扫了下端口<br><img src="https://www.tu3k.cn/images/7i24/5.png" alt="scanport" title="scanport"><br>想着从mssql和mysql两个入口突破，翻查D盘找到了mysql数据库目录下载用户文件到本地得到root密码，没解开<br><img src="https://www.tu3k.cn/images/7i24/6.png" alt="3306提权" title="3306提权"><br>又访问了D:\freehost目录，发现可以跨目录访问，权限挺大，挨个网站去点，翻配置文件，最后翻到了两个sa的账号密码都没有登录成功  sa 123456/sa zxcv1010<br><img src="https://www.tu3k.cn/images/7i24/7.png" alt="1433提权" title="1433提权"><br>当时是直接无语，过了阵子又上去看这个站，发现C盘根目录被人传了mimikatz.exe和1.log 点进去发现竟然有服务器iis用户的密码，虽然里面没有管理员的，那人能执行mimikatz说明拿到了system权限，就准备重新试试，当时手里有个烂土豆的升级版。</p>
@@ -350,7 +352,7 @@
         <p><span>Title:</span><a href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-01-04, 04:28:00</p>
-        <p><span>Updated:</span>2021-01-05, 13:44:28</p>
+        <p><span>Updated:</span>2021-01-05, 14:21:56</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/01/04/7i24tiquan/" title="记录一次7i24星外虚拟主机提权">https://www.tu3k.cn/2021/01/04/7i24tiquan/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/04/7i24tiquan/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>

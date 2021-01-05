@@ -15,17 +15,17 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="kerberos的概念、作用Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos 工作流程0x01例如A与B之间有个秘钥需要传输，A要向B证明这个秘钥是我给你的，首先A需要自己给秘钥加密，然后把明文发送给B，B拿到后会先解密，得到的和明文相符，则证明是A发送来的。在网络中，秘钥是可以被截获和破解的，">
+<meta name="description" content="kerberos的概念、作用Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos">
 <meta property="og:type" content="article">
 <meta property="og:title" content="个人理解kerberos的作用和运行流程">
 <meta property="og:url" content="https://www.tu3k.cn/2020/12/29/kerberos-study/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="kerberos的概念、作用Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos 工作流程0x01例如A与B之间有个秘钥需要传输，A要向B证明这个秘钥是我给你的，首先A需要自己给秘钥加密，然后把明文发送给B，B拿到后会先解密，得到的和明文相符，则证明是A发送来的。在网络中，秘钥是可以被截获和破解的，">
+<meta property="og:description" content="kerberos的概念、作用Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.tu3k.cn/images/kerberos/kerberos.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/kerberos/sb.jpg">
 <meta property="article:published_time" content="2020-12-29T07:24:58.000Z">
-<meta property="article:modified_time" content="2020-12-29T10:13:08.683Z">
+<meta property="article:modified_time" content="2021-01-05T06:22:33.989Z">
 <meta property="article:tag" content="kerberos">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.tu3k.cn/images/kerberos/kerberos.png">
@@ -312,6 +312,8 @@
     
         
         <h2 id="kerberos的概念、作用"><a href="#kerberos的概念、作用" class="headerlink" title="kerberos的概念、作用"></a>kerberos的概念、作用</h2><p><strong>Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos</strong></p>
+<a id="more"></a>
+
 <h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>例如A与B之间有个秘钥需要传输，A要向B证明这个秘钥是我给你的，首先A需要自己给秘钥加密，然后把明文发送给B，B拿到后会先解密，得到的和明文相符，则证明是A发送来的。<br>在网络中，秘钥是可以被截获和破解的，所以秘钥的加密又分为长期秘钥（Long time Key）和临时秘钥（Session Key），大部分都是用临时秘钥进行传输，因为就算黑客截获了密文，等到破解出来密文已经过期，需要重启验证。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">长期秘钥是长期存在的，例如存储在计算机用户的管理员NTLM-Hash </span><br><span class="line">短期秘钥就需要一个第三方可信任机构来生成，也就是KDC</span><br><span class="line">至此，三个介质已经介绍完毕，1、Client 2、Server 3、KDC</span><br></pre></td></tr></table></figure>
 <h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>在A到B机器的完整通信中，需要经过几个介质的名称<br>1、Domain Controller（域控制器，也叫域控）简称DC，用于对域下计算机，用户的统一管理<br>2、KDC，秘钥分发中心<br>3、AS，身份验证服务，用于KDC对Client的认证<br>4、AD, 存储机器信息，用户组，域相关的信息<br>5、TGS,票据授予服务，用于KDC向Client和Server分发临时秘钥<br>6、Client 我们客户端<br>7、Server 对方服务端</p>
@@ -336,7 +338,7 @@
         <p><span>Title:</span><a href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2020-12-29, 15:24:58</p>
-        <p><span>Updated:</span>2020-12-29, 18:13:08</p>
+        <p><span>Updated:</span>2021-01-05, 14:22:33</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2020/12/29/kerberos-study/" title="个人理解kerberos的作用和运行流程">https://www.tu3k.cn/2020/12/29/kerberos-study/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2020/12/29/kerberos-study/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>

