@@ -15,12 +15,12 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="漏洞简介Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。 漏洞环境搭建1234wget http:&#x2F;&#x2F;download.redis.io&#x2F;r">
+<meta name="description" content="漏洞简介Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis未授权访问">
 <meta property="og:url" content="https://www.tu3k.cn/2021/01/07/redis/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="漏洞简介Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。 漏洞环境搭建1234wget http:&#x2F;&#x2F;download.redis.io&#x2F;r">
+<meta property="og:description" content="漏洞简介Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.tu3k.cn/images/redis/1.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/redis/2.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://www.tu3k.cn/images/redis/11.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/redis/12.png">
 <meta property="article:published_time" content="2021-01-07T11:20:04.000Z">
-<meta property="article:modified_time" content="2021-01-07T11:31:04.016Z">
+<meta property="article:modified_time" content="2021-01-07T11:41:47.732Z">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.tu3k.cn/images/redis/1.png">
@@ -322,6 +322,7 @@
     
         
         <h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。</p>
+<a id="more"></a>
 <h3 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-2.8.17.tar.gz        &#x2F;&#x2F;wget下载Redis安装包</span><br><span class="line">tar xzvf redis-2.8.17.tar.gz         &#x2F;&#x2F;解压安装包</span><br><span class="line">cd redis-2.8.17         &#x2F;&#x2F;进入redis目录</span><br><span class="line">make               &#x2F;&#x2F;编译</span><br></pre></td></tr></table></figure>
 <p>出现下面这句话就说明编译成功了<br><img src="https://www.tu3k.cn/images/redis/1.png" alt="redis" title="redis未授权访问"><br>PS：建议使用sudo以root身份安装，避免报错。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd src&#x2F;               &#x2F;&#x2F;进入src目录</span><br><span class="line">cp redis-server &#x2F;usr&#x2F;bin&#x2F;</span><br><span class="line">cp redis-cli &#x2F;usr&#x2F;bin&#x2F;          &#x2F;&#x2F;将redis-server和redis-cli拷贝到&#x2F;usr&#x2F;bin目录下，类似于加入到环境变量下（这样每次启动redis-server和redis-cli就不用进入安装目录了）</span><br><span class="line">cd ..                                 &#x2F;&#x2F;返回上一级目录</span><br><span class="line">cp redis.conf &#x2F;etc&#x2F;           &#x2F;&#x2F;将redis.conf拷贝到&#x2F;etc&#x2F;目录下</span><br><span class="line">redis-server &#x2F;etc&#x2F;redis.conf           &#x2F;&#x2F;使用&#x2F;etc&#x2F;目录下的redis.conf配置来启动redis服务</span><br></pre></td></tr></table></figure>
@@ -343,7 +344,7 @@
         <p><span>Title:</span><a href="/2021/01/07/redis/">Redis未授权访问</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-01-07, 19:20:04</p>
-        <p><span>Updated:</span>2021-01-07, 19:31:04</p>
+        <p><span>Updated:</span>2021-01-07, 19:41:47</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/01/07/redis/" title="Redis未授权访问">https://www.tu3k.cn/2021/01/07/redis/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/07/redis/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
