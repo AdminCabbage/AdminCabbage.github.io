@@ -14,16 +14,34 @@
 <meta name="author" content="Tu3k" />
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
-    
-    
 
-
-<meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://www.tu3k.cn/index.html">
+<meta name="description" content="声明记录一下学习Python的笔记，大部分摘自菜鸟教程，从0开始的记的，边学边发出来。 编码格式默认情况下，Python编码格式为UTF-8，所有的字符串都是Unicode字符串，也可以手动指定编码格式  1# coding: cp-1252 标识符12341、第一个字符必须是字母或者下划线2、标识符的其他部分由字母、下划线、数字组成3、标识符大小写敏感4、可以用中文作为变量名 Python保留字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python笔记1——基本语法">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/14/Python-one/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="声明记录一下学习Python的笔记，大部分摘自菜鸟教程，从0开始的记的，边学边发出来。 编码格式默认情况下，Python编码格式为UTF-8，所有的字符串都是Unicode字符串，也可以手动指定编码格式  1# coding: cp-1252 标识符12341、第一个字符必须是字母或者下划线2、标识符的其他部分由字母、下划线、数字组成3、标识符大小写敏感4、可以用中文作为变量名 Python保留字">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610541493484-1f6e66ba-4b89-497a-80af-0cb3c0f31473.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610541680823-0d9464ad-3c54-4ad2-976c-1d05542ba445.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610541979224-f4058b66-cd00-4aad-a6fb-d55c794b4b2c.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610542141683-ec7c100a-69df-42b4-b4e4-211e4b30cf06.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610542191250-5eb0225c-b2a0-4809-8387-2d189eb469d3.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610542483291-523aedcd-f8ca-4429-8639-b20d13319d96.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610543141339-64235b67-de85-402e-b575-74e179cd3551.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610544721116-b2b938e2-d194-4f4f-8e03-60586a2675dc.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610543829220-6519a32a-0da8-439b-8189-1ff559b54b9b.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610543845617-84a8b6f8-d825-46f7-8c96-da99bd2a7393.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610544132797-05615225-356f-42ff-a431-218fac833ad6.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610587635735-942c20cf-f9a4-433f-8baa-9d8136708e83.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610588066615-de1786e3-95f4-43b8-86f7-c9b4d9a28ac7.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610588514987-25183c4a-7508-41d8-b8c8-a4f926ed581c.png?x-oss-process=image/resize,w_806">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610589329829-8c20f524-ace5-4a4b-9b8a-07c038116022.png?x-oss-process=image/resize,w_1358">
+<meta property="article:published_time" content="2021-01-14T03:12:39.000Z">
+<meta property="article:modified_time" content="2021-01-14T03:26:39.746Z">
+<meta property="article:tag" content="Python笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1610541493484-1f6e66ba-4b89-497a-80af-0cb3c0f31473.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -53,13 +71,11 @@
 
 
 
-    <style> .article { opacity: 0;} </style>
-
 
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Tu3k's Blog</title>
+<title>Python笔记1——基本语法 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -68,8 +84,8 @@
     var yiliaConfig = {
         fancybox: true,
         animate: true,
-        isHome: true,
-        isPost: false,
+        isHome: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -268,9 +284,7 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-Python-one" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Python-one" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2021/01/14/Python-one/" class="article-date">
@@ -288,12 +302,23 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/14/Python-one/">Python笔记1——基本语法</a>
+    <h1 class="article-title" itemprop="name">
+      Python笔记1——基本语法
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python%E7%AC%94%E8%AE%B0/" rel="tag">Python笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
     
 <div class="article-entry" itemprop="articleBody">
@@ -350,595 +375,119 @@
     
 </div>
     
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python%E7%AC%94%E8%AE%B0/" rel="tag">Python笔记</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
   
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-flash-diaoyu" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/13/flash-diaoyu/" class="article-date">
-      <time datetime="2021-01-13T06:31:50.000Z" itemprop="datePublished">2021-01-13</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/13/flash-diaoyu/">Flash制作钓鱼远控上线CS</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Flash成为几乎各大网站必备的插件，越来越多的flash需求导致用户对此放下戒备心，本文讲述利用flash制作钓鱼网页。</p>
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flash%E9%92%93%E9%B1%BC/" rel="tag">flash钓鱼</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/13/flash-diaoyu/#more">more >></a>
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2021/01/14/Python-one/">Python笔记1——基本语法</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2021-01-14, 11:12:39</p>
+        <p><span>Updated:</span>2021-01-14, 11:26:39</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/14/Python-one/" title="Python笔记1——基本语法">https://www.tu3k.cn/2021/01/14/Python-one/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/14/Python-one/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-chubanshe-bugs" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/11/chubanshe-bugs/" class="article-date">
-      <time datetime="2021-01-11T03:08:50.000Z" itemprop="datePublished">2021-01-11</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        Here's something encrypted, password is required to continue reading.
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%87%BA%E7%89%88%E7%A4%BE%E6%BC%8F%E6%B4%9E/" rel="tag">出版社漏洞</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/11/chubanshe-bugs/#more">more >></a>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
-      
-      <div class="clearfix"></div>
     </div>
-    
-  </div>
-  
-</article>
 
 
 
-
-
-
-
-
-
-  
-    <article id="post-sc-powershell-serivces-yincang" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/10/sc-powershell-serivces-yincang/" class="article-date">
-      <time datetime="2021-01-10T05:51:26.000Z" itemprop="datePublished">2021-01-10</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+    <nav id="article-nav">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。</p>
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/10/sc-powershell-serivces-yincang/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-74cms-tempelate-log-include-shell" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/09/74cms-tempelate-log-include-shell/" class="article-date">
-      <time datetime="2021-01-09T02:58:32.000Z" itemprop="datePublished">2021-01-09</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>骑士CMS是一款被广泛应用于人才招聘系统的程序，2020年年底被爆出模板文件存在注入可通过写木马进日志的方法包含日志Getshell.<br>受影响版本：&lt; 6.0.48</p>
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AA%91%E5%A3%ABCMS-Getshell/" rel="tag">骑士CMS Getshell</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/09/74cms-tempelate-log-include-shell/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-cs-chm-online" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/08/cs-chm-online/" class="article-date">
-      <time datetime="2021-01-07T18:28:43.000Z" itemprop="datePublished">2021-01-08</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2021/01/13/flash-diaoyu/">
+                    Flash制作钓鱼远控上线CS
+                </a>
+            </div>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        <h2 id="Chm简介"><a href="#Chm简介" class="headerlink" title="Chm简介"></a>Chm简介</h2><p>类似于一款用于存储信息和图文的帮助文档，里面可以集成很多页面，由html渲染而成，通过调用Windows中的hh.exe来执行。</p>
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/08/cs-chm-online/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-redis" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/07/redis/" class="article-date">
-      <time datetime="2021-01-07T11:20:04.000Z" itemprop="datePublished">2021-01-07</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/07/redis/">Redis未授权访问</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        <h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis安装后，会默认监听6379端口且允许连接的IP为0.0.0.0，如果没有进行一些策略限制，防火墙端口入站规则和限制来源IP访问等，就会把Redis暴露在公网上所有用户都可访问，如果没有密码认证，攻击者可利用脚本来未授权访问Redis，并执行一些命令来进行更危险的操作。</p>
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/07/redis/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-7i24tiquan" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/04/7i24tiquan/" class="article-date">
-      <time datetime="2021-01-03T20:28:00.000Z" itemprop="datePublished">2021-01-04</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        Here's something encrypted, password is required to continue reading.
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/04/7i24tiquan/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-yinduneiwang" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/01/03/yinduneiwang/" class="article-date">
-      <time datetime="2021-01-03T07:11:55.000Z" itemprop="datePublished">2021-01-03</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        Here's something encrypted, password is required to continue reading.
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2021/01/03/yinduneiwang/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-kerberos-study" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/12/29/kerberos-study/" class="article-date">
-      <time datetime="2020-12-29T07:24:58.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-<div class="article-entry" itemprop="articleBody">
-    
-        <h2 id="kerberos的概念、作用"><a href="#kerberos的概念、作用" class="headerlink" title="kerberos的概念、作用"></a>kerberos的概念、作用</h2><p><strong>Kerberos是一种协议，是一种基于第三方可信主机的计算机网络协议，用来安全验证两台主机间的通信，域渗透中的黄金票据，白银票据等都基于kerberos</strong></p>
-    
-</div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2020/12/29/kerberos-study/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
+
   
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">编码格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-number">1.2.</span> <span class="toc-text">标识符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python%E4%BF%9D%E7%95%99%E5%AD%97"><span class="toc-number">1.3.</span> <span class="toc-text">Python保留字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A"><span class="toc-number">1.4.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E4%B8%8E%E7%BC%A9%E8%BF%9B%E7%AC%A6"><span class="toc-number">1.5.</span> <span class="toc-text">行与缩进符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%A1%8C%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.6.</span> <span class="toc-text">多行语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.7.</span> <span class="toc-text">数字类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.8.</span> <span class="toc-text">字符串的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%87%BA%E4%BD%BF%E7%94%A8"><span class="toc-number">1.9.</span> <span class="toc-text">字符串的输出使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E8%A1%8C"><span class="toc-number">1.10.</span> <span class="toc-text">空行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E4%B8%80%E8%A1%8C%E6%98%BE%E7%A4%BA%E5%A4%9A%E6%9D%A1%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.11.</span> <span class="toc-text">同一行显示多条语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%84"><span class="toc-number">1.12.</span> <span class="toc-text">代码组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#print%E8%BE%93%E5%87%BA"><span class="toc-number">1.13.</span> <span class="toc-text">print输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#import%E4%B8%8Efrom%E2%80%A6import"><span class="toc-number">1.14.</span> <span class="toc-text">import与from…import</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Python笔记1——基本语法　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2021/01/13/flash-diaoyu/" title="Next: Flash制作钓鱼远控上线CS">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/01/14/Python-one/">Python笔记1——基本语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/13/flash-diaoyu/">Flash制作钓鱼远控上线CS</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
