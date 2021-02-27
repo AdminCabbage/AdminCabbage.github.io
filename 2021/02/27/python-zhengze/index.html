@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Tu3k" />
+<link rel="stylesheet" href="/css/tags.css" media="all">
+
+
+<meta name="description" content="简介Python正则表达式学习,正则表达式能够方便的帮助你检查一个字符串是否与某种模式匹配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python正则表达式学习">
+<meta property="og:url" content="https://www.tu3k.cn/2021/02/27/python-zhengze/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="简介Python正则表达式学习,正则表达式能够方便的帮助你检查一个字符串是否与某种模式匹配">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/1.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/2.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/3.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/4.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/5.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/6.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/7.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/8.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/9.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/10.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/11.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/pythonzhengze/12.png">
+<meta property="article:published_time" content="2021-02-27T02:12:26.000Z">
+<meta property="article:modified_time" content="2021-02-27T02:59:15.472Z">
+<meta property="article:tag" content="Python正则">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tu3k.cn/images/pythonzhengze/1.png">
+
+
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Python正则表达式学习 | Tu3k's Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?691d4c8cb59ad2a5d8c46f1ce6268b57";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/images/qq.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">首页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/playlist/">那忆年</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ocr/" rel="tag">Ocr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E5%87%BD%E6%95%B0/" rel="tag">Python函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E6%AD%A3%E5%88%99/" rel="tag">Python正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E7%AC%94%E8%AE%B0/" rel="tag">Python笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dll%E5%8A%AB%E6%8C%81/" rel="tag">dll劫持</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash%E9%92%93%E9%B1%BC/" rel="tag">flash钓鱼</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E7%89%88%E7%A4%BE%E6%BC%8F%E6%B4%9E/" rel="tag">出版社漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AA%91%E5%A3%ABCMS-Getshell/" rel="tag">骑士CMS Getshell</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://www.tu3k.cn">吃可爱存活的博客</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">博客就是记录平常学习的笔记和操作，以及最新漏洞的复现，写成文章增加记忆力和动手能力[小博主真的菜]。生活很苦，但你要努力，加油，追梦人。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/images/qq.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/playlist/">那忆年</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" target="_blank" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-python-zhengze" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/02/27/python-zhengze/" class="article-date">
+      <time datetime="2021-02-27T02:12:26.000Z" itemprop="datePublished">2021-02-27</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python正则表达式学习
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python%E6%AD%A3%E5%88%99/" rel="tag">Python正则</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Python正则表达式学习,正则表达式能够方便的帮助你检查一个字符串是否与某种模式匹配</p>
+<a id="more"></a>
+<h3 id="re-match"><a href="#re-match" class="headerlink" title="re.match()"></a>re.match()</h3><h4 id="从字符串开头匹配规则，如果是开头匹配到的则返回匹配的对象，不是则返回none"><a href="#从字符串开头匹配规则，如果是开头匹配到的则返回匹配的对象，不是则返回none" class="headerlink" title="从字符串开头匹配规则，如果是开头匹配到的则返回匹配的对象，不是则返回none"></a>从字符串开头匹配规则，如果是开头匹配到的则返回匹配的对象，不是则返回none</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">res &#x3D; re.match(&#39;www&#39;,&#39;www.baidu.com&#39;)   #从字符串开头匹配规则，如果是开头匹配到的则返回匹配的对象，不是则返回none</span><br><span class="line">print(res.span())</span><br><span class="line">ress &#x3D; re.match(&#39;com&#39;,&#39;www.baidu.com&#39;)</span><br><span class="line">print(ress)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/1.png" alt="python正则" title="regexp"></p>
+<p>ress.group()    返回匹配到的所有字符<br>ress.group(1)    返回正则第一次匹配到的字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">str &#x3D; &#39;Cat are cool than dog!&#39;</span><br><span class="line">patt &#x3D; r&#39;(.*) are (.*?) .*&#39;</span><br><span class="line">res &#x3D; re.match(patt,str)</span><br><span class="line">if res:</span><br><span class="line">    print(&quot;group()：&quot;,res.group())</span><br><span class="line">    print(&quot;group(1)：&quot;,res.group(1))</span><br><span class="line">    print(&quot;group(2)：&quot;,res.group(2))</span><br><span class="line">else:</span><br><span class="line">    print(&quot;no match res&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/2.png" alt="python正则" title="regexp"></p>
+<h3 id="re-search"><a href="#re-search" class="headerlink" title="re.search()"></a>re.search()</h3><h4 id="扫描整个字符串并返回第一个成功的匹配"><a href="#扫描整个字符串并返回第一个成功的匹配" class="headerlink" title="扫描整个字符串并返回第一个成功的匹配"></a>扫描整个字符串并返回第一个成功的匹配</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">print(re.search(&#39;www&#39;,&#39;www.baidu.com&#39;).span())</span><br><span class="line">print(re.search(&#39;com&#39;,&#39;www.baidu.com&#39;).span())</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/3.png" alt="python正则" title="regexp"></p>
+<h4 id="ress-group-1"><a href="#ress-group-1" class="headerlink" title="ress.group(1)"></a>ress.group(1)</h4><p><img src="https://www.tu3k.cn/images/pythonzhengze/4.png" alt="python正则" title="regexp"></p>
+<h3 id="re-match-与re-search-的区别"><a href="#re-match-与re-search-的区别" class="headerlink" title="re.match()与re.search()的区别"></a>re.match()与re.search()的区别</h3><h4 id="re-match只匹配字符串的开始，如果开头没匹配到，则返回none，而re-search则是匹配整个字符串，直到找到一个匹配"><a href="#re-match只匹配字符串的开始，如果开头没匹配到，则返回none，而re-search则是匹配整个字符串，直到找到一个匹配" class="headerlink" title="re.match只匹配字符串的开始，如果开头没匹配到，则返回none，而re.search则是匹配整个字符串，直到找到一个匹配"></a>re.match只匹配字符串的开始，如果开头没匹配到，则返回none，而re.search则是匹配整个字符串，直到找到一个匹配</h4><p>实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line"># match</span><br><span class="line">str &#x3D; &#39;Cats are cool than dogs!&#39;</span><br><span class="line">patt &#x3D; r&#39;dog&#39;</span><br><span class="line">res &#x3D; re.match(patt,str)</span><br><span class="line">if res:</span><br><span class="line">    print(&quot;match_group:&quot;,res.group())</span><br><span class="line">else:</span><br><span class="line">    print(&quot;No match&quot;)</span><br><span class="line"># search</span><br><span class="line">ress &#x3D; re.search(patt,str)</span><br><span class="line">if ress:</span><br><span class="line">    print(&quot;search_group:&quot;,ress.group())</span><br><span class="line">else:</span><br><span class="line">    print(&quot;No search&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/5.png" alt="python正则" title="regexp"></p>
+<h3 id="re-sub"><a href="#re-sub" class="headerlink" title="re.sub"></a>re.sub</h3><h4 id="检索和替换"><a href="#检索和替换" class="headerlink" title="检索和替换"></a>检索和替换</h4><p>语法<br><code>re.sub(patt,replace,str)</code><br>第一个参数：匹配规则<br>第二个参数：要替换成的字符<br>第三个参数：原字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line"># 去除注释</span><br><span class="line">str &#x3D; &#39;2206-8886-443 # 你的电话号码&#39;</span><br><span class="line">patt &#x3D; r&#39;#.*$&#39;</span><br><span class="line">res &#x3D; re.sub(patt,&quot;&quot;,str)</span><br><span class="line">print(res)</span><br><span class="line"># 去除非数字字符</span><br><span class="line">patts &#x3D; r&#39;\D&#39;           # \D代表匹配非数字字符</span><br><span class="line">ress &#x3D; re.sub(patt,&quot;&quot;,str)</span><br><span class="line">print(ress)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/6.png" alt="python正则" title="regexp"></p>
+<h3 id="re-compile"><a href="#re-compile" class="headerlink" title="re.compile"></a>re.compile</h3><h4 id="返回一个正则规则的对象"><a href="#返回一个正则规则的对象" class="headerlink" title="返回一个正则规则的对象"></a>返回一个正则规则的对象</h4><p>和php内的某个函数差不多，就是生成一个规则，再使用这个规则下的一些方法（match、search….）直接匹配字符串<br>res.start()    获取匹配到的字符中 第一个字母出现的位置<br>res.end()    反之</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import re </span><br><span class="line"># 生成一个规则</span><br><span class="line">patton &#x3D; re.compile(r&#39;\d+&#39;)</span><br><span class="line">res &#x3D; patton.match(&#39;one2345sixseven8nine1011&#39;,3,10)</span><br><span class="line">if res:</span><br><span class="line">    print(&quot;match:&quot;,res.group())</span><br><span class="line">else:</span><br><span class="line">    print(&quot;No match&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/7.png" alt="python正则" title="regexp"></p>
+<p>返回的正则结果对象的一些方法：<br><img src="https://www.tu3k.cn/images/pythonzhengze/8.png" alt="python正则" title="regexp"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; res.group(0)                            # 返回匹配成功的整个子串</span><br><span class="line">&#39;Hello World&#39;</span><br><span class="line">&gt;&gt;&gt; res.span(0)                             # 返回匹配成功的整个子串的索引</span><br><span class="line">(0, 11)</span><br><span class="line">&gt;&gt;&gt; res.group(1)                            # 返回第一个分组匹配成功的子串</span><br><span class="line">&#39;Hello&#39;</span><br><span class="line">&gt;&gt;&gt; res.span(1)                             # 返回第一个分组匹配成功的子串的索引</span><br><span class="line">(0, 5)</span><br><span class="line">&gt;&gt;&gt; res.group(2)                            # 返回第二个分组匹配成功的子串</span><br><span class="line">&#39;World&#39;</span><br><span class="line">&gt;&gt;&gt; res.span(2)                             # 返回第二个分组匹配成功的子串索引</span><br><span class="line">(6, 11)</span><br><span class="line">&gt;&gt;&gt; res.groups()                            # 等价于 (m.group(1), m.group(2), ...)</span><br><span class="line">(&#39;Hello&#39;, &#39;World&#39;)</span><br></pre></td></tr></table></figure>
+<h3 id="re-findall"><a href="#re-findall" class="headerlink" title="re.findall()"></a>re.findall()</h3><h4 id="在正则匹配中找到所有所匹配的字符串，并返回一个列表"><a href="#在正则匹配中找到所有所匹配的字符串，并返回一个列表" class="headerlink" title="在正则匹配中找到所有所匹配的字符串，并返回一个列表"></a>在正则匹配中找到所有所匹配的字符串，并返回一个列表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">str &#x3D; &#39;00123sca56a4sdxa1&#39;</span><br><span class="line">patt &#x3D; r&#39;\d+&#39;</span><br><span class="line">res &#x3D; re.findall(patt,str)</span><br><span class="line">print(res)</span><br><span class="line"># 同等写法</span><br><span class="line">patt2 &#x3D; re.compile(r&#39;\d+&#39;)</span><br><span class="line">ress &#x3D; patt2.findall(&#39;00123sca56a4sdxa1&#39;)</span><br><span class="line">print(ress)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/9.png" alt="python正则" title="regexp"></p>
+<h3 id="re-finditer"><a href="#re-finditer" class="headerlink" title="re.finditer()"></a>re.finditer()</h3><h4 id="和findall的功能一样，finditer将结果以迭代器的形式返回"><a href="#和findall的功能一样，finditer将结果以迭代器的形式返回" class="headerlink" title="和findall的功能一样，finditer将结果以迭代器的形式返回"></a>和findall的功能一样，finditer将结果以迭代器的形式返回</h4><p>例如：从字符串中匹配到了四组数字，那么将结果直接输出是得不到的，得到的是整个对象，使用for循环依次输出会发现<br><img src="https://www.tu3k.cn/images/pythonzhengze/10.png" alt="python正则" title="regexp"><br>直接 match.group() 就能输出每组的内容了<br><img src="https://www.tu3k.cn/images/pythonzhengze/11.png" alt="python正则" title="regexp"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">str &#x3D; &#39;213sca8g4t23cw&#39;</span><br><span class="line">patt &#x3D; r&#39;\d+&#39;</span><br><span class="line">res &#x3D; re.finditer(patt,str)</span><br><span class="line">for match in res:</span><br><span class="line">    print(match.group())</span><br></pre></td></tr></table></figure>
+<h3 id="re-split"><a href="#re-split" class="headerlink" title="re.split()"></a>re.split()</h3><h4 id="以正则的规则，分割字符串返回列表"><a href="#以正则的规则，分割字符串返回列表" class="headerlink" title="以正则的规则，分割字符串返回列表"></a>以正则的规则，分割字符串返回列表</h4><p>例子：以数字为分割点 分割字符串为列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import re </span><br><span class="line">str &#x3D; &#39;hello asd2sad is arge&#39;</span><br><span class="line">patt &#x3D; r&#39;\b&#39;    # 以空格的形式分割字符串</span><br><span class="line">l &#x3D; re.split(patt,str)</span><br><span class="line">print(l)</span><br><span class="line">patts &#x3D; r&#39;\d+&#39;</span><br><span class="line">ll &#x3D; re.split(patts,str)</span><br><span class="line">print(ll)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/pythonzhengze/12.png" alt="python正则" title="regexp"></p>
+<h3 id="正则表达式修饰符："><a href="#正则表达式修饰符：" class="headerlink" title="正则表达式修饰符："></a>正则表达式修饰符：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">re.I	    对大小写不敏感</span><br><span class="line">re.M	    多行匹配，影响 ^ 和 $</span><br><span class="line">re.S	    使 . 匹配包括换行在内的所有字符</span><br><span class="line">正则表达式模式：</span><br><span class="line">^    匹配开头</span><br><span class="line">$    匹配结尾</span><br><span class="line">.        任意字符 </span><br><span class="line">*        多个</span><br><span class="line">\w	匹配数字字母下划线</span><br><span class="line">\W	匹配非数字字母下划线</span><br><span class="line">\s	匹配空白字符</span><br><span class="line">\S	匹配非空字符</span><br><span class="line">\d	匹配任意数字，等价于 [0-9]。</span><br><span class="line">\D	匹配任意非数字</span><br><span class="line">\A	匹配字符串开始</span><br><span class="line">\Z	匹配字符串结束，如果是存在换行，只匹配到换行前的结束字符串。</span><br><span class="line">\z	匹配字符串结束</span><br><span class="line">\G	匹配最后匹配完成的位置。</span><br><span class="line">\b	匹配一个单词边界，也就是指单词和空格间的位置。例如， &#39;er\b&#39; 可以匹配&quot;never&quot; 中的 &#39;er&#39;，但不能匹配 &quot;verb&quot; 中的 &#39;er&#39;。</span><br><span class="line">\B	匹配非单词边界。&#39;er\B&#39; 能匹配 &quot;verb&quot; 中的 &#39;er&#39;，但不能匹配 &quot;never&quot; 中的 &#39;er&#39;。</span><br><span class="line">\n, \t, 等。	匹配一个换行符。匹配一个制表符, 等</span><br><span class="line">[0-9]    匹配数字0-9之间的某个数字</span><br><span class="line">[^0-9] 匹配除了数字的字符</span><br><span class="line">[a-z]    匹配任意小写字母</span><br><span class="line">[^abcd]    匹配除了abcd的所有字符</span><br></pre></td></tr></table></figure>
+    
+</div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2021/02/27/python-zhengze/">Python正则表达式学习</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2021-02-27, 10:12:26</p>
+        <p><span>Updated:</span>2021-02-27, 10:59:15</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2021/02/27/python-zhengze/" title="Python正则表达式学习">https://www.tu3k.cn/2021/02/27/python-zhengze/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/02/27/python-zhengze/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2021/02/22/python-jicheng/">
+                    Python面向对象继承
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#re-match"><span class="toc-number">1.1.</span> <span class="toc-text">re.match()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%80%E5%A4%B4%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%98%AF%E5%BC%80%E5%A4%B4%E5%8C%B9%E9%85%8D%E5%88%B0%E7%9A%84%E5%88%99%E8%BF%94%E5%9B%9E%E5%8C%B9%E9%85%8D%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E4%B8%8D%E6%98%AF%E5%88%99%E8%BF%94%E5%9B%9Enone"><span class="toc-number">1.1.1.</span> <span class="toc-text">从字符串开头匹配规则，如果是开头匹配到的则返回匹配的对象，不是则返回none</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-search"><span class="toc-number">1.2.</span> <span class="toc-text">re.search()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F%E6%95%B4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B9%B6%E8%BF%94%E5%9B%9E%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%88%90%E5%8A%9F%E7%9A%84%E5%8C%B9%E9%85%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">扫描整个字符串并返回第一个成功的匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ress-group-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">ress.group(1)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-match-%E4%B8%8Ere-search-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.</span> <span class="toc-text">re.match()与re.search()的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#re-match%E5%8F%AA%E5%8C%B9%E9%85%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%BC%80%E5%A7%8B%EF%BC%8C%E5%A6%82%E6%9E%9C%E5%BC%80%E5%A4%B4%E6%B2%A1%E5%8C%B9%E9%85%8D%E5%88%B0%EF%BC%8C%E5%88%99%E8%BF%94%E5%9B%9Enone%EF%BC%8C%E8%80%8Cre-search%E5%88%99%E6%98%AF%E5%8C%B9%E9%85%8D%E6%95%B4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E7%9B%B4%E5%88%B0%E6%89%BE%E5%88%B0%E4%B8%80%E4%B8%AA%E5%8C%B9%E9%85%8D"><span class="toc-number">1.3.1.</span> <span class="toc-text">re.match只匹配字符串的开始，如果开头没匹配到，则返回none，而re.search则是匹配整个字符串，直到找到一个匹配</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-sub"><span class="toc-number">1.4.</span> <span class="toc-text">re.sub</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E7%B4%A2%E5%92%8C%E6%9B%BF%E6%8D%A2"><span class="toc-number">1.4.1.</span> <span class="toc-text">检索和替换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-compile"><span class="toc-number">1.5.</span> <span class="toc-text">re.compile</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E6%AD%A3%E5%88%99%E8%A7%84%E5%88%99%E7%9A%84%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.5.1.</span> <span class="toc-text">返回一个正则规则的对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-findall"><span class="toc-number">1.6.</span> <span class="toc-text">re.findall()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E4%B8%AD%E6%89%BE%E5%88%B0%E6%89%80%E6%9C%89%E6%89%80%E5%8C%B9%E9%85%8D%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E5%B9%B6%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E5%88%97%E8%A1%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">在正则匹配中找到所有所匹配的字符串，并返回一个列表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-finditer"><span class="toc-number">1.7.</span> <span class="toc-text">re.finditer()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%92%8Cfindall%E7%9A%84%E5%8A%9F%E8%83%BD%E4%B8%80%E6%A0%B7%EF%BC%8Cfinditer%E5%B0%86%E7%BB%93%E6%9E%9C%E4%BB%A5%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%9A%84%E5%BD%A2%E5%BC%8F%E8%BF%94%E5%9B%9E"><span class="toc-number">1.7.1.</span> <span class="toc-text">和findall的功能一样，finditer将结果以迭代器的形式返回</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#re-split"><span class="toc-number">1.8.</span> <span class="toc-text">re.split()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E6%AD%A3%E5%88%99%E7%9A%84%E8%A7%84%E5%88%99%EF%BC%8C%E5%88%86%E5%89%B2%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%94%E5%9B%9E%E5%88%97%E8%A1%A8"><span class="toc-number">1.8.1.</span> <span class="toc-text">以正则的规则，分割字符串返回列表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BF%AE%E9%A5%B0%E7%AC%A6%EF%BC%9A"><span class="toc-number">1.9.</span> <span class="toc-text">正则表达式修饰符：</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Python正则表达式学习　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2021/02/22/python-jicheng/" title="Next: Python面向对象继承">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/02/27/python-zhengze/">Python正则表达式学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/22/python-jicheng/">Python面向对象继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/24/dllhack/">Dll劫持的简单实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/23/Python-tesseract-getCode/">Python Ocr识别验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/17/Python-def/">Python字符串内建函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/14/Python-one/">Python笔记1——基本语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/13/flash-diaoyu/">Flash制作钓鱼远控上线CS</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2020-2021 @Baicai
+            </div>
+            <div class="footer-right">
+                <a href="https://www.tu3k.cn" target="_blank" title="A fast, simple &amp; powerful blog framework">By Tu3k</a>       ||	This WebSite No Smoking</a> <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+<div id="musicMouseDrag" style="position:fixed; z-index: 9999; bottom: 0; right: 0;">
+    
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 等主人回来啊~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
