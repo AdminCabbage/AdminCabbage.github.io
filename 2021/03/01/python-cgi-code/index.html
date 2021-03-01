@@ -15,12 +15,12 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="CGI简介CGI：通用网关接口，是一段程序，运行在HTTP服务器上，CGI程序可以是 Python脚本，PERL脚本，SHELL脚本，C脚本等语言构成。 服务器配置CGI首先在apache的httpd.conf配置文件中设置网站cgi-bin目录ScriptAlias &#x2F;cgi-bin&#x2F; &quot;D:&#x2F;AppServ&#x2F;www&#x2F;cgi-bin&#x2F;&quot;    添加py后缀AddHandler">
+<meta name="description" content="CGI简介CGI：通用网关接口，是一段程序，运行在HTTP服务器上，CGI程序可以是 Python脚本，PERL脚本，SHELL脚本，C脚本等语言构成。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python_CGI编程笔记1">
 <meta property="og:url" content="https://www.tu3k.cn/2021/03/01/python-cgi-code/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="CGI简介CGI：通用网关接口，是一段程序，运行在HTTP服务器上，CGI程序可以是 Python脚本，PERL脚本，SHELL脚本，C脚本等语言构成。 服务器配置CGI首先在apache的httpd.conf配置文件中设置网站cgi-bin目录ScriptAlias &#x2F;cgi-bin&#x2F; &quot;D:&#x2F;AppServ&#x2F;www&#x2F;cgi-bin&#x2F;&quot;    添加py后缀AddHandler">
+<meta property="og:description" content="CGI简介CGI：通用网关接口，是一段程序，运行在HTTP服务器上，CGI程序可以是 Python脚本，PERL脚本，SHELL脚本，C脚本等语言构成。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://www.tu3k.cn/images/cgi/1.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/cgi/2.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://www.tu3k.cn/images/cgi/12.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/cgi/13.png">
 <meta property="article:published_time" content="2021-03-01T10:00:56.000Z">
-<meta property="article:modified_time" content="2021-03-01T10:24:04.187Z">
+<meta property="article:modified_time" content="2021-03-01T10:27:47.820Z">
 <meta property="article:tag" content="CGI编程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.tu3k.cn/images/cgi/1.png">
@@ -323,6 +323,7 @@
     
         
         <h2 id="CGI简介"><a href="#CGI简介" class="headerlink" title="CGI简介"></a>CGI简介</h2><p>CGI：通用网关接口，是一段程序，运行在HTTP服务器上，CGI程序可以是 Python脚本，PERL脚本，SHELL脚本，C脚本等语言构成。</p>
+<a id="more"></a>
 <h3 id="服务器配置CGI"><a href="#服务器配置CGI" class="headerlink" title="服务器配置CGI"></a>服务器配置CGI</h3><p>首先在apache的httpd.conf配置文件中设置网站cgi-bin目录<br><code>ScriptAlias /cgi-bin/ &quot;D:/AppServ/www/cgi-bin/&quot;    </code><br>添加py后缀<br><code>AddHandler cgi-script .cgi .py</code><br>去掉注释<br><code>LoadModule rewrite_module modules/mod_rewrite.so</code><br>启动apache访问<br><code>127.0.0.1:8080/cgi-bin/hello.py</code><br>这就是我们写的cgi程序地址</p>
 <h3 id="第一个CGI程序"><a href="#第一个CGI程序" class="headerlink" title="第一个CGI程序"></a>第一个CGI程序</h3><p>在cgi-bin目录下创建hello.py文件<br>注意：代码开头要带Python的绝对路径<br>注意2：如果程序不能运行，查看权限</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line">print(&quot;Content-Type:text&#x2F;html&quot;)</span><br><span class="line">print()</span><br><span class="line">print(&#39;&lt;html&gt;&#39;)</span><br><span class="line">print(&#39;&lt;head&gt;&#39;)</span><br><span class="line">print(&#39;&lt;meta charset&#x3D;&quot;gbk&quot;&gt;&#39;)</span><br><span class="line">print(&#39;&lt;title&gt;hello cgi&lt;&#x2F;title&gt;&#39;)</span><br><span class="line">print(&#39;&lt;&#x2F;head&gt;&#39;)</span><br><span class="line">print(&#39;&lt;body&gt;&#39;)</span><br><span class="line">print(&#39;&lt;h2&gt;这是我的第一个CGI页面&lt;&#x2F;h2&gt;&#39;)</span><br><span class="line">print(&#39;&lt;&#x2F;body&gt;&#39;)</span><br><span class="line">print(&#39;&lt;&#x2F;html&gt;&#39;)</span><br></pre></td></tr></table></figure>
@@ -369,7 +370,7 @@
         <p><span>Title:</span><a href="/2021/03/01/python-cgi-code/">Python_CGI编程笔记1</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-03-01, 18:00:56</p>
-        <p><span>Updated:</span>2021-03-01, 18:24:04</p>
+        <p><span>Updated:</span>2021-03-01, 18:27:47</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/03/01/python-cgi-code/" title="Python_CGI编程笔记1">https://www.tu3k.cn/2021/03/01/python-cgi-code/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/01/python-cgi-code/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
