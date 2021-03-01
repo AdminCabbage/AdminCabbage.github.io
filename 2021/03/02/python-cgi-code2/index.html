@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Tu3k" />
+<link rel="stylesheet" href="/css/tags.css" media="all">
+
+
+<meta name="description" content="继上篇，完。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python_CGI编程笔记2">
+<meta property="og:url" content="https://www.tu3k.cn/2021/03/02/python-cgi-code2/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="继上篇，完。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/1.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/2.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/3.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/4.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/5.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/6.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/7.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/8.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/9.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/10.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/11.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/cgi2/12.png">
+<meta property="article:published_time" content="2021-03-02T03:18:29.000Z">
+<meta property="article:modified_time" content="2021-03-01T12:36:08.102Z">
+<meta property="article:tag" content="CGI编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/cgi2/1.png">
+
+
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Python_CGI编程笔记2 | Tu3k's Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?691d4c8cb59ad2a5d8c46f1ce6268b57";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/images/qq.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">首页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/playlist/">那忆年</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CGI%E7%BC%96%E7%A8%8B/" rel="tag">CGI编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ocr/" rel="tag">Ocr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E5%87%BD%E6%95%B0/" rel="tag">Python函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E6%AD%A3%E5%88%99/" rel="tag">Python正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E7%AC%94%E8%AE%B0/" rel="tag">Python笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dll%E5%8A%AB%E6%8C%81/" rel="tag">dll劫持</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash%E9%92%93%E9%B1%BC/" rel="tag">flash钓鱼</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E7%89%88%E7%A4%BE%E6%BC%8F%E6%B4%9E/" rel="tag">出版社漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AA%91%E5%A3%ABCMS-Getshell/" rel="tag">骑士CMS Getshell</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://www.tu3k.cn">吃可爱存活的博客</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">博客就是记录平常学习的笔记和操作，以及最新漏洞的复现，写成文章增加记忆力和动手能力[小博主真的菜]。生活很苦，但你要努力，加油，追梦人。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/images/qq.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/playlist/">那忆年</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" target="_blank" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-python-cgi-code2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/03/02/python-cgi-code2/" class="article-date">
+      <time datetime="2021-03-02T03:18:29.000Z" itemprop="datePublished">2021-03-02</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python_CGI编程笔记2
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CGI%E7%BC%96%E7%A8%8B/" rel="tag">CGI编程</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <p>继上篇，完。</p>
+<a id="more"></a>
+<h3 id="CGI传递接受Select下拉数据"><a href="#CGI传递接受Select下拉数据" class="headerlink" title="CGI传递接受Select下拉数据"></a>CGI传递接受Select下拉数据</h3><p>select.html：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta charset&#x3D;utf-8&gt;</span><br><span class="line">&lt;form action&#x3D;&#39;&#x2F;cgi-bin&#x2F;selects.py&#39; method&#x3D;&quot;post&quot;&gt;</span><br><span class="line">	&lt;select name&#x3D;&quot;likes&quot;&gt;</span><br><span class="line">  	&lt;option value&#x3D;&quot;电脑&quot;&gt;电脑&lt;&#x2F;option&gt;</span><br><span class="line">    &lt;option value&#x3D;&quot;打球&quot;&gt;打球&lt;&#x2F;option&gt;</span><br><span class="line">    &lt;option value&#x3D;&quot;购物&quot;&gt;购物&lt;&#x2F;option&gt;</span><br><span class="line">  &lt;&#x2F;select&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;提交&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line">&lt;html&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/cgi2/1.png" alt="cgi_code" title="cgi_code"><br>/cgi-bin/selects.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line"></span><br><span class="line">import cgi</span><br><span class="line">import cgitb</span><br><span class="line"></span><br><span class="line"># 实例化，接收表单数据</span><br><span class="line">form &#x3D; cgi.FieldStorage()</span><br><span class="line"></span><br><span class="line"># 赋值</span><br><span class="line">if form.getvalue(&#39;likes&#39;):</span><br><span class="line">    likes &#x3D; form.getvalue(&#39;likes&#39;)</span><br><span class="line">else:</span><br><span class="line">    likes &#x3D; &#39;没有内容&#39;</span><br><span class="line"></span><br><span class="line"># 写网页</span><br><span class="line">print(&quot;Content-type:text&#x2F;html&quot;)</span><br><span class="line">print()</span><br><span class="line">print(&quot;&lt;html&gt;&quot;)</span><br><span class="line">print(&quot;&lt;head&gt;&quot;)</span><br><span class="line">print(&quot;&lt;meta charset&#x3D;gbk&gt;&quot;)</span><br><span class="line">print(&quot;&lt;title&gt;Select测试实例&lt;&#x2F;title&gt;&quot;)</span><br><span class="line">print(&quot;&lt;&#x2F;head&gt;&quot;)</span><br><span class="line">print(&quot;&lt;body&gt;&quot;)</span><br><span class="line">print(&quot;&lt;h2&gt; 选中的选项是：%s&lt;&#x2F;h2&gt;&quot; % likes)</span><br><span class="line">print(&quot;&lt;&#x2F;body&gt;&quot;)</span><br><span class="line">print(&quot;&lt;&#x2F;html&gt;&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/cgi2/2.png" alt="cgi_code" title="cgi_code"></p>
+<h3 id="CGI中Cookie的使用"><a href="#CGI中Cookie的使用" class="headerlink" title="CGI中Cookie的使用"></a>CGI中Cookie的使用</h3><p>概念：cookie 就是在客户访问脚本的同时，通过客户的浏览器，在客户硬盘上写入纪录数据 ，当下次客户访问脚本时取回数据信息，从而达到身份判别的功能，cookie 常用在身份校验中使用。</p>
+<h4 id="Cookie语法："><a href="#Cookie语法：" class="headerlink" title="Cookie语法："></a>Cookie语法：</h4><p><code>Set-Cookie: name=name;expires=date;domain=domain;secure</code><br>name：cookie的值<br>expires：cookie过期的时间<br>domain：对此cookie生效的域名<br>secure：表示cookie只能通过https协议来传递    </p>
+<h4 id="Cookie的设置"><a href="#Cookie的设置" class="headerlink" title="Cookie的设置"></a>Cookie的设置</h4><p>cookie.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line"></span><br><span class="line">print(&#39;Content-Type:text&#x2F;html&#39;)</span><br><span class="line">print(&#39;Set-cookie: name&#x3D;baicai;date&#x3D;Wed, 28 Aug 2016 18:30:00 GMT&#39;)</span><br><span class="line">print()</span><br><span class="line">print(&quot;&quot;&quot;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta charset&#x3D;utf-8&gt;</span><br><span class="line">&lt;title&gt;Cookie生成测试&lt;&#x2F;title&gt;</span><br><span class="line">&lt;h3&gt;Cookie set OK&lt;&#x2F;h3&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line">&quot;&quot;&quot;)</span><br></pre></td></tr></table></figure>
+<p>访问页面，程序自动将cookie加入http头中<br><img src="http://www.tu3k.cn/images/cgi2/3.png" alt="cgi_code" title="cgi_code"><br>查看cookie<br><img src="http://www.tu3k.cn/images/cgi2/4.png" alt="cgi_code" title="cgi_code"></p>
+<h3 id="使用HTTP-COOKIE模块检索取出Cookie对应的键、值"><a href="#使用HTTP-COOKIE模块检索取出Cookie对应的键、值" class="headerlink" title="使用HTTP.COOKIE模块检索取出Cookie对应的键、值"></a>使用HTTP.COOKIE模块检索取出Cookie对应的键、值</h3><p>流程：<br>1、先通过os.environ的环境变量模块查询是否存在HTTP_COOKIE的键，存在则取出赋值给一个变量 string<br>2、然后创建一个常规Cookie空间赋值给一个变量ccc，加载取出来的cookie值 ccc.load(string)/3、然后通过数组取值的方式取出键名对应的键值   ccc[‘name’].value<br>.value是获取这个键名的键值，.key是获取键名本身</p>
+<p>先设置cookie：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line"></span><br><span class="line">print(&#39;Content-Type:text&#x2F;html&#39;)</span><br><span class="line">print(&#39;Set-cookie: name&#x3D;tu3k; team&#x3D;nbfe&#39;)</span><br><span class="line">print()</span><br><span class="line">print(&quot;&quot;&quot;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta charset&#x3D;utf-8&gt;</span><br><span class="line">&lt;title&gt;Cookie生成测试&lt;&#x2F;title&gt;</span><br><span class="line">&lt;h3&gt;Cookie set OK&lt;&#x2F;h3&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line">&quot;&quot;&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/cgi2/5.png" alt="cgi_code" title="cgi_code"><br><img src="http://www.tu3k.cn/images/cgi2/6.png" alt="cgi_code" title="cgi_code"><br>设置cookie成功，name=tu3k</p>
+<p>检索取出Cookie：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line">import os</span><br><span class="line">import http.cookies</span><br><span class="line"></span><br><span class="line">print(&#39;Content-Type:text&#x2F;html&#39;)</span><br><span class="line">print()</span><br><span class="line">print(&quot;&quot;&quot;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta charset&#x3D;gbk&gt;</span><br><span class="line">&lt;title&gt;获取Cookie的键值测试&lt;&#x2F;title&gt;</span><br><span class="line">&lt;h2&gt;存在的cookie&lt;&#x2F;h2&gt;</span><br><span class="line">&quot;&quot;&quot;)</span><br><span class="line">if &#39;HTTP_COOKIE&#39; in os.environ:</span><br><span class="line">    cookie_string &#x3D; os.environ[&#39;HTTP_COOKIE&#39;]</span><br><span class="line">    c &#x3D; http.cookies.SimpleCookie()</span><br><span class="line">    c.load(cookie_string)</span><br><span class="line">try:</span><br><span class="line">    data &#x3D; c[&#39;name&#39;].value</span><br><span class="line">    print(&#39;cookie中name的键对应的值为%s&#39; % data)</span><br><span class="line">except KeyError:</span><br><span class="line">    print(&#39;cookie未设置或已过期&#39;)</span><br><span class="line">print(&quot;&quot;&quot;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line">&quot;&quot;&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/cgi2/7.png" alt="cgi_code" title="cgi_code"></p>
+<h3 id="文件上传实例"><a href="#文件上传实例" class="headerlink" title="文件上传实例"></a>文件上传实例</h3><p>file.html：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta charset&#x3D;utf-8&gt;</span><br><span class="line">&lt;title&gt;文件上传&lt;&#x2F;title&gt;</span><br><span class="line">&lt;form enctype&#x3D;&quot;multipart&#x2F;form-data&quot; action&#x3D;&quot;&#x2F;cgi-bin&#x2F;save_file.py&quot; method&#x3D;&quot;post&quot;&gt;</span><br><span class="line">	&lt;input type&#x3D;&quot;file&quot; name&#x3D;&quot;filename&quot;&#x2F;&gt;</span><br><span class="line">  &lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;上传&quot;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/cgi2/8.png" alt="cgi_code" title="cgi_code"><br>/cgi-bin/save_file.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line"></span><br><span class="line">import os, cgi</span><br><span class="line">import cgitb</span><br><span class="line"></span><br><span class="line"># 开启文件上传错误提示</span><br><span class="line">cgitb.enable()</span><br><span class="line"></span><br><span class="line"># 实例化，接收表单数据</span><br><span class="line">form &#x3D; cgi.FieldStorage()</span><br><span class="line"></span><br><span class="line"># 获取文件整体</span><br><span class="line">fileitem &#x3D; form[&#39;filename&#39;]</span><br><span class="line"></span><br><span class="line"># 判断文件名的整体是否存在</span><br><span class="line">if fileitem.filename:</span><br><span class="line">    # 获取上传的文件名</span><br><span class="line">    fname &#x3D; os.path.basename(fileitem.filename)</span><br><span class="line">    # 设置上传路径和上传文件，以二进制写入文件，fileitem.file.read() 获取该文件的二进制内容</span><br><span class="line">    open(&#39;D:\\Appserv\\www\\cgi-bin\\images\\demo2.png&#39;, &#39;wb&#39;).write(fileitem.file.read())</span><br><span class="line"></span><br><span class="line">    # 返回信息</span><br><span class="line">    message &#x3D; &quot;文件&quot; + fname + &quot;上传成功&quot;</span><br><span class="line">else:</span><br><span class="line">    message &#x3D; &quot;文件上传失败&quot;</span><br><span class="line"></span><br><span class="line"># 写网页</span><br><span class="line">print(&quot;&quot;&quot;\</span><br><span class="line">Content-Type:text&#x2F;html\n</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta charset&#x3D;gbk&gt;</span><br><span class="line">&lt;title&gt;Upload&lt;&#x2F;title&gt;</span><br><span class="line">&lt;p&gt;%s&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line">&quot;&quot;&quot; % message)</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/cgi2/9.png" alt="cgi_code" title="cgi_code"><br><img src="http://www.tu3k.cn/images/cgi2/10.png" alt="cgi_code" title="cgi_code"></p>
+<h3 id="文件下载对话框"><a href="#文件下载对话框" class="headerlink" title="文件下载对话框"></a>文件下载对话框</h3><p>文件下载通过HTTP头部实现<br><code>PS:fn.read()    读取文件内容的所有字节</code><br>download.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!C:\Users\86150\AppData\Local\Programs\Python\Python39\Python3.exe</span><br><span class="line"></span><br><span class="line"># 设置HTTP头，下载的文件名</span><br><span class="line">print(&#39;Content-Disposition:attachment; filename&#x3D;nbfe.txt&#39;)</span><br><span class="line">print()</span><br><span class="line"></span><br><span class="line"># 打开要下载的文件名</span><br><span class="line">fn &#x3D; open(&#39;nbfe.txt&#39;,&#39;r&#39;)</span><br><span class="line">str &#x3D; fn.read()</span><br><span class="line">print(str)</span><br><span class="line"></span><br><span class="line"># 关闭资源</span><br><span class="line">fn.close()</span><br></pre></td></tr></table></figure>
+<p>filename=文件名，只是浏览器返回给客户端的文件名，并不是服务器端的，真正获取要看open内打开的什么文件。<br><img src="http://www.tu3k.cn/images/cgi2/11.png" alt="cgi_code" title="cgi_code"><br><img src="http://www.tu3k.cn/images/cgi2/12.png" alt="cgi_code" title="cgi_code"></p>
+
+    
+</div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2021/03/02/python-cgi-code2/">Python_CGI编程笔记2</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2021-03-02, 11:18:29</p>
+        <p><span>Updated:</span>2021-03-01, 20:36:08</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2021/03/02/python-cgi-code2/" title="Python_CGI编程笔记2">https://www.tu3k.cn/2021/03/02/python-cgi-code2/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/02/python-cgi-code2/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2021/03/01/python-cgi-code/">
+                    Python_CGI编程笔记1
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CGI%E4%BC%A0%E9%80%92%E6%8E%A5%E5%8F%97Select%E4%B8%8B%E6%8B%89%E6%95%B0%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">CGI传递接受Select下拉数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CGI%E4%B8%ADCookie%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">CGI中Cookie的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cookie%E8%AF%AD%E6%B3%95%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">Cookie语法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Cookie%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">2.2.</span> <span class="toc-text">Cookie的设置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8HTTP-COOKIE%E6%A8%A1%E5%9D%97%E6%A3%80%E7%B4%A2%E5%8F%96%E5%87%BACookie%E5%AF%B9%E5%BA%94%E7%9A%84%E9%94%AE%E3%80%81%E5%80%BC"><span class="toc-number">3.</span> <span class="toc-text">使用HTTP.COOKIE模块检索取出Cookie对应的键、值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AE%9E%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">文件上传实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="toc-number">5.</span> <span class="toc-text">文件下载对话框</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Python_CGI编程笔记2　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2021/03/01/python-cgi-code/" title="Next: Python_CGI编程笔记1">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/03/02/python-cgi-code2/">Python_CGI编程笔记2</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/01/python-cgi-code/">Python_CGI编程笔记1</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/python-fanxulie/">Python反序列化理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/27/python-zhengze/">Python正则表达式学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/22/python-jicheng/">Python面向对象继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/24/dllhack/">Dll劫持的简单实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/23/Python-tesseract-getCode/">Python Ocr识别验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/17/Python-def/">Python字符串内建函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/14/Python-one/">Python笔记1——基本语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/13/flash-diaoyu/">Flash制作钓鱼远控上线CS</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2020-2021 @Baicai
+            </div>
+            <div class="footer-right">
+                <a href="https://www.tu3k.cn" target="_blank" title="A fast, simple &amp; powerful blog framework">By Tu3k</a>       ||	This WebSite No Smoking</a> <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+<div id="musicMouseDrag" style="position:fixed; z-index: 9999; bottom: 0; right: 0;">
+    
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 等主人回来啊~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
