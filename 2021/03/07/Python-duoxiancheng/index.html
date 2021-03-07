@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Tu3k" />
+<link rel="stylesheet" href="/css/tags.css" media="all">
+
+
+<meta name="description" content="多线程，可同时执行多个不同任务的程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python多线程和锁学习">
+<meta property="og:url" content="https://www.tu3k.cn/2021/03/07/Python-duoxiancheng/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="多线程，可同时执行多个不同任务的程序。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/1.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/2.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/3.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/4.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/5.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/6.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/7.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/8.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/9.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/10.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/Python_dxc/11.png">
+<meta property="article:published_time" content="2021-03-07T05:12:39.000Z">
+<meta property="article:modified_time" content="2021-03-07T08:43:21.601Z">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tu3k.cn/images/Python_dxc/1.png">
+
+
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Python多线程和锁学习 | Tu3k's Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?691d4c8cb59ad2a5d8c46f1ce6268b57";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/images/qq.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">首页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/playlist/">那忆年</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CGI%E7%BC%96%E7%A8%8B/" rel="tag">CGI编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ocr/" rel="tag">Ocr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pymysql/" rel="tag">Pymysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E5%87%BD%E6%95%B0/" rel="tag">Python函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E6%AD%A3%E5%88%99/" rel="tag">Python正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E7%AC%94%E8%AE%B0/" rel="tag">Python笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dll%E5%8A%AB%E6%8C%81/" rel="tag">dll劫持</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash%E9%92%93%E9%B1%BC/" rel="tag">flash钓鱼</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-mysql/" rel="tag">python_mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/" rel="tag">socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E7%89%88%E7%A4%BE%E6%BC%8F%E6%B4%9E/" rel="tag">出版社漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AA%91%E5%A3%ABCMS-Getshell/" rel="tag">骑士CMS Getshell</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://www.tu3k.cn">吃可爱存活的博客</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">博客就是记录平常学习的笔记和操作，以及最新漏洞的复现，写成文章增加记忆力和动手能力[小博主真的菜]。生活很苦，但你要努力，加油，追梦人。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/images/qq.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/playlist/">那忆年</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" target="_blank" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-Python-duoxiancheng" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/03/07/Python-duoxiancheng/" class="article-date">
+      <time datetime="2021-03-07T05:12:39.000Z" itemprop="datePublished">2021-03-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python多线程和锁学习
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <p>多线程，可同时执行多个不同任务的程序。</p>
+<a id="more"></a>
+
+<h3 id="多线程和多进程"><a href="#多线程和多进程" class="headerlink" title="多线程和多进程?"></a>多线程和多进程?</h3><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><p>并发性高，进程在执行过程之中拥有独立的内存单元，而多个线程共享内存，从而极大的提升了程序的运行效率，多个线程共享一个进程的虚拟空间<br>操作系统在创建进程时，需为该进程分配独立的内存空间，而创建线程则简单的多。</p>
+<h4 id="总结优点："><a href="#总结优点：" class="headerlink" title="总结优点："></a>总结优点：</h4><p>1、进程之间不能共享内存，而线程之间可以。<br>2、操作系统在创建进程时需为该进程分配独立内存空间，消耗很大，而多线程之间可以共享一个进程的虚拟空间<br>先来了解这个time库</p>
+<h3 id="time库"><a href="#time库" class="headerlink" title="time库"></a>time库</h3><p>设置时间，获取时间等等操作<br><code>time.sleep(5)    线程睡眠5秒</code><br><code>time.ctime()    获取当前时间</code><br><img src="https://www.tu3k.cn/images/Python_dxc/1.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="创建一个线程"><a href="#创建一个线程" class="headerlink" title="创建一个线程"></a>创建一个线程</h3><p>导入threading、time<br>其中time主要是用来进程睡眠，而threading模块用的最多的是Thread方法，也是最核心的一个方法<br><strong>threading.Thread()：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">返回一个该线程的对象</span><br><span class="line">每个Thread代表一个进程的创建，在每个线程中可以让程序处理不同的任务，这就是多线程编程</span><br><span class="line">target 参数：</span><br><span class="line">Thread方法中最主要的参数是target&#x3D;，我们需要将一个函数名指向他，线程才能正常运行，注意是函数名指向，没有()</span><br><span class="line">target &#x3D;  就是接受一个函数，看调用了哪个函数，进程启动的时候直接执行的那个函数</span><br><span class="line">如果要启动一个Thread线程，只需要调用 .start() 即可</span><br><span class="line">PS：程序在运行时，默认线路在主线程上</span><br><span class="line">args &#x3D; (1,)</span><br><span class="line">如果调用的函数有参数，用args&#x3D; 来将实参传进函数形参中</span><br><span class="line">注意args &#x3D; 是一个元祖</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import threading</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">def run(n):</span><br><span class="line">    print(&quot;task&quot;,n)</span><br><span class="line">    time.sleep(2)</span><br><span class="line">    print(&quot;2s&quot;)</span><br><span class="line">    time.sleep(1)</span><br><span class="line">    print(&quot;1s&quot;)</span><br><span class="line">    time.sleep(1)</span><br><span class="line">    print(&quot;0s&quot;)</span><br><span class="line">    time.sleep(1)</span><br><span class="line">   </span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    t1 &#x3D; threading.Thread(target&#x3D;run,args&#x3D;(&#39;t1&#39;,))</span><br><span class="line">    t2 &#x3D; threading.Thread(target&#x3D;run,args&#x3D;(&#39;t2&#39;,))</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br></pre></td></tr></table></figure>
+<p>执行结果可以看到，线程是一起执行的，当t1执行了函数内第一条语句，t2紧跟其后执行了，说明在同一内存空间中，线程是并发执行。<br><img src="https://www.tu3k.cn/images/Python_dxc/2.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="Thread的名字"><a href="#Thread的名字" class="headerlink" title="Thread的名字"></a>Thread的名字</h3><p><code>threading.current_thread()    返回当前线程的本身，name属性即是当前的线程名</code><br><code>访问当前线程名：thread.current_thread().name</code><br>每一个Thread都有一个name属性，代表的就是线程的名字，如果在构造方法中没有name赋值的话，那么Thread的名字就是以“Thread-N”的形式存在，N代表数字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">def test():</span><br><span class="line">    for x in range(5):</span><br><span class="line">        print(threading.current_thread().name,&#39;test&#39;,i)</span><br><span class="line">        time.sleep(1)</span><br><span class="line">        </span><br><span class="line"># 创建线程</span><br><span class="line">thread &#x3D; threading.Thread(target&#x3D;test)</span><br><span class="line">thread.start()</span><br><span class="line"></span><br><span class="line"># 创建主线程</span><br><span class="line">for x in range(5):</span><br><span class="line">    print(threading.current_thread().name,&#39;test&#39;,i)</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+<p>执行结果好看一点应该是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thread-1 test 0</span><br><span class="line">MainThread test 0</span><br><span class="line">Thread-1 test1</span><br><span class="line">MainThread test 1</span><br></pre></td></tr></table></figure>
+<p>但是这里为什么有的会交叉或者重合呢，因为线程是并发一起执行，而且延时1秒也是有误差存在的。<br><img src="https://www.tu3k.cn/images/Python_dxc/3.png" alt="Python多线程" title="Python多线程"><br>又执行了一次，这次比较规范<br><img src="https://www.tu3k.cn/images/Python_dxc/4.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="Thread-第二个参数也可以手动设置线程名"><a href="#Thread-第二个参数也可以手动设置线程名" class="headerlink" title="Thread() 第二个参数也可以手动设置线程名"></a>Thread() 第二个参数也可以手动设置线程名</h3><p>name参数：<br><code>name = 线程名</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">def test():</span><br><span class="line">    for x in range(5):</span><br><span class="line">        print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">        time.sleep(1)</span><br><span class="line">        </span><br><span class="line"># 创建子线程</span><br><span class="line">thread &#x3D; threading.Thread(target&#x3D;test,name&#x3D;&#39;DJone&#39;)</span><br><span class="line">thread.start()</span><br><span class="line"></span><br><span class="line"># 创建主线程</span><br><span class="line">for x in range(5):</span><br><span class="line">    print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/Python_dxc/5.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="Thread的生命周期"><a href="#Thread的生命周期" class="headerlink" title="Thread的生命周期"></a>Thread的生命周期</h3><p>1、创建线程对象时，Thread内部被初始化<br>2、调用start() 方法时，线程开始运行<br>3、当代码正常运行结束或异常终止时，thread线程终止，生命周期结束<br>可以通过调用Thread()的<strong>is_alive()</strong> 方法查询线程是否还在运行</p>
+<h4 id="is-alive"><a href="#is-alive" class="headerlink" title="is_alive()"></a>is_alive()</h4><p>返回 True或False<br>线程之间可以相互检查对方线程是否终止，前提是你的生命周期要比另一个线程长。<br><strong>例</strong>：主线程去检查子线程存活状态，我把子线程的睡眠时间调少了，这样主线程生命周期就比子线程长</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">def test():</span><br><span class="line">    for x in range(5):</span><br><span class="line">        print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">        time.sleep(0.5)</span><br><span class="line">        </span><br><span class="line"># 创建子线程</span><br><span class="line">thread &#x3D; threading.Thread(target&#x3D;test,name&#x3D;&#39;DJone&#39;)</span><br><span class="line">thread.start()</span><br><span class="line"></span><br><span class="line"># 创建主线程</span><br><span class="line">for x in range(5):</span><br><span class="line">    print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">    print(thread.name,&#39;is alive? &#39;,thread.is_alive())</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+<p>子线程很快就执行结束线程了，最后俩就检查不到子线程存活 为False<br><img src="https://www.tu3k.cn/images/Python_dxc/6.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="线程先后运行-Thread-join"><a href="#线程先后运行-Thread-join" class="headerlink" title="线程先后运行   Thread.join()"></a>线程先后运行   Thread.join()</h3><p>上面讲的那些，线程都是一起运行的，可能会造成不便或者程序有点混乱，但如果先让一个线程运行，后让一个线程运行，那就美滋滋</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">调用Thread 的 join() 方法，表示当前线程优先调用CPU资源执行同时让下面的线程进入等待，也叫阻塞自己</span><br><span class="line">也可以规定等待时间</span><br><span class="line">Thread.join(1.0)    这样主线程等待1秒就开始执行了</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">def test():</span><br><span class="line">    for x in range(5):</span><br><span class="line">        print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">        time.sleep(0.5)</span><br><span class="line"></span><br><span class="line"># 创建子线程</span><br><span class="line">thread &#x3D; threading.Thread(target&#x3D;test,name&#x3D;&#39;DJone&#39;)</span><br><span class="line">thread.start()</span><br><span class="line">thread.join()   # 表示当前线程优先调用CPU资源执行同时让下面的线程进入等待</span><br><span class="line"></span><br><span class="line"># 创建主线程</span><br><span class="line">for x in range(5):</span><br><span class="line">    print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">    print(thread.name,&#39;is alive? &#39;,thread.is_alive())</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/Python_dxc/7.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="Thread中daemon参数——子线程随主线程结束而结束"><a href="#Thread中daemon参数——子线程随主线程结束而结束" class="headerlink" title="Thread中daemon参数——子线程随主线程结束而结束"></a>Thread中daemon参数——子线程随主线程结束而结束</h3><p>刚刚的例子中，如果子线程的睡眠时间大于主线程，那么主线程结束后，子线程还在运行，下面的代码就是让子随主结束而结束。<br>只需要在创建子线程的时候，加一个<br><code>daemon=True</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">def test():</span><br><span class="line">    for x in range(5):</span><br><span class="line">        print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">        time.sleep(2)</span><br><span class="line">        </span><br><span class="line"># 创建子线程</span><br><span class="line">thread &#x3D; threading.Thread(target&#x3D;test,name&#x3D;&#39;DJone&#39;,daemon&#x3D;True)</span><br><span class="line">thread.start()</span><br><span class="line"></span><br><span class="line"># 创建主线程</span><br><span class="line">for x in range(5):</span><br><span class="line">    print(threading.current_thread().name,&#39;test&#39;,x)</span><br><span class="line">    print(thread.name,&#39;is alive? &#39;,thread.is_alive())</span><br><span class="line">    time.sleep(1)</span><br></pre></td></tr></table></figure>
+<p>可以看到子线程只执行了2次，主线程就已经执行完毕了，所有线程结束。<br><img src="https://www.tu3k.cn/images/Python_dxc/8.png" alt="Python多线程" title="Python多线程"></p>
+<h3 id="Python的多线程对象有两种表示方式"><a href="#Python的多线程对象有两种表示方式" class="headerlink" title="Python的多线程对象有两种表示方式"></a>Python的多线程对象有两种表示方式</h3><p><code>1、就是上面讲述的 thread = threading.Thread()</code><br><code>2、继承父类并重写run()方法</code><br>因为Thread在创建线程、启动线程的时候，实际上调用的是start() 里面的 run()方法，所以我们只需要通过重写类中的run()方法，就可以达到需求。</p>
+<h4 id="实例：实现三个窗口买票，共用一个票池，每个窗口线程买完票后输出买的票数和当前剩余票数"><a href="#实例：实现三个窗口买票，共用一个票池，每个窗口线程买完票后输出买的票数和当前剩余票数" class="headerlink" title="实例：实现三个窗口买票，共用一个票池，每个窗口线程买完票后输出买的票数和当前剩余票数"></a>实例：实现三个窗口买票，共用一个票池，每个窗口线程买完票后输出买的票数和当前剩余票数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import threading</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line"># 创建派生类继承线程内置类</span><br><span class="line">class WindowThread(threading.Thread):</span><br><span class="line">    # 初始化的值给父类</span><br><span class="line">    def __init__(self,name):</span><br><span class="line">        threading.Thread.__init__(self,name&#x3D;name)</span><br><span class="line">        self.name &#x3D; name</span><br><span class="line">        # 一共卖出的票数</span><br><span class="line">        self.ticks &#x3D; 0</span><br><span class="line">    # 重写run方法</span><br><span class="line">    def run(self):</span><br><span class="line">        # 设置全局变量 总票数</span><br><span class="line">        global ticket_count</span><br><span class="line">        # 做个判断</span><br><span class="line">        while ticket_count &gt; 0 :</span><br><span class="line">            print(&quot;票池中还剩%d张票&quot; % (ticket_count))</span><br><span class="line">            </span><br><span class="line">            if ticket_count &gt; 2:</span><br><span class="line">                number &#x3D; random.randint(1,2)</span><br><span class="line">            else:</span><br><span class="line">                number &#x3D; 1</span><br><span class="line">            # 计算剩余和卖出的票数</span><br><span class="line">            ticket_count -&#x3D; number</span><br><span class="line">            self.ticks +&#x3D; number</span><br><span class="line">            print(&quot;窗口%s买了%d张票，票池中还剩%d张票，三个窗口一共卖出了%d张票&quot; % (self.name,number,ticket_count,self.ticks))</span><br><span class="line">            </span><br><span class="line">        print(&quot;票数小于0，操作失败!&quot;)</span><br><span class="line">        </span><br><span class="line"># 设置总票数</span><br><span class="line">ticket_count &#x3D; 10</span><br><span class="line"></span><br><span class="line"># 实例化类并启动购票线程</span><br><span class="line">windows1 &#x3D; WindowThread(&#39;Windows1&#39;)</span><br><span class="line">windows2 &#x3D; WindowThread(&#39;Windows2&#39;)</span><br><span class="line">windows3 &#x3D; WindowThread(&#39;Windows3&#39;)</span><br><span class="line">windows1.start()</span><br><span class="line">windows2.start()</span><br><span class="line">windows3.start()</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/Python_dxc/9.png" alt="Python多线程" title="Python多线程"><br><img src="https://www.tu3k.cn/images/Python_dxc/10.png" alt="Python多线程" title="Python多线程"><br>看到会出现还剩-1张票的情况，这是为什么呢，因为线程在并发执行的时候，速度很快，可能会同时修改一个变量或数据，导致的数据错乱<br>针对这种解决方法，只需要加线程锁即可</p>
+<h3 id="线程锁：LOCK"><a href="#线程锁：LOCK" class="headerlink" title="线程锁：LOCK"></a>线程锁：LOCK</h3><p>上面的例子就是多线程同时改了一个变量把数据改乱了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lock &#x3D; threading.Lock()    返回当前线程锁的对象</span><br><span class="line">默认是locked</span><br><span class="line">lock.acquire()        当lock状态是locked的时候，使用acquire方法会优先使当前线程完成任务，相当于给当前线程锁了起来</span><br><span class="line">lock.release()        当前线程的任务执行完需要执行 lock.release() 释放锁，让下一个线程接入。</span><br></pre></td></tr></table></figure>
+<p>多线程和多进程最大的不同在于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、多进程中，同一个变量，各自有一份拷贝存在于每个进程中，互不影响。</span><br><span class="line">2、而多线程中，所有变量都由所有线程共享，所以，任何一个变量都可以被任何一个线程修改，因此，线程之间共享数据最大的危险在于多个线程同时改一个变量，把内容给改乱了。</span><br></pre></td></tr></table></figure>
+<p>所以我们只需要简单改一下上面的程序，在线程正式开始执行代码的地方开启锁 lock.acquire() ，结束任务前释放锁 lock.release()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">import threading</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class WindowThread(threading.Thread):</span><br><span class="line">    def __init__(self,name,lock):</span><br><span class="line">        threading.Thread.__init__(self, name&#x3D;name)</span><br><span class="line">        self.name &#x3D; name</span><br><span class="line">        self.ticks &#x3D; 0</span><br><span class="line">        self.lock &#x3D; lock</span><br><span class="line"></span><br><span class="line">    def run(self):</span><br><span class="line">        global ticket_count</span><br><span class="line">        # 此时while只相当于一个判断，循环的作用</span><br><span class="line">        while ticket_count &gt; 0:</span><br><span class="line">            print(&quot;当前剩余%d张票&quot; % (ticket_count))</span><br><span class="line"></span><br><span class="line">            # 上锁，主要代码都在锁里</span><br><span class="line">            self.lock.acquire()</span><br><span class="line">            if ticket_count &gt; 0:</span><br><span class="line">                if ticket_count &gt; 2:</span><br><span class="line">                    number &#x3D; random.randint(1, 2)</span><br><span class="line">                else:</span><br><span class="line">                    number &#x3D; 1</span><br><span class="line">                ticket_count -&#x3D; number</span><br><span class="line">                self.ticks +&#x3D; number</span><br><span class="line">                print(&quot;窗口%s买了%d张票，票池中还剩%d张票，三个窗口一共卖出了%d张票&quot; % (self.name, number, ticket_count, self.ticks))</span><br><span class="line">           	# 解锁</span><br><span class="line">            self.lock.release()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 创建锁</span><br><span class="line">lock &#x3D; threading.Lock()</span><br><span class="line"></span><br><span class="line">ticket_count &#x3D; 10</span><br><span class="line"></span><br><span class="line">windows1 &#x3D; WindowThread(&#39;Windows1&#39;, lock)</span><br><span class="line">windows2 &#x3D; WindowThread(&#39;Windows2&#39;, lock)</span><br><span class="line">windows3 &#x3D; WindowThread(&#39;Windows3&#39;, lock)</span><br><span class="line">windows1.start()</span><br><span class="line">windows2.start()</span><br><span class="line">windows3.start()</span><br><span class="line">windows1.join()</span><br><span class="line">windows2.join()</span><br><span class="line">windows3.join()</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.tu3k.cn/images/Python_dxc/11.png" alt="Python多线程" title="Python多线程"></p>
+
+    
+</div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2021/03/07/Python-duoxiancheng/">Python多线程和锁学习</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2021-03-07, 13:12:39</p>
+        <p><span>Updated:</span>2021-03-07, 16:43:21</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2021/03/07/Python-duoxiancheng/" title="Python多线程和锁学习">https://www.tu3k.cn/2021/03/07/Python-duoxiancheng/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/07/Python-duoxiancheng/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2021/03/04/python-socket/">
+                    Python之Socket简单学习
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">多线程和多进程?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">优点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">总结优点：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#time%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">time库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">创建一个线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread%E7%9A%84%E5%90%8D%E5%AD%97"><span class="toc-number">4.</span> <span class="toc-text">Thread的名字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread-%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%8F%82%E6%95%B0%E4%B9%9F%E5%8F%AF%E4%BB%A5%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AE%E7%BA%BF%E7%A8%8B%E5%90%8D"><span class="toc-number">5.</span> <span class="toc-text">Thread() 第二个参数也可以手动设置线程名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">6.</span> <span class="toc-text">Thread的生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#is-alive"><span class="toc-number">6.1.</span> <span class="toc-text">is_alive()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%85%88%E5%90%8E%E8%BF%90%E8%A1%8C-Thread-join"><span class="toc-number">7.</span> <span class="toc-text">线程先后运行   Thread.join()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread%E4%B8%ADdaemon%E5%8F%82%E6%95%B0%E2%80%94%E2%80%94%E5%AD%90%E7%BA%BF%E7%A8%8B%E9%9A%8F%E4%B8%BB%E7%BA%BF%E7%A8%8B%E7%BB%93%E6%9D%9F%E8%80%8C%E7%BB%93%E6%9D%9F"><span class="toc-number">8.</span> <span class="toc-text">Thread中daemon参数——子线程随主线程结束而结束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AF%B9%E8%B1%A1%E6%9C%89%E4%B8%A4%E7%A7%8D%E8%A1%A8%E7%A4%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">Python的多线程对象有两种表示方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%EF%BC%9A%E5%AE%9E%E7%8E%B0%E4%B8%89%E4%B8%AA%E7%AA%97%E5%8F%A3%E4%B9%B0%E7%A5%A8%EF%BC%8C%E5%85%B1%E7%94%A8%E4%B8%80%E4%B8%AA%E7%A5%A8%E6%B1%A0%EF%BC%8C%E6%AF%8F%E4%B8%AA%E7%AA%97%E5%8F%A3%E7%BA%BF%E7%A8%8B%E4%B9%B0%E5%AE%8C%E7%A5%A8%E5%90%8E%E8%BE%93%E5%87%BA%E4%B9%B0%E7%9A%84%E7%A5%A8%E6%95%B0%E5%92%8C%E5%BD%93%E5%89%8D%E5%89%A9%E4%BD%99%E7%A5%A8%E6%95%B0"><span class="toc-number">9.1.</span> <span class="toc-text">实例：实现三个窗口买票，共用一个票池，每个窗口线程买完票后输出买的票数和当前剩余票数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%94%81%EF%BC%9ALOCK"><span class="toc-number">10.</span> <span class="toc-text">线程锁：LOCK</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Python多线程和锁学习　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2021/03/04/python-socket/" title="Next: Python之Socket简单学习">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/03/07/Python-duoxiancheng/">Python多线程和锁学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/04/python-socket/">Python之Socket简单学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/04/pymysql/">Pymysql驱动库详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/03/python-mysql/">Python管理Mysql数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/02/python-cgi-code2/">Python_CGI编程笔记2</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/01/python-cgi-code/">Python_CGI编程笔记1</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/python-fanxulie/">Python反序列化理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/27/python-zhengze/">Python正则表达式学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/22/python-jicheng/">Python面向对象继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/24/dllhack/">Dll劫持的简单实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/23/Python-tesseract-getCode/">Python Ocr识别验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/17/Python-def/">Python字符串内建函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/14/Python-one/">Python笔记1——基本语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/13/flash-diaoyu/">Flash制作钓鱼远控上线CS</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2020-2021 @Baicai
+            </div>
+            <div class="footer-right">
+                <a href="https://www.tu3k.cn" target="_blank" title="A fast, simple &amp; powerful blog framework">By Tu3k</a>       ||	This WebSite No Smoking</a> <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+<div id="musicMouseDrag" style="position:fixed; z-index: 9999; bottom: 0; right: 0;">
+    
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 等主人回来啊~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
