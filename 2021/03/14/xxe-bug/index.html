@@ -15,12 +15,12 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="原理 XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。">
+<meta name="description" content="原理XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XXE漏洞详解">
 <meta property="og:url" content="https://www.tu3k.cn/2021/03/14/xxe-bug/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="原理 XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。">
+<meta property="og:description" content="原理XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635780262-cd2eedf7-fef3-431e-a3d1-0af477f04d04.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635769318-7be0aee2-e26a-4f21-994b-1e7ffc4ed0aa.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615703906321-48f42ac4-0222-4ef2-9659-bd000b311e24.png?x-oss-process=image/resize,w_762">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615704030936-0aabf1d5-ee77-4a0f-841b-9d9b80a48bf8.png?x-oss-process=image/resize,w_908">
 <meta property="article:published_time" content="2021-03-14T08:31:29.000Z">
-<meta property="article:modified_time" content="2021-03-14T08:35:00.877Z">
+<meta property="article:modified_time" content="2021-03-14T08:41:31.966Z">
 <meta property="article:tag" content="XXE">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635780262-cd2eedf7-fef3-431e-a3d1-0af477f04d04.png">
@@ -322,9 +322,7 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><blockquote>
-<p>XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。</p>
-</blockquote>
+        <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。</p>
 <a id="more"></a>
 <h2 id="服务端XML函数了解"><a href="#服务端XML函数了解" class="headerlink" title="服务端XML函数了解"></a>服务端XML函数了解</h2><h3 id="PHP解析处理XML函数"><a href="#PHP解析处理XML函数" class="headerlink" title="PHP解析处理XML函数"></a>PHP解析处理XML函数</h3><p>simplexml_load_string()<br>转换正常的XML字符串为SimpleXmlElement对象，返回所有对象的键和元素到变量中，[return object]。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 普通方式操控解析xml</span><br><span class="line">$xml &#x3D; &lt;&lt;&lt;XML</span><br><span class="line">&lt;note&gt;</span><br><span class="line">&lt;to&gt;baicai&lt;&#x2F;to&gt;</span><br><span class="line">&lt;&#x2F;note&gt;</span><br><span class="line">XML;</span><br><span class="line">$xmlobj &#x3D; simplexml_load_string($xml)</span><br><span class="line">echo $xmlobj-&gt;getname();	   &#x2F;&#x2F;获取xml根元素名称  note</span><br><span class="line">echo $xmlobj-&gt;to;	          &#x2F;&#x2F; 直接获取xml元素内to键名的值  baicai</span><br><span class="line">&#x2F;&#x2F; dom对象操控解析xml</span><br><span class="line">$dom &#x3D; new DOMDocument();	&#x2F;&#x2F;使用xml操作时需创建domdocument对象</span><br><span class="line">$dom-&gt;loadxml(&#39;test.xml&#39;);            &#x2F;&#x2F; 载入xml文件到内存中并设置些属性</span><br><span class="line">$c &#x3D; simplexml_import_dom($dom);    &#x2F;&#x2F; 解析xml文件并把结果给$c</span><br><span class="line">print($c);</span><br></pre></td></tr></table></figure>
@@ -403,7 +401,7 @@
         <p><span>Title:</span><a href="/2021/03/14/xxe-bug/">XXE漏洞详解</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-03-14, 16:31:29</p>
-        <p><span>Updated:</span>2021-03-14, 16:35:00</p>
+        <p><span>Updated:</span>2021-03-14, 16:41:31</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/03/14/xxe-bug/" title="XXE漏洞详解">https://www.tu3k.cn/2021/03/14/xxe-bug/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/14/xxe-bug/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
