@@ -22,8 +22,8 @@
 <meta property="og:site_name">
 <meta property="og:description" content="一步步拿到flag，值得一看，涉及到脚本编写，sql注入理解，文件包含，代码审计。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/60.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/61.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/60.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/61.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/62.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/63.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/64.png">
@@ -34,10 +34,10 @@
 <meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/70.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/69.png">
 <meta property="article:published_time" content="2021-04-12T14:00:01.000Z">
-<meta property="article:modified_time" content="2021-04-13T08:38:57.872Z">
+<meta property="article:modified_time" content="2021-04-13T08:44:34.288Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf/60.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/60.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -322,7 +322,7 @@
         
         <p>一步步拿到flag，值得一看，涉及到脚本编写，sql注入理解，文件包含，代码审计。</p>
 <a id="more"></a>
-<h3 id="编写验证码脚本"><a href="#编写验证码脚本" class="headerlink" title="编写验证码脚本"></a>编写验证码脚本</h3><p>界面如下，翻译中文是：<br>“你好，单身狗，这是一个迷你文件管理器，你可以登录和下载文件，甚至得到标志。”<br><img src="http://www.tu3k.cn/images/php_web_ctf/60.png" alt="web_ctf" title="getflag"><br>根据提示，大致思路是让我们登陆进去后，找到文件管理器下载文件，获取得到flag的思路。<br>点击Login，是个登陆界面，有个验证码和对应的验证码规则，随便输入几个常见验证码页面无回显，好吧那就跟着他规则来吧<br><img src="http://www.tu3k.cn/images/php_web_ctf/61.png" alt="web_ctf" title="getflag"><br>先根据规则写出脚本<br><code>substr(md5(captcha), 0, 6)=59bcd5</code>验证码md5加密后的前六位是59bcd5</p>
+<h3 id="编写验证码脚本"><a href="#编写验证码脚本" class="headerlink" title="编写验证码脚本"></a>编写验证码脚本</h3><p>界面如下，翻译中文是：<br>“你好，单身狗，这是一个迷你文件管理器，你可以登录和下载文件，甚至得到标志。”<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/60.png" alt="web_ctf" title="getflag"><br>根据提示，大致思路是让我们登陆进去后，找到文件管理器下载文件，获取得到flag的思路。<br>点击Login，是个登陆界面，有个验证码和对应的验证码规则，随便输入几个常见验证码页面无回显，好吧那就跟着他规则来吧<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/61.png" alt="web_ctf" title="getflag"><br>先根据规则写出脚本<br><code>substr(md5(captcha), 0, 6)=59bcd5</code>验证码md5加密后的前六位是59bcd5</p>
 <h4 id="poc"><a href="#poc" class="headerlink" title="poc:"></a>poc:</h4><p>为了方便从10000到10亿取值</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">def getmd5(cap):</span><br><span class="line">	for i in range(10000,1000000000):</span><br><span class="line">		captcha &#x3D; i</span><br><span class="line">		md5 &#x3D; hashlib.md5(str(captcha).encode(&#39;utf-8&#39;)).hexdigest()</span><br><span class="line">		if md5[0:6] &#x3D;&#x3D; cap:</span><br><span class="line">			return captcha</span><br><span class="line">print(getmd5(&#39;59bcd5&#39;))</span><br></pre></td></tr></table></figure>
 <p><img src="http://www.tu3k.cn/images/ichunqiu_ctf/62.png" alt="web_ctf" title="getflag"><br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/63.png" alt="web_ctf" title="getflag"><br>验证码正确了，但账户密码不知道，每次刷新验证码规则都不一样，无法爆破；经过测试发现用户名处可能存在注入<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/64.png" alt="web_ctf" title="getflag"><br>尝试万能密码，如果万能密码不行基本注入的思路也断了，结果是ok的<br>用户名：admin’ or ‘1’=’1<br>密码：123456<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/65.png" alt="web_ctf" title="getflag"><br>进入后台页面有三个超链接文件，点击下载有个下载链接<br><code>http://7f9db7d6c0c14f7c87234de92bfdac618fe5eb97876d4394.changame.ichunqiu.com/Challenges/file/download.php?f=hello.txt</code></p>
@@ -351,7 +351,7 @@
         <p><span>Title:</span><a href="/2021/04/12/ctf-getflag/">百度杯CTF比赛_十月场GetFlag</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-04-12, 22:00:01</p>
-        <p><span>Updated:</span>2021-04-13, 16:38:57</p>
+        <p><span>Updated:</span>2021-04-13, 16:44:34</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/04/12/ctf-getflag/" title="百度杯CTF比赛_十月场GetFlag">https://www.tu3k.cn/2021/04/12/ctf-getflag/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/12/ctf-getflag/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
