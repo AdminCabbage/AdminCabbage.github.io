@@ -15,25 +15,29 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="是在Python3中用于连接Mysql的一个库，在Python2中用mysqldb，上一章学会后这一章很好理解，效果增益。">
+<meta name="description" content="一步步拿到flag，值得一看，涉及到脚本编写，sql注入理解，文件包含，代码审计。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pymysql驱动库详解">
-<meta property="og:url" content="https://www.tu3k.cn/2021/03/04/pymysql/index.html">
+<meta property="og:title" content="百度杯CTF比赛_十月场GetFlag">
+<meta property="og:url" content="https://www.tu3k.cn/2021/04/12/ctf-getflag/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="是在Python3中用于连接Mysql的一个库，在Python2中用mysqldb，上一章学会后这一章很好理解，效果增益。">
+<meta property="og:description" content="一步步拿到flag，值得一看，涉及到脚本编写，sql注入理解，文件包含，代码审计。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/1.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/2.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/3.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/4.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/5.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/6.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/pymysql/7.png">
-<meta property="article:published_time" content="2021-03-04T07:44:48.000Z">
-<meta property="article:modified_time" content="2021-03-04T01:43:51.189Z">
-<meta property="article:tag" content="Pymysql">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/60.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/61.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/62.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/63.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/64.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/65.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/66.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/68.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/67.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/70.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/ichunqiu_ctf/69.png">
+<meta property="article:published_time" content="2021-04-12T14:00:01.000Z">
+<meta property="article:modified_time" content="2021-04-13T08:38:57.872Z">
+<meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/pymysql/1.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf/60.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -67,7 +71,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Pymysql驱动库详解 | Tu3k's Blog</title>
+<title>百度杯CTF比赛_十月场GetFlag | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -276,11 +280,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-pymysql" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ctf-getflag" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/03/04/pymysql/" class="article-date">
-      <time datetime="2021-03-04T07:44:48.000Z" itemprop="datePublished">2021-03-04</time>
+      <a href="/2021/04/12/ctf-getflag/" class="article-date">
+      <time datetime="2021-04-12T14:00:01.000Z" itemprop="datePublished">2021-04-12</time>
 </a>
 
 
@@ -295,7 +299,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Pymysql驱动库详解
+      百度杯CTF比赛_十月场GetFlag
     </h1>
   
 
@@ -306,7 +310,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pymysql/" rel="tag">Pymysql</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -316,29 +320,26 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <p>是在Python3中用于连接Mysql的一个库，在Python2中用mysqldb，上一章学会后这一章很好理解，效果增益。</p>
+        <p>一步步拿到flag，值得一看，涉及到脚本编写，sql注入理解，文件包含，代码审计。</p>
 <a id="more"></a>
-<h3 id="PyMysql库适用于Python3"><a href="#PyMysql库适用于Python3" class="headerlink" title="PyMysql库适用于Python3"></a>PyMysql库适用于Python3</h3><p>是在Python3中用于连接Mysql的一个库，在Python2中用mysqldb库</p>
-<h3 id="创建数据库连接"><a href="#创建数据库连接" class="headerlink" title="创建数据库连接"></a>创建数据库连接</h3><p><code>pymysql.connect()    连接数据库</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line"></span><br><span class="line"># 连接数据库</span><br><span class="line">db &#x3D; pymysql.connect(&#39;127.0.0.1&#39;,&#39;root&#39;,&#39;root&#39;,&#39;PyMysql&#39;)</span><br><span class="line"># 返回数据库游标对象</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"># 执行sql语句</span><br><span class="line">cursor.execute(&#39;SELECT VERSION()&#39;)</span><br><span class="line"># 获取结果</span><br><span class="line">result &#x3D; cursor.fetchone()</span><br><span class="line"># 输出</span><br><span class="line">print(&#39;数据库版本为：&#39;,result)</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/pymysql/1.png" alt="pymysql" title="pymysql"></p>
-<h3 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line"></span><br><span class="line">db &#x3D; pymysql.connect(&#39;127.0.0.1&#39;,&#39;root&#39;,&#39;root&#39;,&#39;PyMysql2&#39;)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"># 如果数据库中存在EMPLOYEE表 先删掉</span><br><span class="line">cursor.execute(&#39;DROP TABLE IF EXISTS EMPLOYEE&#39;)</span><br><span class="line"># 创建数据库表EMPLOYEE</span><br><span class="line">sql &#x3D; &quot;&quot;&quot;CREATE TABLE EMPLOYEE (</span><br><span class="line">        FIRST_NAME CHAR(20) NOT NULL,</span><br><span class="line">        LAST_NAME CHAR(20),</span><br><span class="line">        AGE INT,  </span><br><span class="line">        SEX CHAR(1),</span><br><span class="line">        INCOME FLOAT)&quot;&quot;&quot;</span><br><span class="line">cursor.execute(sql)</span><br><span class="line"></span><br><span class="line"># 关闭数据库连接</span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/pymysql/2.png" alt="pymysql" title="pymysql"></p>
-<h3 id="数据库插入操作"><a href="#数据库插入操作" class="headerlink" title="数据库插入操作"></a>数据库插入操作</h3><p>db.rollback()    发生错误则回滚之前所有操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sql &#x3D; &quot;&quot;&quot;INSERT INTO EMPLOYEE (FIRST_NAME,</span><br><span class="line">		LAST_NAME,AGE,SEX,INCOME) VALUES (</span><br><span class="line">		&#39;MAC&#39;,&#39;baicai&#39;,&#39;20&#39;,&#39;M&#39;,&#39;2000&#39;)</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line"></span><br><span class="line">db &#x3D; pymysql.connect(&#39;127.0.0.1&#39;,&#39;root&#39;,&#39;root&#39;,&#39;PyMysql2&#39;)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line">sql &#x3D; &quot;&quot;&quot;INSERT INTO EMPLOYEE (FIRST_NAME,</span><br><span class="line">        LAST_NAME,AGE,SEX,INCOME) VALUES (</span><br><span class="line">        &#39;MAC&#39;,&#39;baicai&#39;,20,&#39;M&#39;,2000</span><br><span class="line">        )&quot;&quot;&quot;</span><br><span class="line">try:</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    db.commit()</span><br><span class="line">except:</span><br><span class="line">    db.rollback()</span><br><span class="line"></span><br><span class="line"># 关闭数据库连接</span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/pymysql/3.png" alt="pymysql" title="pymysql"></p>
-<h4 id="以上代码也可以写成以下形式："><a href="#以上代码也可以写成以下形式：" class="headerlink" title="以上代码也可以写成以下形式："></a>以上代码也可以写成以下形式：</h4><p>没有标注多行代码时，换行写代码需在每行末尾加上 \</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line"></span><br><span class="line">db &#x3D; pymysql.connect(&quot;127.0.0.1&quot;, &quot;root&quot;, &quot;root&quot;, &quot;PyMysql2&quot;)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line"># SQL 插入语句</span><br><span class="line">sql &#x3D; &quot;INSERT INTO EMPLOYEE(FIRST_NAME, \</span><br><span class="line">       LAST_NAME, AGE, SEX, INCOME) \</span><br><span class="line">       VALUES (&#39;%s&#39;,&#39;%s&#39;,&#39;%s&#39;,&#39;%s&#39;,&#39;%s&#39;)&quot; % (&#39;DJ&#39;, &#39;Tu3k&#39;, 23, &#39;L&#39;, 3000)</span><br><span class="line">try:</span><br><span class="line">    # 执行sql语句</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    # 提交修改事件</span><br><span class="line">    db.commit()</span><br><span class="line">except:</span><br><span class="line">    # 发生错误时回滚</span><br><span class="line">    db.rollback()</span><br><span class="line"></span><br><span class="line"># 关闭数据库连接</span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/pymysql/4.png" alt="pymysql" title="pymysql"></p>
-<h3 id="数据库查询操作"><a href="#数据库查询操作" class="headerlink" title="数据库查询操作"></a>数据库查询操作</h3><p>fetchone()     获取下一个查询结果集，一次获取一个<br>fetchall()       接收全部的返回结果行.<br>rowcount      返回执行execute()方法后影响的行数。<br>例子：查询工资高于1000的记录<br>PS：多使用%s 的好处一个是方便，另一个是一定程度上防范了sql注入<br><img src="https://www.tu3k.cn/images/pymysql/5.png" alt="pymysql" title="pymysql"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line"></span><br><span class="line">db &#x3D; pymysql.connect(&#39;127.0.0.1&#39;,&#39;root&#39;,&#39;root&#39;,&#39;PyMysql2&#39;)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line">sql &#x3D; &quot;SELECT * FROM EMPLOYEE \</span><br><span class="line">      WHERE INCOME &gt; %s&quot; % (1000)</span><br><span class="line">try:</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    result &#x3D; cursor.fetchall()</span><br><span class="line">    for row in result:</span><br><span class="line">        fname &#x3D; row[0]</span><br><span class="line">        lname &#x3D; row[1]</span><br><span class="line">        age &#x3D; row[2]</span><br><span class="line">        sex &#x3D; row[3]</span><br><span class="line">        income &#x3D; row[4]</span><br><span class="line">        print(&quot;fname&#x3D;%s,lname&#x3D;%s,age&#x3D;%s,sex&#x3D;%s,income&#x3D;%s&quot; % (fname,lname,age,sex,income))</span><br><span class="line">except:</span><br><span class="line">    print(&quot;error sql query&quot;)</span><br><span class="line"></span><br><span class="line">#关闭数据库连接</span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/pymysql/6.png" alt="pymysql" title="pymysql"></p>
-<h3 id="更新操作-UPDATE-name-SET"><a href="#更新操作-UPDATE-name-SET" class="headerlink" title="更新操作   UPDATE name SET"></a>更新操作   UPDATE name SET</h3><p>更新，插入，删除操作都要进行 db.commit() 提交事件和try…except判断错误<br>例：将性别为M的记录,年龄全部增加一岁</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line"></span><br><span class="line">db &#x3D; pymysql.connect(&#39;127.0.0.1&#39;,&#39;root&#39;,&#39;root&#39;,&#39;PyMysql2&#39;)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line">sql &#x3D; &quot;UPDATE EMPLOYEE SET AGE&#x3D;AGE+1 WHERE SEX&#x3D;%s&quot; % (&#39;M&#39;)</span><br><span class="line">try:</span><br><span class="line">	cursor.execute(sql)</span><br><span class="line">    db.commit()</span><br><span class="line">    print(&#39;影响了&#39;,cursor.rowcount,&#39;行&#39;)</span><br><span class="line">except:</span><br><span class="line">    db.rollback()</span><br><span class="line"># 关闭数据库</span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/pymysql/7.png" alt="pymysql" title="pymysql"></p>
-<h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><p>例：删除表中年龄为20的记录<br>语句：<br><code>sql = &quot;DELETE FROM EMPLOYEE WHERE age = %s&quot; % (20)</code></p>
-<h3 id="执行事务："><a href="#执行事务：" class="headerlink" title="执行事务："></a>执行事务：</h3><p>db.commit()        在更新、新增、删除时需用到提交数据库事物<br>db.rollback()        一般用在报错的代码块中，回滚到数据库之前所有操作</p>
+<h3 id="编写验证码脚本"><a href="#编写验证码脚本" class="headerlink" title="编写验证码脚本"></a>编写验证码脚本</h3><p>界面如下，翻译中文是：<br>“你好，单身狗，这是一个迷你文件管理器，你可以登录和下载文件，甚至得到标志。”<br><img src="http://www.tu3k.cn/images/php_web_ctf/60.png" alt="web_ctf" title="getflag"><br>根据提示，大致思路是让我们登陆进去后，找到文件管理器下载文件，获取得到flag的思路。<br>点击Login，是个登陆界面，有个验证码和对应的验证码规则，随便输入几个常见验证码页面无回显，好吧那就跟着他规则来吧<br><img src="http://www.tu3k.cn/images/php_web_ctf/61.png" alt="web_ctf" title="getflag"><br>先根据规则写出脚本<br><code>substr(md5(captcha), 0, 6)=59bcd5</code>验证码md5加密后的前六位是59bcd5</p>
+<h4 id="poc"><a href="#poc" class="headerlink" title="poc:"></a>poc:</h4><p>为了方便从10000到10亿取值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">def getmd5(cap):</span><br><span class="line">	for i in range(10000,1000000000):</span><br><span class="line">		captcha &#x3D; i</span><br><span class="line">		md5 &#x3D; hashlib.md5(str(captcha).encode(&#39;utf-8&#39;)).hexdigest()</span><br><span class="line">		if md5[0:6] &#x3D;&#x3D; cap:</span><br><span class="line">			return captcha</span><br><span class="line">print(getmd5(&#39;59bcd5&#39;))</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/ichunqiu_ctf/62.png" alt="web_ctf" title="getflag"><br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/63.png" alt="web_ctf" title="getflag"><br>验证码正确了，但账户密码不知道，每次刷新验证码规则都不一样，无法爆破；经过测试发现用户名处可能存在注入<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/64.png" alt="web_ctf" title="getflag"><br>尝试万能密码，如果万能密码不行基本注入的思路也断了，结果是ok的<br>用户名：admin’ or ‘1’=’1<br>密码：123456<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/65.png" alt="web_ctf" title="getflag"><br>进入后台页面有三个超链接文件，点击下载有个下载链接<br><code>http://7f9db7d6c0c14f7c87234de92bfdac618fe5eb97876d4394.changame.ichunqiu.com/Challenges/file/download.php?f=hello.txt</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hello.txt</span><br><span class="line">s.txt</span><br><span class="line">a.php</span><br></pre></td></tr></table></figure>
+<p>两个txt都没啥东西，着重看下a.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	echo &quot;Do what you want to do, web dog, flag is in the web root dir&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>提示flag在根目录，ok，去下载根目录的flag.php<br><code>Challenges/file/download.php?f=../../flag.php</code><br>不过通过递归测试”../“，没有找到真正的flag<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/66.png" alt="web_ctf" title="getflag"><br>猜想通过apache的默认网站目录去访问flag.php<br>/var/www/html 拼接网站路径 /Challenges<br><code>http://7f9db7d6c0c14f7c87234de92bfdac618fe5eb97876d4394.changame.ichunqiu.com/Challenges/file/download.php?f=/var/www/html/Challenges/flag.php</code><br>成功下载，本以为结束了，没想到刚开始<br>审计</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$f &#x3D; $_POST[&#39;flag&#39;];</span><br><span class="line">$f &#x3D; str_replace(array(&#39;&#96;&#39;, &#39;$&#39;, &#39;*&#39;, &#39;#&#39;, &#39;:&#39;, &#39;\\&#39;, &#39;&quot;&#39;, &quot;&#39;&quot;, &#39;(&#39;, &#39;)&#39;, &#39;.&#39;, &#39;&gt;&#39;), &#39;&#39;, $f);</span><br><span class="line">if((strlen($f) &gt; 13) || (false !&#x3D;&#x3D; stripos($f, &#39;return&#39;)))</span><br><span class="line">&#123;</span><br><span class="line">		die(&#39;wowwwwwwwwwwwwwwwwwwwwwwwww&#39;);</span><br><span class="line">&#125;</span><br><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">		 eval(&quot;\$spaceone &#x3D; $f&quot;);</span><br><span class="line">&#125;</span><br><span class="line">catch (Exception $e)</span><br><span class="line">&#123;</span><br><span class="line">		return false;</span><br><span class="line">&#125;</span><br><span class="line">if ($spaceone &#x3D;&#x3D;&#x3D; &#39;flag&#39;)&#123;</span><br><span class="line">	echo file_get_contents(&quot;helloctf.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接收POST来的参数，值为flag则输出flag，理论上应该是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST</span><br><span class="line">....</span><br><span class="line">flag&#x3D;flag</span><br></pre></td></tr></table></figure>
+<h4 id="但是在try内对eval进行了异常处理，导致直接传入flag-flag会返回false导致终止程序，’flag’、”flag”引号都被过滤"><a href="#但是在try内对eval进行了异常处理，导致直接传入flag-flag会返回false导致终止程序，’flag’、”flag”引号都被过滤" class="headerlink" title="但是在try内对eval进行了异常处理，导致直接传入flag=flag会返回false导致终止程序，’flag’、”flag”引号都被过滤"></a>但是在try内对eval进行了异常处理，导致直接传入flag=flag会返回false导致终止程序，’flag’、”flag”引号都被过滤</h4><p>百度了其他PHP字符串的表示方法，不需要用引号等等黑名单的表示方法，叫做Heredoc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;s</span><br><span class="line">flag&#x3D;flag</span><br><span class="line">s;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>因为包含换行，所以需要url编码<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/68.png" alt="web_ctf" title="getflag"><br>于是构造flag参数如图<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/67.png" alt="web_ctf" title="getflag"><br>注意：在burp内post参数后除了url编码不要有换行符，因为代码中判断了长度。</p>
+<h4 id="分号后缀"><a href="#分号后缀" class="headerlink" title="分号后缀"></a>分号后缀</h4><p>查看其他人写的思路，使用分号来绕过。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#x3D;flag;</span><br></pre></td></tr></table></figure>
+<p>执行eval()函数要在代码末尾添加分号来结束一行代码，所以传入参数要带一个分号，当时本地搭建测试传参末尾不带分号，报错$end什么的，但是分号带上 flag就不全等了，所以就用了第一种heredoc方法。<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/70.png" alt="web_ctf" title="getflag"><br>但没想到进入eval函数后分号会自动去掉，从而达成条件。<br><img src="http://www.tu3k.cn/images/ichunqiu_ctf/69.png" alt="web_ctf" title="getflag"></p>
+<p>flag{e04c0510-884f-4bb8-804d-e950eb7bfe51}</p>
 
     
 </div>
@@ -347,13 +348,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/03/04/pymysql/">Pymysql驱动库详解</a></p>
+        <p><span>Title:</span><a href="/2021/04/12/ctf-getflag/">百度杯CTF比赛_十月场GetFlag</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-03-04, 15:44:48</p>
-        <p><span>Updated:</span>2021-03-04, 09:43:51</p>
+        <p><span>Created:</span>2021-04-12, 22:00:01</p>
+        <p><span>Updated:</span>2021-04-13, 16:38:57</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/03/04/pymysql/" title="Pymysql驱动库详解">https://www.tu3k.cn/2021/03/04/pymysql/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/04/pymysql/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/04/12/ctf-getflag/" title="百度杯CTF比赛_十月场GetFlag">https://www.tu3k.cn/2021/04/12/ctf-getflag/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/12/ctf-getflag/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -365,16 +366,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/03/04/python-socket/">
-                    Python之Socket简单学习
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/03/03/python-mysql/">
-                    Python管理Mysql数据库
+                <a href="/2021/04/09/sprintf-bug/">
+                    Sprintf格式化造成的注入漏洞
                 </a>
             </div>
         
@@ -386,7 +381,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PyMysql%E5%BA%93%E9%80%82%E7%94%A8%E4%BA%8EPython3"><span class="toc-number">1.</span> <span class="toc-text">PyMysql库适用于Python3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.</span> <span class="toc-text">创建数据库连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="toc-number">3.</span> <span class="toc-text">创建数据库表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">数据库插入操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8A%E4%BB%A3%E7%A0%81%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%86%99%E6%88%90%E4%BB%A5%E4%B8%8B%E5%BD%A2%E5%BC%8F%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">以上代码也可以写成以下形式：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">数据库查询操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%93%8D%E4%BD%9C-UPDATE-name-SET"><span class="toc-number">6.</span> <span class="toc-text">更新操作   UPDATE name SET</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">7.</span> <span class="toc-text">删除操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E4%BA%8B%E5%8A%A1%EF%BC%9A"><span class="toc-number">8.</span> <span class="toc-text">执行事务：</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E9%AA%8C%E8%AF%81%E7%A0%81%E8%84%9A%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">编写验证码脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#poc"><span class="toc-number">1.1.</span> <span class="toc-text">poc:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%86%E6%98%AF%E5%9C%A8try%E5%86%85%E5%AF%B9eval%E8%BF%9B%E8%A1%8C%E4%BA%86%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%8C%E5%AF%BC%E8%87%B4%E7%9B%B4%E6%8E%A5%E4%BC%A0%E5%85%A5flag-flag%E4%BC%9A%E8%BF%94%E5%9B%9Efalse%E5%AF%BC%E8%87%B4%E7%BB%88%E6%AD%A2%E7%A8%8B%E5%BA%8F%EF%BC%8C%E2%80%99flag%E2%80%99%E3%80%81%E2%80%9Dflag%E2%80%9D%E5%BC%95%E5%8F%B7%E9%83%BD%E8%A2%AB%E8%BF%87%E6%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">但是在try内对eval进行了异常处理，导致直接传入flag&#x3D;flag会返回false导致终止程序，’flag’、”flag”引号都被过滤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8F%B7%E5%90%8E%E7%BC%80"><span class="toc-number">1.3.</span> <span class="toc-text">分号后缀</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -422,7 +417,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Pymysql驱动库详解　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"百度杯CTF比赛_十月场GetFlag　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -442,15 +437,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/03/04/python-socket/" title="Pre: Python之Socket简单学习">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/03/03/python-mysql/" title="Next: Python管理Mysql数据库">
+            <a href="/2021/04/09/sprintf-bug/" title="Next: Sprintf格式化造成的注入漏洞">
                 <i class="fa fa-angle-right"></i>
             </a>
         
