@@ -15,19 +15,22 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="Python提供了两个级别访问网络的服务模块，低级别叫Socket，高级别叫Socketserver，本章节用于举例理解Socket的运行流程。">
+<meta name="description" content="法制与道德就是站在顶峰的人，给弱者制定的规则，而强者一般无视规则。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python之Socket简单学习">
-<meta property="og:url" content="https://www.tu3k.cn/2021/03/04/python-socket/index.html">
+<meta property="og:title" content="广东强网杯_Whoareyou?">
+<meta property="og:url" content="https://www.tu3k.cn/2021/04/19/whoareyou/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="Python提供了两个级别访问网络的服务模块，低级别叫Socket，高级别叫Socketserver，本章节用于举例理解Socket的运行流程。">
+<meta property="og:description" content="法制与道德就是站在顶峰的人，给弱者制定的规则，而强者一般无视规则。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://www.tu3k.cn/images/socket/1.png">
-<meta property="article:published_time" content="2021-03-04T11:58:55.000Z">
-<meta property="article:modified_time" content="2021-03-03T12:58:25.463Z">
-<meta property="article:tag" content="socket">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/11.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/14.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/12.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/15.png">
+<meta property="article:published_time" content="2021-04-19T00:05:52.000Z">
+<meta property="article:modified_time" content="2021-04-19T00:31:07.735Z">
+<meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.tu3k.cn/images/socket/1.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf2/11.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -61,7 +64,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Python之Socket简单学习 | Tu3k's Blog</title>
+<title>广东强网杯_Whoareyou? | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -270,11 +273,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-python-socket" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-whoareyou" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/03/04/python-socket/" class="article-date">
-      <time datetime="2021-03-04T11:58:55.000Z" itemprop="datePublished">2021-03-04</time>
+      <a href="/2021/04/19/whoareyou/" class="article-date">
+      <time datetime="2021-04-19T00:05:52.000Z" itemprop="datePublished">2021-04-19</time>
 </a>
 
 
@@ -289,7 +292,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Python之Socket简单学习
+      广东强网杯_Whoareyou?
     </h1>
   
 
@@ -300,7 +303,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/socket/" rel="tag">socket</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -310,17 +313,11 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <p>Python提供了两个级别访问网络的服务模块，低级别叫Socket，高级别叫Socketserver，本章节用于举例理解Socket的运行流程。</p>
+        <p>法制与道德就是站在顶峰的人，给弱者制定的规则，而强者一般无视规则。</p>
 <a id="more"></a>
-<h2 id="什么是Socket"><a href="#什么是Socket" class="headerlink" title="什么是Socket"></a>什么是Socket</h2><p>Socket又叫套接字，通常是通过套接字向网络发送和接收请求，使主机和另一台主机/服务器进行通信。</p>
-<h3 id="socket函数"><a href="#socket函数" class="headerlink" title="socket函数"></a>socket函数</h3><p>先介绍下socket套接字内的方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sk &#x3D; socket.socket(socket.AF_INET,socket.SOCK_STREAM)   </span><br><span class="line">					返回一个socket对象          </span><br><span class="line">					socket.AF_INET    	表示协议为ipv4</span><br><span class="line">					socket.SOCK_STREAM    表示协议为TCP</span><br><span class="line">这两个参数是默认的，可以不写，即：</span><br><span class="line">sk &#x3D; socket.socket()</span><br><span class="line">sk.bind(ip_port)    绑定服务器端监听的地址，只有一个参数，数组 ip_port &#x3D; (ip , port)</span><br><span class="line">sk.listen(5)        开启监听，并设置最大连接数为5</span><br><span class="line">sk.accept()         接收并返回（conn，address），其中conn为新的套接字对象，可用来接收发送数据，address为来连接的客户端ip地址</span><br><span class="line">sk.connect()        连接到address的套接字，参数只有一个，需为数组  ip_port &#x3D;（&#39;127.0.0.1&#39; , &#39;9999&#39;）</span><br><span class="line">sk.close()        关闭套接字对象</span><br><span class="line">sk.recv(1024)     接受服务端返回的内容，(1024)表示接收来自服务器端返回的最大字节数为1024，不填写则为无限制接受</span><br><span class="line">sk.sendall(string)      发送内容到客户端</span><br></pre></td></tr></table></figure>
-<h4 id="框架："><a href="#框架：" class="headerlink" title="框架："></a>框架：</h4><p>1、服务器端代码<br>2、客户端代码</p>
-<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><p>1、使用socket模块中的socket方法创建返回一个socket对象<br>2、设置服务器端ip和socket监听端口<br>3、绑定地址到socket对象空间中<br>4、开启监听并设置最大连接数<br>5、无限循环接收客户端的请求（while True:）<br>6、将接收的请求返回给两个变量，一个是新的套接字，一个来请求的客户端ip地址<br>7、使用新的套接字发送一个内容给客户端，输出一些信息给服务端用于查看请求信息<br>8、关闭socket连接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line"># 创建socket对象</span><br><span class="line">sk &#x3D; socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"># 设置服务器端ip和端口</span><br><span class="line">ip &#x3D; socket.gethostname()</span><br><span class="line">port &#x3D; 9999</span><br><span class="line">ip_port &#x3D; (ip,port)</span><br><span class="line"></span><br><span class="line"># 绑定地址</span><br><span class="line">sk.bind(ip_port)</span><br><span class="line"></span><br><span class="line"># 开启监听，设置最大连接数</span><br><span class="line">sk.listen(5)</span><br><span class="line"></span><br><span class="line"># 接收客户端连接并建立信息</span><br><span class="line">while True:</span><br><span class="line">    # sk.accept() 会返回两组数据，第一个是生成新的套接字对象，第二个是客户端连接ip地址</span><br><span class="line">    clientsocket,addr &#x3D; sk.accept()</span><br><span class="line">    print(&quot;连接地址为：&quot;,str(addr))</span><br><span class="line">    msg &#x3D; &quot;你已经与服务端建立了Socket连接!\n&quot;</span><br><span class="line">    clientsocket.send(msg.encode(&#39;UTF-8&#39;))	  # 使用新的套接字对象发送一些encode后的内容给客户端，客户端接收也同样需要decode的</span><br><span class="line">	# 使用完关闭资源</span><br><span class="line">    clientsocket.close()</span><br></pre></td></tr></table></figure>
-<h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p>1、创建socket对象空间并设置服务端的ip和端口<br>2、连接服务端<br>3、接受来自服务端反馈的信息，可设置最多接受多少字节数<br>4、将返回来的信息decode解码输出<br>5、关闭socket</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line"># 创建socket对象</span><br><span class="line">sk &#x3D; socket.socket()</span><br><span class="line"></span><br><span class="line"># 设置服务器ip端口，因为服务器在本地，所以用的socket.gethostname直接获取了服务端地址</span><br><span class="line">ip &#x3D; socket.gethostname()</span><br><span class="line">port &#x3D; 9999</span><br><span class="line">ip_port &#x3D; (ip,port)</span><br><span class="line"></span><br><span class="line"># 连接服务端</span><br><span class="line">sk.connect(ip_port)</span><br><span class="line"></span><br><span class="line"># 接收来自服务器端的信息，设置最大接收字节数为1024</span><br><span class="line">msg &#x3D; sk.recv(1024)</span><br><span class="line"># 关闭socket</span><br><span class="line">sk.close()</span><br><span class="line"># 输出服务端返回来的信息</span><br><span class="line">print(msg.decode(&#39;UTF-8&#39;)) </span><br></pre></td></tr></table></figure>
-<p><img src="https://www.tu3k.cn/images/socket/1.png" alt="socket" title="pythonsocket"></p>
+<h3 id="泱泱大国…"><a href="#泱泱大国…" class="headerlink" title="泱泱大国…"></a>泱泱大国…</h3><p>打开页面后是个拒绝访问描述，查找robot、备份、泄露无果<br><img src="http://www.tu3k.cn/images/php_web_ctf2/11.png" alt="ctf_vid" title="ctf_vid"><br>尝试对当前页面抓包<br><img src="http://www.tu3k.cn/images/php_web_ctf2/14.png" alt="ctf_vid" title="ctf_vid"><br>发现base64编码，解密下数据为<code>f:5:&quot;thrfg&quot;;</code><br>经验判断像rot13编码，解码之<br><code>s:5:&quot;guest&quot;;</code><br><img src="http://www.tu3k.cn/images/php_web_ctf2/12.png" alt="ctf_vid" title="ctf_vid"><br>将guest换成admin，加密回来<br><code>Zjo1OiJucXp2YSI7</code><br>替换放包，登录进去了，查看源代码<br><img src="http://www.tu3k.cn/images/php_web_ctf2/15.png" alt="ctf_vid" title="ctf_vid"><br>POST的发包传入参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filname&#x3D;dj.php&amp;data[]&#x3D;&lt;?php phpinfo()?&gt;</span><br></pre></td></tr></table></figure>
+<p>data[]即可绕过data检测php字符，上传后访问即可获取flag</p>
 
     
 </div>
@@ -329,13 +326,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/03/04/python-socket/">Python之Socket简单学习</a></p>
+        <p><span>Title:</span><a href="/2021/04/19/whoareyou/">广东强网杯_Whoareyou?</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-03-04, 19:58:55</p>
-        <p><span>Updated:</span>2021-03-03, 20:58:25</p>
+        <p><span>Created:</span>2021-04-19, 08:05:52</p>
+        <p><span>Updated:</span>2021-04-19, 08:31:07</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/03/04/python-socket/" title="Python之Socket简单学习">https://www.tu3k.cn/2021/03/04/python-socket/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/03/04/python-socket/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/04/19/whoareyou/" title="广东强网杯_Whoareyou?">https://www.tu3k.cn/2021/04/19/whoareyou/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/19/whoareyou/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -347,16 +344,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/03/07/Python-duoxiancheng/">
-                    Python多线程和锁学习
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/03/04/pymysql/">
-                    Pymysql驱动库详解
+                <a href="/2021/04/17/escapeshell-ctf/">
+                    EscapeshellArg/Escapeshellcmd使用不当产生的问题
                 </a>
             </div>
         
@@ -368,7 +359,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSocket"><span class="toc-number">1.</span> <span class="toc-text">什么是Socket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#socket%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">socket函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">框架：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.1.3.</span> <span class="toc-text">客户端</span></a></li></ol></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%B1%E6%B3%B1%E5%A4%A7%E5%9B%BD%E2%80%A6"><span class="toc-number">1.</span> <span class="toc-text">泱泱大国…</span></a></li></ol>
         
     </div>
     <style>
@@ -404,7 +395,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Python之Socket简单学习　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"广东强网杯_Whoareyou?　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -424,15 +415,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/03/07/Python-duoxiancheng/" title="Pre: Python多线程和锁学习">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/03/04/pymysql/" title="Next: Pymysql驱动库详解">
+            <a href="/2021/04/17/escapeshell-ctf/" title="Next: EscapeshellArg/Escapeshellcmd使用不当产生的问题">
                 <i class="fa fa-angle-right"></i>
             </a>
         
