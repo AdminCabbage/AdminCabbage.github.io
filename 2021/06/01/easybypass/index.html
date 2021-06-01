@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/133.png">
 <meta property="og:image" content="http://www.tu3k.cn/images/php_web_ctf2/134.png">
 <meta property="article:published_time" content="2021-06-01T04:52:33.000Z">
-<meta property="article:modified_time" content="2021-06-01T05:10:02.071Z">
+<meta property="article:modified_time" content="2021-06-01T05:22:11.866Z">
 <meta property="article:tag" content="ctf">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.tu3k.cn/images/php_web_ctf2/130.png">
@@ -321,7 +321,7 @@
 <h3 id="file函数"><a href="#file函数" class="headerlink" title="file函数"></a>file函数</h3><p>作用：获取一个文件脚本格式等信息<br>格式：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file 文件名</span><br><span class="line">file 1.txt</span><br><span class="line">file 1.txt;whoami</span><br></pre></td></tr></table></figure>
 <p><img src="http://www.tu3k.cn/images/php_web_ctf2/131.png" alt="ctf" title="easybypass"><br>linux中命令之间使用<code>;</code>进行拼接命令执行</p>
-<p>在comm1的正则过滤中没过滤<code>;</code>，但是过滤了查看文件的一些函数例如<code>cat、more、less</code>，使用tac函数进行绕过</p>
+<p>在comm1的正则过滤中没过滤<code>;</code>，但是过滤了查看文件的一些函数例如<code>cat、more、less</code>，使用tac函数进行绕过（根据题意flag在/flag中所以我们只需要找到没有过滤的读取文件的函数来读取即可）</p>
 <h3 id="tac函数"><a href="#tac函数" class="headerlink" title="tac函数"></a>tac函数</h3><p>和cat相反，将文件内容从最后一行开始显示<br><img src="http://www.tu3k.cn/images/php_web_ctf2/132.png" alt="ctf" title="easybypass"><br>先闭合前面的file函数，再执行tac读取当前文件代码并闭合后缀</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?comm1&#x3D;index.php&quot;;tac index.php;&quot;</span><br></pre></td></tr></table></figure>
 <p><img src="http://www.tu3k.cn/images/php_web_ctf2/133.png" alt="ctf" title="easybypass"><br>成功读取，接下来读取flag</p>
@@ -340,7 +340,7 @@
         <p><span>Title:</span><a href="/2021/06/01/easybypass/">BUUCTF_EasyBypass</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
         <p><span>Created:</span>2021-06-01, 12:52:33</p>
-        <p><span>Updated:</span>2021-06-01, 13:10:02</p>
+        <p><span>Updated:</span>2021-06-01, 13:22:11</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2021/06/01/easybypass/" title="BUUCTF_EasyBypass">https://www.tu3k.cn/2021/06/01/easybypass/</a>
             <span class="copy-path" data-clipboard-text="From https://www.tu3k.cn/2021/06/01/easybypass/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
